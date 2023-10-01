@@ -1,0 +1,160 @@
+@import 'normalize.css';
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
+
+:root {
+  --primary: rgb(29, 155, 240);
+  --black: #000;
+  --text-color: #161823;
+  --button-active: rgba(15, 20, 25, 1);
+  --white: #fff;
+
+  --font-family: 'ProximaNova', sans-serif;
+
+  //DefaultLayout
+  --default-layout-header-height: 60px;
+  --default-layout-width: 1150px;
+  --default-layout-horizontal-space: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  transition: all 0.3s ease-out 0s;
+}
+html {
+  font-size: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 15px;
+  line-height: normal;
+}
+
+//fonts embedded
+@font-face {
+  font-family: ProximaNova;
+  src: url('/assets/fonts/Proxima-Nova-Regular.woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: ProximaNova;
+  src: url('/assets/fonts/ProximaNova-Semibold.woff2');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: ProximaNova;
+  src: url('/assets/fonts/ProximaNova-Semibold.woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: SofiaPro;
+  src: url('/assets/fonts/sofiapro-bold.woff');
+  font-weight: 700;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed;
+  overflow-y: overlay;
+}
+
+//Scroll bar css
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(22, 24, 35, 0.06);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+ul {
+  li {
+    list-style-type: none;
+  }
+}
+// Custom tippy tooltip
+body {
+  .tippy-box {
+    font-size: 1.6rem;
+    font-weight: 600;
+    border-radius: 8px;
+    line-height: 2.2rem;
+    background-color: rgba(84, 84, 84, 0.92);
+  }
+
+  .tippy-arrow {
+    color: rgba(84, 84, 84, 0.92);
+  }
+
+  .tippy-content {
+    padding: 8px 9px;
+  }
+
+  .error {
+    background-color: rgb(253, 237, 237);
+    width: 30%;
+    position: fixed;
+    right: 0;
+    top: 80px;
+    line-height: 55px;
+    z-index: 100;
+    box-shadow: -1px 2px #ebe7e7;
+    padding: 6px 16px;
+    color: rgb(95, 33, 32);
+    transition: cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-radius: 4px;
+  }
+
+  .success {
+    width: 30%;
+    position: fixed;
+    right: 0;
+    top: 80px;
+    line-height: 55px;
+    box-shadow: -1px 2px #ebe7e7;
+    padding: 6px 16px;
+    color: #155724;
+    z-index: 100;
+    transition: cubic-bezier(0.165, 0.84, 0.44, 1);
+    background-color: #d4edda;
+    border-radius: 4px;
+  }
+}

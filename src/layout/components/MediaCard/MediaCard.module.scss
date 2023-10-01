@@ -1,0 +1,64 @@
+.article-image {
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.5s linear;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+.card-content {
+  &:hover {
+    .title {
+      .meta-item {
+        .meta-categories {
+          a {
+            background: #f63a3a;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+  .title {
+    font-size: 16px !important;
+    font-weight: bold !important;
+    padding-top: 8px;
+
+    .meta-item {
+      .meta-categories {
+        display: inline-block;
+
+        a {
+          display: inline-block;
+          background: #ffeaea;
+          border-radius: 5px;
+          color: #f63a3a;
+          font-size: 14px;
+          font-weight: 700;
+          text-transform: capitalize;
+          padding: 0 15px;
+        }
+      }
+
+      .meta-date {
+        margin-left: 4px;
+        display: inline-block;
+
+        span {
+          font-size: 12px;
+          font-weight: 400;
+
+          i {
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+    .title-link {
+      &:hover {
+        color: #f63a3a;
+      }
+    }
+  }
+}

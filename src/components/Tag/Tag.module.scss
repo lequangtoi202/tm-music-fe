@@ -1,0 +1,11 @@
+.tags-container {
+  display: inline;
+
+  .tag {
+    &:hover {
+      a {
+        color: #e74d58;
+      }
+    }
+  }
+}

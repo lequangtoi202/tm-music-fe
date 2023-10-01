@@ -1,0 +1,34 @@
+.add-account-wrapper {
+  &:hover {
+    background: rgba(22, 24, 35, 0.03);
+  }
+  .wrapper {
+    cursor: pointer;
+  }
+
+  .small {
+    height: 30px;
+  }
+
+  .info {
+    margin-top: 4px;
+    display: flex;
+    gap: 40px;
+    justify-content: space-between;
+    margin-left: 12px;
+    padding: 2px;
+    line-height: 20px;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .type {
+    text-align: end;
+    font-size: 14px;
+    color: rgba(22, 24, 35, 0.5);
+    padding-right: 10px;
+  }
+}

@@ -16,7 +16,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { API_URL } from '../../constant';
 import { clearError, setError } from '../../redux/errorReducer';
 
 function Copyright(props: any) {
@@ -79,7 +78,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post(API_URL + 'auth/register', payload, {
+      const response = await axios.post(process.env.API_URL + 'auth/register', payload, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

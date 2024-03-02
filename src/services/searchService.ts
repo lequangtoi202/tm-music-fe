@@ -1,10 +1,8 @@
 import axios, { AxiosResponse, isAxiosError } from 'axios';
-import { API_URL } from '../constant';
-import { SearchResult } from '../model/SearchResult';
 
-export const search = async (q: string, pageNumber: number): Promise<SearchResult[]> => {
+export const search = async (q: string, pageNumber: number): Promise<any[]> => {
   try {
-    const res: AxiosResponse<any> = await axios.get(API_URL + 'search', {
+    const res: AxiosResponse<any> = await axios.get(process.env.API_URL + 'search', {
       params: {
         kw: q,
         pageSize: 6,

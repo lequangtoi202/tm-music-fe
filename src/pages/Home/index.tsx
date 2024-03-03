@@ -1,12 +1,15 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { useContext } from 'react';
 import AlbumContainer from '../../components/Album';
 import CarouselContainer from '../../components/Carousel';
 import HistoryContainer from '../../components/History';
 import Text from '../../components/Text';
 import { TextHeader } from '../../components/TextHeader';
+import { KContext } from '../../context';
 const theme = createTheme();
 
 function Homepage() {
+  const { isMobile } = useContext(KContext);
   const data = [
     {
       src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
@@ -62,31 +65,31 @@ function Homepage() {
     },
   ];
 
+  console.log(isMobile);
+
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <CarouselContainer items={data} />
-        <div style={{ marginTop: '30px' }}>
-          <Text color="black" style={{ fontWeight: 'bold', fontSize: '24px', marginLeft: '24px' }}>
-            {'Gần đây'}
-          </Text>
-          <HistoryContainer items={data} />
-        </div>
-        <div>
-          <TextHeader text={'Chill'} />
-          <AlbumContainer items={albumData} />
-        </div>
-        <div>
-          <TextHeader text={'Tâm Trạng Tan Chậm'} />
-          <AlbumContainer items={albumData} />
-        </div>
-        <div>
-          <TextHeader text={'Hot'} />
-          <AlbumContainer items={albumData} />
-        </div>
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <CarouselContainer items={data} />
+      <div style={{ marginTop: '30px' }}>
+        <Text color="black" style={{ fontWeight: 'bold', fontSize: '24px', marginLeft: '32px' }}>
+          {'Gần đây'}
+        </Text>
+        <HistoryContainer items={data} />
+      </div>
+      <div>
+        <TextHeader text={'Chill'} />
+        <AlbumContainer items={albumData} />
+      </div>
+      <div>
+        <TextHeader text={'Tâm Trạng Tan Chậm'} />
+        <AlbumContainer items={albumData} />
+      </div>
+      <div>
+        <TextHeader text={'Hot'} />
+        <AlbumContainer items={albumData} />
+      </div>
+    </ThemeProvider>
   );
 }
 

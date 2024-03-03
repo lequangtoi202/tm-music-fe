@@ -1,6 +1,7 @@
 const routes: { [key: string]: string } = {
   home: '/',
-  categories: '/danh-muc',
+  categories: '/chu-de',
+  album: '/album',
 };
 
 export default routes;

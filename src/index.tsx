@@ -7,16 +7,19 @@ import './index.css';
 import { store } from './redux/store';
 import reportWebVitals from './reportWebVitals';
 import { SidebarProvider } from './context/SidebarContext';
+import { KContextProvider } from './context';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <GlobalStyles>
-      <SidebarProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </SidebarProvider>
+      <KContextProvider>
+        <SidebarProvider>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </SidebarProvider>
+      </KContextProvider>
     </GlobalStyles>
   </React.StrictMode>,
 );

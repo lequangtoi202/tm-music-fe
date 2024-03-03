@@ -1,20 +1,20 @@
-import classNames from 'classnames/bind';
-
 import { Box, alpha, lighten, useTheme } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
-import styles from './DefaultLayout.module.scss';
+import { FullScreenMediaControlCard } from '../../pages/Home/styles';
+import MediaControlCard from '../../components/MediaControlCard';
 
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();
   return (
-    <>
+    <div style={{ position: 'relative' }}>
       <Box
         sx={{
           flex: 1,
           height: '100%',
+          position: 'relative',
 
           '.MuiPageTitle-wrapper': {
             background: theme.palette.mode === 'dark' ? theme.colors.alpha.trueWhite[5] : theme.colors.alpha.white[50],
@@ -34,6 +34,7 @@ const DefaultLayout = ({ children }: any) => {
       >
         <Header />
         <Sidebar />
+
         <Box
           sx={{
             position: 'relative',
@@ -51,7 +52,10 @@ const DefaultLayout = ({ children }: any) => {
           <Footer />
         </Box>
       </Box>
-    </>
+      <FullScreenMediaControlCard>
+        <MediaControlCard />
+      </FullScreenMediaControlCard>
+    </div>
   );
 };
 

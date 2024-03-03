@@ -20,35 +20,32 @@ function App() {
       <ThemeProvider>
         <LocalizationProvider>
           <CssBaseline />
+          <Routes>
+            {publicRoutes.map((route: any, index: number) => {
+              let Layout: LayoutComponent = DefaultLayout;
+              const Page = route.component;
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
 
-          <div className="App">
-            <Routes>
-              {publicRoutes.map((route: any, index: number) => {
-                let Layout: LayoutComponent = DefaultLayout;
-                const Page = route.component;
-                if (route.layout) {
-                  Layout = route.layout;
-                } else if (route.layout === null) {
-                  Layout = Fragment;
-                }
-
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={
-                      <Layout>
-                        <Page />
-                      </Layout>
-                    }
-                  />
-                );
-              })}
-              <Route path={'/sign-in'} element={<Login />} />
-              <Route path={'/sign-up'} element={<SignUp />} />
-              <Route path={'/logout'} element={<Logout />} />
-            </Routes>
-          </div>
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })}
+            <Route path={'/sign-in'} element={<Login />} />
+            <Route path={'/sign-up'} element={<SignUp />} />
+            <Route path={'/logout'} element={<Logout />} />
+          </Routes>
         </LocalizationProvider>
       </ThemeProvider>
     </Router>

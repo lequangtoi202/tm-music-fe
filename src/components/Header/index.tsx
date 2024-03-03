@@ -1,16 +1,30 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
-import { Box, alpha, Stack, lighten, Divider, IconButton, Tooltip, styled, useTheme } from '@mui/material';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import {
+  Box,
+  DialogContent,
+  Divider,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  alpha,
+  lighten,
+  styled,
+  useTheme,
+} from '@mui/material';
 
-import HeaderButtons from './Buttons';
-import HeaderUserbox from './Userbox';
+import { heightHeader, sidebarWidth } from '../../constants';
 import { SidebarContext } from '../../context/SidebarContext';
+import HeaderButtons from './Buttons';
+import { DialogWrapper } from './Buttons/Search/styles';
+import HeaderUserbox from './Userbox';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
-        height: ${theme.header.height};
+        height: ${heightHeader};
         color: ${theme.header.textColor};
         padding: ${theme.spacing(0, 2)};
         right: 0;
@@ -21,7 +35,7 @@ const HeaderWrapper = styled(Box)(
         justify-content: space-between;
         width: 100%;
         @media (min-width: ${theme.breakpoints.values.lg}px) {
-            left: ${theme.sidebar.width};
+            left: ${sidebarWidth}px;
             width: auto;
         }
 `,
@@ -29,8 +43,13 @@ const HeaderWrapper = styled(Box)(
 
 function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const [openSearchResults, setOpenSearchResults] = useState(false);
+  const [open, setOpen] = useState(false);
   const theme = useTheme();
 
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <HeaderWrapper
       display="flex"
@@ -56,6 +75,20 @@ function Header() {
       ></Stack>
       <Box display="flex" alignItems="center">
         <HeaderButtons />
+        {openSearchResults && (
+          <DialogWrapper open={open} keepMounted maxWidth="sm" fullWidth scroll="paper" onClose={handleClose}>
+            <DialogContent>
+              <Box sx={{ pt: 0, pb: 1 }} display="flex" justifyContent="space-between">
+                <Typography variant="body2" component="span">
+                  Search results for{' '}
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1" component="span">
+                    a
+                  </Typography>
+                </Typography>
+              </Box>
+            </DialogContent>
+          </DialogWrapper>
+        )}
         <HeaderUserbox />
         <Box
           component="span"

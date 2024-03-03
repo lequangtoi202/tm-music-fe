@@ -1,10 +1,28 @@
-import { Box, Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { CarouselProps } from './types';
-import CarouselItem from './CarouselItem';
+import { Box, Container } from '@mui/material';
+import { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
+import { heightCarousel } from '../../constants';
+import CarouselItem from './CarouselItem';
+import { CarouselProps } from './types';
 
 const CarouselContainer: React.FC<CarouselProps> = ({ items }) => {
-  const itemsPerRow = 3;
+  const [itemsPerRow, setItemsPerRow] = useState(3);
+  const itemsPerRowDesktop = 3;
+  const itemsPerRowMobile = 1;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerRow(window.innerWidth >= 768 ? itemsPerRowDesktop : itemsPerRowMobile);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [itemsPerRowDesktop, itemsPerRowMobile]);
 
   const rows: React.ReactNode[] = [];
 
@@ -28,10 +46,10 @@ const CarouselContainer: React.FC<CarouselProps> = ({ items }) => {
     rows.push(row);
   }
   return (
-    <Container style={{ height: '30vh', marginTop: '30px' }}>
+    <Container style={{ height: `${heightCarousel}px`, marginTop: '30px' }}>
       <Carousel animation="slide">
         {rows.map((item, index) => (
-          <Box height={'30vh'} key={index}>
+          <Box height={`${heightCarousel}px`} key={index}>
             {item}
           </Box>
         ))}

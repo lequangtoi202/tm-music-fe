@@ -1,17 +1,18 @@
 import { useContext } from 'react';
 
-import { Box, Drawer, alpha, styled, Divider, useTheme, Button, lighten, darken, Tooltip } from '@mui/material';
+import { Box, Divider, Drawer, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
-import SidebarMenu from './SidebarMenu';
-import Scrollbar from '../Scrollbar';
+import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
+import { sidebarWidth } from '../../constants';
 import { SidebarContext } from '../../context/SidebarContext';
 import Logo from '../Logo';
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
+import Scrollbar from '../Scrollbar';
+import SidebarMenu from './SidebarMenu';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
-        width: ${theme.sidebar.width};
-        min-width: ${theme.sidebar.width};
+        width: ${sidebarWidth}px;
+        min-width: ${sidebarWidth}px;
         color: ${theme.colors.alpha.trueWhite[70]};
         position: relative;
         z-index: 7;
@@ -38,10 +39,6 @@ function Sidebar() {
     { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
     { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
     { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
   ];
   return (
     <>
@@ -54,7 +51,6 @@ function Sidebar() {
           position: 'fixed',
           left: 0,
           top: 0,
-          width: 100,
           background:
             theme.palette.mode === 'dark'
               ? alpha(lighten(theme.header.background || '', 0.1), 0.5)
@@ -74,34 +70,38 @@ function Sidebar() {
             <Logo />
           </Box>
         </Box>
-        <Box>
-          <Divider
-            sx={{
-              mt: theme.spacing(3),
-              mx: theme.spacing(2),
-              background: theme.colors.alpha.trueWhite[50],
-            }}
-          />
-          <SidebarMenu menus={menuList} />
-        </Box>
-        <Divider
-          sx={{
-            mx: theme.spacing(2),
-            background: theme.colors.alpha.trueWhite[50],
-          }}
-        />
-        <Scrollbar>
-          <SidebarMenu menus={menuList2} />
-        </Scrollbar>
-        <Box>
-          <Divider
-            sx={{
-              mt: theme.spacing(3),
-              mx: theme.spacing(2),
-              background: theme.colors.alpha.trueWhite[50],
-            }}
-          />
-          <SidebarMenu menus={menuList1} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Box>
+            <Divider
+              sx={{
+                mt: theme.spacing(3),
+                mx: theme.spacing(4),
+                background: theme.colors.alpha.trueWhite[50],
+              }}
+            />
+            <SidebarMenu menus={menuList} />
+          </Box>
+          <Box>
+            <Divider
+              sx={{
+                mx: theme.spacing(4),
+                background: theme.colors.alpha.trueWhite[50],
+              }}
+            />
+            <Scrollbar>
+              <SidebarMenu menus={menuList2} />
+            </Scrollbar>
+          </Box>
+          <Box>
+            <Divider
+              sx={{
+                mt: theme.spacing(1),
+                mx: theme.spacing(4),
+                background: theme.colors.alpha.trueWhite[50],
+              }}
+            />
+            <SidebarMenu menus={menuList1} />
+          </Box>
         </Box>
       </SidebarWrapper>
       <Drawer
@@ -132,16 +132,38 @@ function Sidebar() {
               <Logo />
             </Box>
           </Box>
-          <Divider
-            sx={{
-              mt: theme.spacing(3),
-              mx: theme.spacing(2),
-              background: theme.colors.alpha.trueWhite[10],
-            }}
-          />
-          <Scrollbar>
-            <SidebarMenu menus={menuList} />
-          </Scrollbar>
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box>
+              <Divider
+                sx={{
+                  mt: theme.spacing(3),
+                  mx: theme.spacing(4),
+                  background: theme.colors.alpha.trueWhite[50],
+                }}
+              />
+              <SidebarMenu menus={menuList} />
+            </Box>
+            <Divider
+              sx={{
+                mx: theme.spacing(4),
+                background: theme.colors.alpha.trueWhite[50],
+              }}
+            />
+            <Scrollbar>
+              <SidebarMenu menus={menuList2} />
+            </Scrollbar>
+            <Box>
+              <Divider
+                sx={{
+                  mt: theme.spacing(3),
+                  mx: theme.spacing(4),
+                  background: theme.colors.alpha.trueWhite[50],
+                }}
+              />
+              <SidebarMenu menus={menuList1} />
+            </Box>
+          </Box>
         </SidebarWrapper>
       </Drawer>
     </>

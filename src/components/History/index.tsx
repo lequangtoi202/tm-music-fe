@@ -1,12 +1,12 @@
-import { Container } from '@mui/material';
-import CardItem from '../Card';
-import { CardItemsProps } from '../Card/types';
+import HistoryItem from './HistoryItem';
+import { Container } from './styles';
+import { HistoryItemsProps } from './types';
 
-const HistoryContainer: React.FC<CardItemsProps> = ({ items }) => {
+const HistoryContainer: React.FC<HistoryItemsProps> = ({ items }) => {
   return (
-    <Container style={{ height: '124px', display: 'flex', gap: '38px', marginTop: '16px' }}>
+    <Container>
       {items.map((item, index) => (
-        <CardItem key={index} item={item} />
+        <HistoryItem key={index} item={item} />
       ))}
     </Container>
   );

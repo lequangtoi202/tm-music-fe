@@ -12,43 +12,21 @@ interface TextProps {
 }
 
 const TextWrapper = styled('span')(
-  ({ theme }) => `
+  () => `
       display: inline-block;
       align-items: center;
+      font-size: 14px;
 
       &.flexItem {
         display: inline-flex;
       }
+
+      @media (max-width: 1200px) {
+        font-size: 14px;
+      }
       
-      &.MuiText {
-
-        &-black {
-          color: ${theme.palette.common.black}
-        }
-
-        &-primary {
-          color: ${theme.palette.primary.main}
-        }
-        
-        &-secondary {
-          color: ${theme.palette.secondary.main}
-        }
-        
-        &-success {
-          color: ${theme.palette.success.main}
-        }
-        
-        &-warning {
-          color: ${theme.palette.warning.main}
-        }
-              
-        &-error {
-          color: ${theme.palette.error.main}
-        }
-        
-        &-info {
-          color: ${theme.palette.info.main}
-        }
+      @media (max-width: 480px) {
+        font-size: 12px;
       }
 `,
 );

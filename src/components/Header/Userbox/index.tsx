@@ -1,27 +1,17 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Hidden,
-  lighten,
-  List,
-  ListItem,
-  ListItemText,
-  Popover,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
 
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
-import { styled } from '@mui/material/styles';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import LockIcon from '@mui/icons-material/Lock';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import { styled } from '@mui/material/styles';
+import { KContext } from '../../../context';
+import { StyledIcon } from './styles';
+import { ActionItem } from './types';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -52,12 +42,6 @@ const UserBoxLabel = styled(Typography)(
 `,
 );
 
-const UserBoxDescription = styled(Typography)(
-  ({ theme }) => `
-        color: ${lighten(theme.palette.secondary.main, 0.5)}
-`,
-);
-
 function HeaderUserbox() {
   const user = {
     name: 'Catherine Pike',
@@ -67,6 +51,7 @@ function HeaderUserbox() {
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
+  const { isLoggedIn } = useContext(KContext);
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -76,19 +61,32 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
+  const listActions: ActionItem[] = isLoggedIn
+    ? [
+        { title: 'Hồ sơ', to: '/account', icon: <AccountCircleIcon /> },
+        { title: 'Đăng xuất', to: '/dang-xuat', icon: <LockIcon /> },
+      ]
+    : [
+        { title: 'Đăng nhập', to: '/dang-nhap', icon: <LockIcon /> },
+        { title: 'Đăng ký', to: '/dang-ky', icon: <VpnKeyIcon /> },
+      ];
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={'currentUser?.fullName'} src={''} />
-        <Hidden mdDown>
-          <UserBoxText>
-            <UserBoxLabel variant="body1">{'currentUser?.fullName'}</UserBoxLabel>
-            <UserBoxDescription variant="body2">{'currentUser?.username'}</UserBoxDescription>
-          </UserBoxText>
-        </Hidden>
-        <Hidden smDown>
-          <ExpandMoreTwoToneIcon sx={{ ml: 1 }} />
-        </Hidden>
+        <Avatar variant="circular" alt={'Avatar user'} src={''} />
+        {isLoggedIn && (
+          <>
+            <Hidden mdDown>
+              <UserBoxText>
+                <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+              </UserBoxText>
+            </Hidden>
+            <Hidden smDown>
+              <ExpandMoreTwoToneIcon sx={{ ml: 1 }} />
+            </Hidden>
+          </>
+        )}
       </UserBoxButton>
       <Popover
         anchorEl={ref.current}
@@ -103,31 +101,23 @@ function HeaderUserbox() {
           horizontal: 'right',
         }}
       >
-        <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={'currentUser?.fullName'} src={''} />
-          <UserBoxText>
-            <UserBoxLabel variant="body1">{'currentUser?.fullName'}</UserBoxLabel>
-            <UserBoxDescription variant="body2">{'currentUser?.username'}</UserBoxDescription>
-          </UserBoxText>
+        <MenuUserBox sx={{ minWidth: 210 }} display="flex" alignItems={'center'} justifyContent={'center'}>
+          <Avatar variant="circular" alt={'Avatar user'} src={''} />
+          {isLoggedIn && (
+            <UserBoxText>
+              <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            </UserBoxText>
+          )}
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
-          <ListItem to="/admin/management/profile/details" component={NavLink}>
-            <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary="My Profile" />
-          </ListItem>
-          <ListItem to="/admin/management/profile/settings" component={NavLink}>
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary="Account Settings" />
-          </ListItem>
+          {listActions.map((action, index) => (
+            <ListItem key={index} to={action.to} component={NavLink}>
+              <StyledIcon>{action.icon}</StyledIcon>
+              <ListItemText primary={action.title} />
+            </ListItem>
+          ))}
         </List>
-        <Divider />
-        <Box sx={{ m: 1 }}>
-          <Link to="/logout">
-            <LockOpenTwoToneIcon sx={{ mr: 1 }} />
-            Sign out
-          </Link>
-        </Box>
       </Popover>
     </>
   );

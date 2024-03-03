@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { Box, Button, List, ListItem, alpha, styled } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
 import { SidebarContext } from '../../../context/SidebarContext';
 import { SidebarMenuProps } from '../types';
 

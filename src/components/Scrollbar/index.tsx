@@ -14,7 +14,7 @@ const Scrollbar: React.FC<ScrollbarProps> = ({ className, children, ...rest }) =
   return (
     <Scrollbars
       autoHide
-      style={{ height: '220px' }}
+      style={{ height: '150px' }}
       renderThumbVertical={() => {
         return (
           <Box

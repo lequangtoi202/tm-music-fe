@@ -1,13 +1,12 @@
-import { Box, Paper } from '@mui/material';
-import { AlbumItemProps } from '../types';
+import { Box } from '@mui/material';
+import { RoundedSkeleton } from '../../Skeleton';
 import { StyledAlbumItem, StyledChildAlbumItem } from '../styles';
+import { AlbumItemProps } from '../types';
 
-const AlbumItem: React.FC<AlbumItemProps> = ({ item }) => {
+const AlbumItem: React.FC<AlbumItemProps> = ({ item, loading }) => {
   return (
     <StyledAlbumItem>
-      <StyledChildAlbumItem>
-        <Box>{item.title}</Box>
-      </StyledChildAlbumItem>
+      <StyledChildAlbumItem>{loading ? <RoundedSkeleton /> : <Box>{item.title}</Box>}</StyledChildAlbumItem>
     </StyledAlbumItem>
   );
 };

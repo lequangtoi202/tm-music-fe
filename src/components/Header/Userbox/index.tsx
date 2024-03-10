@@ -63,7 +63,7 @@ function HeaderUserbox() {
 
   const listActions: ActionItem[] = isLoggedIn
     ? [
-        { title: 'Hồ sơ', to: '/account', icon: <AccountCircleIcon /> },
+        { title: 'Hồ sơ', to: '/tai-khoan', icon: <AccountCircleIcon /> },
         { title: 'Đăng xuất', to: '/dang-xuat', icon: <LockIcon /> },
       ]
     : [

@@ -10,6 +10,7 @@ const theme = createTheme();
 
 function Homepage() {
   const { isMobile } = useContext(KContext);
+
   const data = [
     {
       src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
@@ -64,8 +65,6 @@ function Homepage() {
       id: '1',
     },
   ];
-
-  console.log(isMobile);
 
   return (
     <ThemeProvider theme={theme}>

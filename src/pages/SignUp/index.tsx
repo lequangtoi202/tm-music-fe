@@ -1,6 +1,4 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { IconButton } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -23,7 +21,7 @@ function Copyright(props: any) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        TM-music
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -45,8 +43,6 @@ export default function SignUp() {
     address: '',
     email: '',
   });
-
-  const [avatar, setAvatar] = useState<File | null>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -73,9 +69,6 @@ export default function SignUp() {
 
     const payload = new FormData();
     payload.append('registerRequest', JSON.stringify(registerRequest));
-    if (avatar !== null) {
-      payload.append('avatar', avatar || null);
-    }
 
     try {
       const response = await axios.post(process.env.API_URL + 'auth/register', payload, {
@@ -114,19 +107,6 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="fullName"
-                  required
-                  fullWidth
-                  id="fullName"
-                  label="Full Name"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  autoFocus
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -177,37 +157,6 @@ export default function SignUp() {
                   autoComplete="confirm-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <div>
-                  <input type="date" name="dateOfBirth" onChange={handleChange} />
-                </div>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="address"
-                  label="Address"
-                  id="address"
-                  autoComplete="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <input
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  id="avatar-input"
-                  type="file"
-                  onChange={(e) => setAvatar(e.target.files ? e.target.files[0] : null)}
-                />
-                <label htmlFor="avatar-input">
-                  <IconButton color="primary" aria-label="upload picture" component="span">
-                    <PhotoCamera />
-                  </IconButton>
-                </label>
-              </Grid>
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
@@ -215,7 +164,7 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/sign-in" variant="body2">
-                  Already have an account? Sign in
+                  Đã có tài khoản? Đăng ký
                 </Link>
               </Grid>
             </Grid>

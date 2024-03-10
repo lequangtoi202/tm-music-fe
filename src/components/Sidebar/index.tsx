@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Box, Divider, Drawer, alpha, darken, lighten, styled, useTheme } from '@mui/material';
+import { Box, Divider, Drawer, Skeleton, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
 import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
 import { sidebarWidth } from '../../constants';
@@ -25,14 +25,29 @@ function Sidebar() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const closeSidebar = () => toggleSidebar();
   const theme = useTheme();
+  const SkeletonMenuItem = (
+    <Skeleton variant="rounded" height={40} animation="wave" sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+  );
+
+  const renderSkeletonContent = () => {
+    return (
+      <>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <Box key={index} mt={2} mx={2}>
+            {SkeletonMenuItem}
+          </Box>
+        ))}
+      </>
+    );
+  };
   const menuList = [
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
+    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/' },
+    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/chu-de' },
   ];
-  const menuList1 = [{ label: 'Tạo playlist mới', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' }];
+  const menuList1 = [{ label: 'Tạo playlist mới', icon: <DesignServicesTwoToneIcon />, to: '/' }];
   const menuList2 = [
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
+    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/chu-de' },
+    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/albums' },
     { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
     { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
     { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
@@ -79,7 +94,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            <SidebarMenu menus={menuList} />
+            {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList} />}
           </Box>
           <Box>
             <Divider
@@ -88,9 +103,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            <Scrollbar>
-              <SidebarMenu menus={menuList2} />
-            </Scrollbar>
+            <Scrollbar>{sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList2} />}</Scrollbar>
           </Box>
           <Box>
             <Divider
@@ -100,7 +113,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            <SidebarMenu menus={menuList1} />
+            {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList1} />}
           </Box>
         </Box>
       </SidebarWrapper>
@@ -142,7 +155,7 @@ function Sidebar() {
                   background: theme.colors.alpha.trueWhite[50],
                 }}
               />
-              <SidebarMenu menus={menuList} />
+              {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList} />}
             </Box>
             <Divider
               sx={{
@@ -150,9 +163,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            <Scrollbar>
-              <SidebarMenu menus={menuList2} />
-            </Scrollbar>
+            <Scrollbar>{sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList2} />}</Scrollbar>
             <Box>
               <Divider
                 sx={{
@@ -161,7 +172,7 @@ function Sidebar() {
                   background: theme.colors.alpha.trueWhite[50],
                 }}
               />
-              <SidebarMenu menus={menuList1} />
+              {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList1} />}
             </Box>
           </Box>
         </SidebarWrapper>

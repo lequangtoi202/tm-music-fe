@@ -1,16 +1,52 @@
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import { Slider } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
 import Image from '../Image';
+import { formatTime } from '../../utils/time';
 
 export default function MediaControlCard() {
   const theme = useTheme();
+  const [currentTime, setCurrentTime] = useState<number | number[]>(0);
+  const [duration, setDuration] = useState<number>(300);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    setCurrentTime(newValue);
+  };
+
+  const togglePlayPause = () => {
+    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+  };
+
+  useEffect(() => {
+    let intervalId: any;
+
+    if (isPlaying) {
+      intervalId = setInterval(() => {
+        if (typeof currentTime === 'number') {
+          if (currentTime < duration) {
+            setCurrentTime((prevTime) => (prevTime as number) + 1);
+          } else {
+            clearInterval(intervalId);
+          }
+        } else if (Array.isArray(currentTime)) {
+        }
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [currentTime, duration, isPlaying]);
 
   return (
     <Card
@@ -26,14 +62,33 @@ export default function MediaControlCard() {
           </Typography>
         </CardContent>
       </Box>
-      <Box sx={{ flex: '1 1 40%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <IconButton aria-label="previous">
-          {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-        </IconButton>
-        <IconButton aria-label="play/pause">
-          <PlayArrowIcon sx={{ height: 40, width: 40 }} />
-        </IconButton>
-        <IconButton aria-label="next">{theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}</IconButton>
+      <Box sx={{ flex: '1 1 40%', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flex: '1 1 65%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <IconButton aria-label="previous">
+            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+          </IconButton>
+          <IconButton aria-label="play/pause" onClick={togglePlayPause}>
+            {isPlaying ? (
+              <PauseIcon sx={{ height: 40, width: 40 }} />
+            ) : (
+              <PlayArrowIcon sx={{ height: 40, width: 40 }} />
+            )}
+          </IconButton>
+          <IconButton aria-label="next">
+            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+          </IconButton>
+        </Box>
+        <Box sx={{ flex: '1 1 35%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ mr: 2 }}>{formatTime(currentTime)}</Box>
+          <Slider
+            value={currentTime}
+            max={duration}
+            onChange={handleSliderChange}
+            valueLabelDisplay="auto"
+            valueLabelFormat={(value) => formatTime(value)}
+          />
+          <Box sx={{ ml: 2 }}>{formatTime(duration)}</Box>
+        </Box>
       </Box>
 
       <Box sx={{ flex: '1 1 30%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

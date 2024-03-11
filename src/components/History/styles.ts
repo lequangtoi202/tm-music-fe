@@ -21,11 +21,9 @@ const StyledHistoryItem = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
   cursor: pointer;
+  height: 120px;
+  width: 120px;
 
-  & div {
-    height: 120px;
-    width: 120px;
-  }
 
   @media (max-width: 992px) {
     & > div {

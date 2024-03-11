@@ -2,53 +2,61 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import React, { ReactNode } from 'react';
-import { Fragment } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { Fragment, ReactNode, Suspense } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import Loading from './components/Loading';
 import { DefaultLayout } from './layout/DefaultLayout';
-import Login from './pages/Login/Login';
-import Logout from './pages/Logout/Logout';
-import SignUp from './pages/SignUp/SignUp';
-import ThemeProvider from './theme/ThemeProvider';
+import Logout from './pages/Logout';
 import { publicRoutes } from './routes';
+import ThemeProvider from './theme/ThemeProvider';
+import { clientId } from './constants';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 type LayoutComponent = React.ComponentType<{ children?: ReactNode }>;
 
 function App() {
   return (
-    <Router>
-      <ThemeProvider>
-        <LocalizationProvider>
-          <CssBaseline />
-          <Routes>
-            {publicRoutes.map((route: any, index: number) => {
-              let Layout: LayoutComponent = DefaultLayout;
-              const Page = route.component;
-              if (route.layout) {
-                Layout = route.layout;
-              } else if (route.layout === null) {
-                Layout = Fragment;
-              }
-
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    <Layout>
-                      <Page />
-                    </Layout>
+    <GoogleOAuthProvider clientId={clientId}>
+      <Router>
+        <ThemeProvider>
+          <LocalizationProvider>
+            <CssBaseline />
+            <Suspense fallback={<Loading />}>
+              <Routes>
+                {publicRoutes.map((route: any, index: number) => {
+                  let Layout: LayoutComponent = DefaultLayout;
+                  const Page = route.component;
+                  if (route.layout) {
+                    Layout = route.layout;
+                  } else if (route.layout === null) {
+                    Layout = Fragment;
                   }
-                />
-              );
-            })}
-            <Route path={'/sign-in'} element={<Login />} />
-            <Route path={'/sign-up'} element={<SignUp />} />
-            <Route path={'/logout'} element={<Logout />} />
-          </Routes>
-        </LocalizationProvider>
-      </ThemeProvider>
-    </Router>
+
+                  return (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={
+                        <Suspense fallback={<Loading />}>
+                          <Layout>
+                            <Page />
+                          </Layout>
+                        </Suspense>
+                      }
+                    />
+                  );
+                })}
+                <Route path={'/dang-nhap'} element={<Login />} />
+                <Route path={'/dang-ky'} element={<SignUp />} />
+                <Route path={'/dang-xuat'} element={<Logout />} />
+              </Routes>
+            </Suspense>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </Router>
+    </GoogleOAuthProvider>
   );
 }
 

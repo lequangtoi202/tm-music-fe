@@ -79,7 +79,7 @@ function HeaderSearch() {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchTwoToneIcon sx={{ fontSize: '34px' }} />
+                <SearchTwoToneIcon sx={{ fontSize: '34px', cursor: 'pointer' }} />
               </InputAdornment>
             ),
             size: 'small',

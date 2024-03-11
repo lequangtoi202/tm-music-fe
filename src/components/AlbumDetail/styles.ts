@@ -20,6 +20,12 @@ const BoxCentered = styled.div`
   justify-content: center;
   flex-direction: column;
   text-align: center;
+
+  & > div {
+    &:nth-child(n + 2) {
+      font-size: 14px;
+    }
+  }
 `;
 
 const PlayRandomSongButton = styled.div`
@@ -30,10 +36,11 @@ const PlayRandomSongButton = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: red;
+  background-color: #0d6efd;
   position: relative;
   color: #fff;
   padding: 0 12px;
+  margin-top: 6px;
 
   .MuiSvgIcon-root {
     width: 20%;
@@ -53,23 +60,60 @@ const PlaylistContainer = styled.div`
 
 const PlaylistItem = styled.div`
   padding: 8px;
-  height: 40px;
-  border-bottom: 1px solid #ddd; /* Thêm đường kẻ giữa các mục */
+  height: 60px;
+  border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const Box = styled.div`
+  flex: 1;
+  text-align: center;
 `;
 
 const HeaderTitle = styled.div`
   display: flex;
   padding: 8px;
   width: 100%;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
 `;
 
-const Box = styled.div``;
+const SongTitle = styled.span`
+  flex: 2.25;
+  display: flex;
+  align-items: center;
+
+  & > div {
+    & > div {
+      &:nth-child(1) {
+        font-weight: 500;
+        font-size: 16px;
+      }
+    }
+  }
+`;
+
+const AlbumTitle = styled.span`
+  font-size: 14px;
+  flex: 1.75;
+`;
+
+const Time = styled.span`
+  flex: 1;
+  font-size: 14px;
+`;
+
+const StyledBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const StyledBoxTitle = styled.div`
+  font-size: 14px;
+  font-weight: normal;
+`;
 
 const ResponsiveContainer = styled.div`
   padding-left: 24px;
@@ -95,4 +139,9 @@ export {
   HeaderTitle,
   Box,
   PlaylistItem,
+  SongTitle,
+  AlbumTitle,
+  Time,
+  StyledBoxTitle,
+  StyledBox,
 };

@@ -10,15 +10,11 @@ import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import axios, { AxiosResponse } from 'axios';
 import * as React from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { clearError, setError } from '../../redux/errorReducer';
-import { login } from '../../redux/userReducer';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
 
 function Copyright(props: any) {
@@ -26,7 +22,7 @@ function Copyright(props: any) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" to="https://mui.com/">
-        Your Website
+        TM Music
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -54,9 +50,18 @@ function Login() {
     event.preventDefault();
   };
 
-  const responseGoogle = (response: any) => {};
+  const handleGoogleLoginSuccess = async (response: any) => {
+    console.log('Google login success:', response);
 
-  const handleErrorGoogle = () => {};
+    const googleToken = response.credential;
+
+    const decoded = jwt_decode(googleToken);
+    console.log('Decoded JWT:', decoded);
+  };
+
+  const handleGoogleLoginFailure = (error: any) => {
+    console.error('Google login failed:', error);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -113,9 +118,7 @@ function Login() {
               </Grid>
             </Grid>
             <div style={{ margin: '0 auto' }}>
-              <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID || ''}>
-                <GoogleLogin onSuccess={responseGoogle} onError={handleErrorGoogle} />
-              </GoogleOAuthProvider>
+              <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={() => handleGoogleLoginFailure} />
             </div>
           </Box>
         </Box>

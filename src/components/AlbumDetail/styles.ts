@@ -4,6 +4,10 @@ const CardContainer = styled.div`
   flex: 1;
   min-width: 32%;
   min-height: 500px;
+
+  @media (max-width: 480px) {
+    min-height: 300px;
+  }
 `;
 
 const CardImage = styled.div`
@@ -11,6 +15,14 @@ const CardImage = styled.div`
   margin: 10px;
   background-color: green;
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    height: 50%;
+  }
+
+  @media (max-width: 480px) {
+    height: 200px;
+  }
 `;
 
 const BoxCentered = styled.div`
@@ -24,6 +36,14 @@ const BoxCentered = styled.div`
   & > div {
     &:nth-child(n + 2) {
       font-size: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    & > div {
+      &:nth-child(n + 2) {
+        font-size: 12px;
+      }
     }
   }
 `;
@@ -46,6 +66,12 @@ const PlayRandomSongButton = styled.div`
     width: 20%;
     fill: #fff;
   }
+
+  @media (max-width: 480px) {
+    width: 55%;
+    height: 45px;
+    padding: 0 6px;
+  }
 `;
 
 const PlaylistContainer = styled.div`
@@ -56,6 +82,11 @@ const PlaylistContainer = styled.div`
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 0;
+  }
 `;
 
 const PlaylistItem = styled.div`
@@ -77,6 +108,10 @@ const HeaderTitle = styled.div`
   padding: 8px;
   width: 100%;
   align-items: center;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const SongTitle = styled.span`
@@ -92,16 +127,39 @@ const SongTitle = styled.span`
       }
     }
   }
+
+  @media (max-width: 480px) {
+    & > div {
+      & > div {
+        &:nth-child(1) {
+          font-weight: 'bold';
+          font-size: 12px;
+        }
+      }
+    }
+
+    & > svg {
+      font-size: 20px;
+    }
+  }
 `;
 
 const AlbumTitle = styled.span`
   font-size: 14px;
   flex: 1.75;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const Time = styled.span`
   flex: 1;
   font-size: 14px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const StyledBox = styled.div`
@@ -113,6 +171,10 @@ const StyledBox = styled.div`
 const StyledBoxTitle = styled.div`
   font-size: 14px;
   font-weight: normal;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const ResponsiveContainer = styled.div`
@@ -121,7 +183,7 @@ const ResponsiveContainer = styled.div`
   display: flex;
   gap: 16px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     flex-direction: column;
     ${CardContainer}, ${PlaylistContainer} {
       min-width: 100%;

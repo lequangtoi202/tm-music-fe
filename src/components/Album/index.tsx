@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import AlbumItem from './AlbumItem';
-import { Container } from './styles';
+import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
+import { RoundedSkeleton } from '../Skeleton';
+import { Box } from '@mui/material';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,9 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   return (
     <Container>
       {items.map((item, index) => (
-        <AlbumItem key={index} item={item} loading={loading}></AlbumItem>
+        <StyledAlbumItem key={index}>
+          <StyledChildAlbumItem>{loading ? <RoundedSkeleton /> : <Box>{item.title}</Box>}</StyledChildAlbumItem>
+        </StyledAlbumItem>
       ))}
     </Container>
   );

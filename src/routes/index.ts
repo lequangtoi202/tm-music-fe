@@ -6,6 +6,7 @@ import { DefaultLayout } from '../layout/DefaultLayout';
 const HomePage = lazy(() => import('../pages/Home'));
 const Category = lazy(() => import('../pages/Category'));
 const Album = lazy(() => import('../pages/Album'));
+const Account = lazy(() => import('../pages/Account'));
 
 const publicRoutes: any = [
   {
@@ -21,6 +22,11 @@ const publicRoutes: any = [
   {
     path: config.routes.albums,
     component: Album,
+    layout: DefaultLayout,
+  },
+  {
+    path: config.routes.account,
+    component: Account,
     layout: DefaultLayout,
   },
 ];

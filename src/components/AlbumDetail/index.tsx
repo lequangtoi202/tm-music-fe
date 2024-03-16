@@ -20,6 +20,7 @@ import {
   StyledBoxTitle,
   Time,
 } from './styles';
+import { Skeleton } from '@mui/material';
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,7 @@ const AlbumDetail = () => {
     <ResponsiveContainer>
       <CardContainer>
         {loading ? (
-          <RoundedSkeleton />
+          <Skeleton variant="rounded" width="100%" height="200px" animation="wave" />
         ) : (
           <>
             <CardImage>
@@ -68,14 +69,14 @@ const AlbumDetail = () => {
           <Box>THỜI GIAN</Box>
         </HeaderTitle>
         {loading
-          ? Array.from({ length: 10 }, (_, index) => <PlaylistItemSkeleton key={index} />)
+          ? Array.from({ length: 50 }, (_, index) => <PlaylistItemSkeleton key={index} />)
           : Array.from({ length: 50 }, (_, index) => (
               <PlaylistItem key={index}>
                 <SongTitle>
                   <HeadphonesIcon style={{ marginRight: '8px' }} />
                   <StyledBox>
                     <StyledBoxTitle>Tên bài hát {index + 1}</StyledBoxTitle>
-                    <StyledBoxTitle style={{ fontSize: 14, fontWeight: 'normal' }}>Harri Won</StyledBoxTitle>
+                    <StyledBoxTitle>Harri Won</StyledBoxTitle>
                   </StyledBox>
                 </SongTitle>
                 <AlbumTitle>Tên album</AlbumTitle>

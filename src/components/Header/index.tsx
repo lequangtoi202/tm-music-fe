@@ -73,7 +73,7 @@ function Header() {
         alignItems="center"
         spacing={2}
       ></Stack>
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" sx={{ color: '#1976d2' }}>
         <HeaderButtons />
         {openSearchResults && (
           <DialogWrapper open={open} keepMounted maxWidth="sm" fullWidth scroll="paper" onClose={handleClose}>
@@ -98,7 +98,7 @@ function Header() {
           }}
         >
           <Tooltip arrow title="Xem thêm">
-            <IconButton color="primary" onClick={toggleSidebar}>
+            <IconButton color="primary" onClick={toggleSidebar} sx={{ color: '#1976d2' }}>
               {!sidebarToggle ? <MenuTwoToneIcon fontSize="small" /> : <CloseTwoToneIcon fontSize="small" />}
             </IconButton>
           </Tooltip>

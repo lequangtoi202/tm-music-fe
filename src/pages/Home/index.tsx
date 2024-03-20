@@ -1,5 +1,5 @@
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { useContext } from 'react';
+import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import AlbumContainer from '../../components/Album';
 import CarouselContainer from '../../components/Carousel';
 import HistoryContainer from '../../components/History';
@@ -67,28 +67,33 @@ function Homepage() {
   ];
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <CarouselContainer items={data} />
-      <div style={{ marginTop: '30px' }}>
-        <Text color="black" style={{ fontWeight: 'bold', fontSize: '24px', marginLeft: '32px' }}>
-          {'Gần đây'}
-        </Text>
-        <HistoryContainer items={data} />
-      </div>
-      <div>
-        <TextHeader text={'Chill'} />
-        <AlbumContainer items={albumData} />
-      </div>
-      <div>
-        <TextHeader text={'Tâm Trạng Tan Chậm'} />
-        <AlbumContainer items={albumData} />
-      </div>
-      <div>
-        <TextHeader text={'Hot'} />
-        <AlbumContainer items={albumData} />
-      </div>
-    </ThemeProvider>
+    <Box>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div>
+          <CarouselContainer items={data} />
+        </div>
+
+        <div style={{ marginTop: '80px' }}>
+          <Text color="black" style={{ fontWeight: 'bold', fontSize: '24px', marginLeft: '32px' }}>
+            {'Gần đây'}
+          </Text>
+          <HistoryContainer items={data} />
+        </div>
+        <div>
+          <TextHeader text={'Chill'} />
+          <AlbumContainer items={albumData} />
+        </div>
+        <div>
+          <TextHeader text={'Tâm Trạng Tan Chậm'} />
+          <AlbumContainer items={albumData} />
+        </div>
+        <div>
+          <TextHeader text={'Hot'} />
+          <AlbumContainer items={albumData} />
+        </div>
+      </ThemeProvider>
+    </Box>
   );
 }
 

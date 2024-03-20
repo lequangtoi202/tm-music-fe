@@ -1,13 +1,9 @@
 import { useContext } from 'react';
 
-import { Box, Button, List, ListItem, ListSubheader, alpha, styled } from '@mui/material';
+import { Box, Button, List, ListItem, alpha, styled } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
-import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
-import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
-import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
 import { SidebarContext } from '../../../../context/SidebarContext';
 
 const MenuWrapper = styled(Box)(
@@ -53,7 +49,7 @@ const SubMenuWrapper = styled(Box)(
     
         .MuiButton-root {
           display: flex;
-          color: ${theme.colors.alpha.trueWhite[70]};
+          color: #1976d2;
           background-color: transparent;
           width: 100%;
           justify-content: flex-start;

@@ -27,7 +27,6 @@ const Transition = forwardRef(function Transition(
 const SearchInputWrapper = styled(TextField)(
   ({ theme }) => `
     background: ${theme.colors.alpha.white[100]};
-
     .MuiInputBase-input {
         font-size: ${theme.typography.pxToRem(17)};
     }
@@ -74,7 +73,6 @@ function HeaderSearch() {
       <SearchInputContainer>
         <SearchInputWrapper
           value={searchValue}
-          autoFocus={true}
           onChange={handleSearchChange}
           InputProps={{
             startAdornment: (
@@ -108,7 +106,6 @@ function HeaderSearch() {
         <DialogTitleWrapper>
           <SearchInputWrapper
             value={searchValue}
-            autoFocus={true}
             onChange={handleSearchChange}
             InputProps={{
               startAdornment: (

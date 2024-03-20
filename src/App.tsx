@@ -7,13 +7,13 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Loading from './components/Loading';
-import { DefaultLayout } from './layout/DefaultLayout';
-import Logout from './pages/Logout';
-import { publicRoutes } from './routes';
-import ThemeProvider from './theme/ThemeProvider';
 import { clientId } from './constants';
+import { DefaultLayout } from './layout/DefaultLayout';
+import ThemeProvider from './theme/ThemeProvider';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
 import SignUp from './pages/SignUp';
+import { publicRoutes } from './routes';
 type LayoutComponent = React.ComponentType<{ children?: ReactNode }>;
 
 function App() {

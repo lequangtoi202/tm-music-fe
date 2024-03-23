@@ -1,8 +1,9 @@
 import { PlayArrow } from '@mui/icons-material';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
+import { Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import CardItem from '../Card';
-import { PlaylistItemSkeleton, RoundedSkeleton } from '../Skeleton';
+import { PlaylistItemSkeleton } from '../Skeleton';
 import { StyledTextHeader } from '../TextHeader/styles';
 import {
   AlbumTitle,
@@ -20,7 +21,6 @@ import {
   StyledBoxTitle,
   Time,
 } from './styles';
-import { Skeleton } from '@mui/material';
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ const AlbumDetail = () => {
     <ResponsiveContainer>
       <CardContainer>
         {loading ? (
-          <Skeleton variant="rounded" width="100%" height="200px" animation="wave" />
+          <Skeleton variant="rounded" width="100%" height="100%" animation="wave" />
         ) : (
           <>
             <CardImage>

@@ -29,10 +29,10 @@ function Sidebar() {
     <Skeleton variant="rounded" height={40} animation="wave" sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
   );
 
-  const renderSkeletonContent = () => {
+  const renderSkeletonContent = (length: number) => {
     return (
       <>
-        {Array.from({ length: 3 }).map((_, index) => (
+        {Array.from({ length: length }).map((_, index) => (
           <Box key={index} mt={2} mx={2}>
             {SkeletonMenuItem}
           </Box>
@@ -40,20 +40,11 @@ function Sidebar() {
       </>
     );
   };
-  const menuList = [
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/chu-de' },
-  ];
-  const menuList1 = [{ label: 'Tạo playlist mới', icon: <DesignServicesTwoToneIcon />, to: '/' }];
+  const menuList = [{ label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/' }];
+  const menuList1 = [{ label: 'Tạo playlist mới', icon: <DesignServicesTwoToneIcon />, to: '/playlist' }];
   const menuList2 = [
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/chu-de' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/albums' },
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
-    { label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/admin/discover' },
-    { label: 'Thư viện', icon: <DesignServicesTwoToneIcon />, to: '/admin/library' },
+    { label: 'Chủ Đề & Thể Loại', icon: <DesignServicesTwoToneIcon />, to: '/chu-de' },
+    { label: 'Album', icon: <DesignServicesTwoToneIcon />, to: '/albums' },
   ];
   return (
     <>
@@ -94,7 +85,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList} />}
+            {sidebarToggle ? renderSkeletonContent(menuList.length) : <SidebarMenu menus={menuList} />}
           </Box>
           <Box>
             <Divider
@@ -103,7 +94,9 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            <Scrollbar>{sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList2} />}</Scrollbar>
+            <Scrollbar>
+              {sidebarToggle ? renderSkeletonContent(menuList2.length) : <SidebarMenu menus={menuList2} />}
+            </Scrollbar>
           </Box>
           <Box>
             <Divider
@@ -113,7 +106,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList1} />}
+            {sidebarToggle ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
           </Box>
         </Box>
       </SidebarWrapper>
@@ -155,7 +148,7 @@ function Sidebar() {
                   background: theme.colors.alpha.trueWhite[50],
                 }}
               />
-              {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList} />}
+              {sidebarToggle ? renderSkeletonContent(menuList.length) : <SidebarMenu menus={menuList} />}
             </Box>
             <Divider
               sx={{
@@ -163,7 +156,9 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            <Scrollbar>{sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList2} />}</Scrollbar>
+            <Scrollbar>
+              {sidebarToggle ? renderSkeletonContent(menuList2.length) : <SidebarMenu menus={menuList2} />}
+            </Scrollbar>
             <Box>
               <Divider
                 sx={{
@@ -172,7 +167,7 @@ function Sidebar() {
                   background: theme.colors.alpha.trueWhite[50],
                 }}
               />
-              {sidebarToggle ? renderSkeletonContent() : <SidebarMenu menus={menuList1} />}
+              {sidebarToggle ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
             </Box>
           </Box>
         </SidebarWrapper>

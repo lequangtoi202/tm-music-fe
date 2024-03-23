@@ -1,13 +1,12 @@
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { Container } from '@mui/material';
 import Carousel from 'react-bootstrap/Carousel';
-import { heightCarousel } from '../../constants';
-import { CarouselProps } from './types';
 import CarouselItem from './CarouselItem';
-import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { CarouselProps } from './types';
 
 const CarouselContainer: React.FC<CarouselProps> = ({ items }) => {
   return (
-    <Container style={{ height: `${heightCarousel}px`, marginTop: '30px' }}>
+    <Container style={{ height: `24vh`, marginTop: '30px' }}>
       <Carousel
         style={{ height: '24vh', textAlign: 'center' }}
         prevLabel=""

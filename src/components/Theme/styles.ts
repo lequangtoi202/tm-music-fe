@@ -21,6 +21,7 @@ const Container = styled.div`
 `;
 
 const StyledThemeItem = styled.div`
+  flex: 1;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
   cursor: pointer;

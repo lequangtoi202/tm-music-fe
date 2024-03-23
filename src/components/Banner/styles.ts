@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-  height: 46vh;
+  height: 30vh;
   margin-left: 24px;
   margin-right: 24px;
 `;

@@ -13,6 +13,19 @@ const Container = styled.div`
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
   }
+
+  @media (max-width: 768px) {
+    & > div {
+      height: 100px;
+      width: 100px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    & > div {
+      height: 100px;
+    }
+  }
 `;
 
 const StyledHistoryItem = styled.div`
@@ -21,13 +34,19 @@ const StyledHistoryItem = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
   cursor: pointer;
-  height: 120px;
+  height: 140px;
   width: 120px;
 
-
-  @media (max-width: 992px) {
+  @media (max-width: 768px) {
     & > div {
-      height: 100px;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    & > div {
+      height: 100%;
       width: 100px;
     }
   }

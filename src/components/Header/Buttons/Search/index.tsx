@@ -1,4 +1,5 @@
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+import ClearIcon from '@mui/icons-material/Clear';
 import {
   Box,
   DialogContent,
@@ -15,7 +16,7 @@ import { styled } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
 import { ChangeEvent, ReactElement, Ref, forwardRef, useState } from 'react';
 
-import { DialogWrapper, MobileSearchButton, SearchInputContainer } from './styles';
+import { DialogWrapper, MobileSearchButton, SearchInputContainer, StyledSearchResult } from './styles';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children: ReactElement<any, any> },
@@ -28,7 +29,7 @@ const SearchInputWrapper = styled(TextField)(
   ({ theme }) => `
     background: ${theme.colors.alpha.white[100]};
     .MuiInputBase-input {
-        font-size: ${theme.typography.pxToRem(17)};
+        font-size: ${theme.typography.pxToRem(16)};
     }
 
 `,
@@ -37,7 +38,7 @@ const SearchInputWrapper = styled(TextField)(
 const DialogTitleWrapper = styled(DialogTitle)(
   ({ theme }) => `
     background: ${theme.colors.alpha.black[5]};
-    padding: ${theme.spacing(3)}
+    padding: ${theme.spacing(1)}
 `,
 );
 
@@ -45,17 +46,24 @@ function HeaderSearch() {
   const [openSearchResults, setOpenSearchResults] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);
+  const [isOpenSearchResult, setIsOpenSearchResult] = useState(false);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(event.target.value);
-
+    setIsOpenSearchResult(true);
     if (event.target.value) {
       if (!openSearchResults) {
         setOpenSearchResults(true);
       }
     } else {
       setOpenSearchResults(false);
+      setIsOpenSearchResult(false);
     }
+  };
+
+  const handleClearSearch = () => {
+    setSearchValue('');
+    setIsOpenSearchResult(false);
   };
 
   const handleMobileSearchClick = () => {
@@ -80,11 +88,31 @@ function HeaderSearch() {
                 <SearchTwoToneIcon sx={{ fontSize: '34px', cursor: 'pointer' }} />
               </InputAdornment>
             ),
+            endAdornment: (
+              <InputAdornment position="end">
+                {searchValue && (
+                  <IconButton sx={{ p: 0 }} onClick={handleClearSearch}>
+                    <ClearIcon />
+                  </IconButton>
+                )}
+              </InputAdornment>
+            ),
             size: 'small',
           }}
           placeholder="Tìm kiếm bài hát, nghệ sĩ, lời bài hát"
           fullWidth
         />
+        {isOpenSearchResult && (
+          <StyledSearchResult>
+            <DialogContent>
+              <Box sx={{ pt: 1, pb: 1 }} display="flex" justifyContent="space-between">
+                <Typography fontSize={16} fontWeight={'bold'} variant="body2" component="span">
+                  Gợi ý kết quả
+                </Typography>
+              </Box>
+            </DialogContent>
+          </StyledSearchResult>
+        )}
       </SearchInputContainer>
       <MobileSearchButton>
         <Tooltip arrow title="Search">
@@ -113,20 +141,26 @@ function HeaderSearch() {
                   <SearchTwoToneIcon />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  {searchValue && (
+                    <IconButton sx={{ p: 0 }} onClick={handleClearSearch}>
+                      <ClearIcon />
+                    </IconButton>
+                  )}
+                </InputAdornment>
+              ),
             }}
             placeholder="Tìm kiếm bài hát, nghệ sĩ, lời bài hát"
             fullWidth
           />
         </DialogTitleWrapper>
         <Divider />
-        {openSearchResults && (
-          <DialogContent>
-            <Box sx={{ pt: 0, pb: 1 }} display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="span">
-                Gợi ý kết quả cho{' '}
-                <Typography sx={{ fontWeight: 'bold' }} variant="body1" component="span">
-                  {searchValue}
-                </Typography>
+        {isOpenSearchResult && (
+          <DialogContent sx={{ p: 1.5 }}>
+            <Box display="flex" justifyContent="space-between">
+              <Typography variant="body2" fontSize={16} fontWeight={'bold'} color={'#1976d2'} component="span">
+                Gợi ý kết quả
               </Typography>
             </Box>
           </DialogContent>

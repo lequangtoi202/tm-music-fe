@@ -1,5 +1,5 @@
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import AlbumContainer from '../../components/Album';
 import CarouselContainer from '../../components/Carousel';
 import HistoryContainer from '../../components/History';
@@ -74,7 +74,7 @@ function Homepage() {
           <CarouselContainer items={data} />
         </div>
 
-        <div style={{ marginTop: '80px' }}>
+        <div style={{ marginTop: '52px' }}>
           <Text color="black" style={{ fontWeight: 'bold', fontSize: '24px', marginLeft: '32px' }}>
             {'Gần đây'}
           </Text>

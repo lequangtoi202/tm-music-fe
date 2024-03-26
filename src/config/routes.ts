@@ -3,6 +3,7 @@ const routes: { [key: string]: string } = {
   categories: '/chu-de',
   albums: '/albums',
   account: '/ho-so',
+  myplaylist: '/mymusic/playlist',
 };
 
 export default routes;

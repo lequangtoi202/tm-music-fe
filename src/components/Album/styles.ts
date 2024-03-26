@@ -36,7 +36,7 @@ const StyledAlbumItem = styled.div`
   @media (max-width: 768px) {
     flex-basis: calc(50% - 16px);
     & > div {
-      height: 150px;
+      height: 172px;
       width: 100%;
     }
   }
@@ -44,7 +44,7 @@ const StyledAlbumItem = styled.div`
   @media (max-width: 480px) {
     flex-basis: 100%;
     & > div {
-      height: 120px;
+      height: 146px;
       width: 100%;
     }
   }

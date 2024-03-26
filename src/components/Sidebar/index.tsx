@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Box, Divider, Drawer, Skeleton, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
@@ -23,11 +23,21 @@ const SidebarWrapper = styled(Box)(
 
 function Sidebar() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const [loading, setLoading] = useState(true);
+
   const closeSidebar = () => toggleSidebar();
   const theme = useTheme();
   const SkeletonMenuItem = (
     <Skeleton variant="rounded" height={40} animation="wave" sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
   );
+  useEffect(() => {
+    const fetchData = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   const renderSkeletonContent = (length: number) => {
     return (
@@ -40,8 +50,8 @@ function Sidebar() {
       </>
     );
   };
-  const menuList = [{ label: 'Khám phá', icon: <DesignServicesTwoToneIcon />, to: '/' }];
-  const menuList1 = [{ label: 'Tạo playlist mới', icon: <DesignServicesTwoToneIcon />, to: '/playlist' }];
+  const menuList = [{ label: 'Khám Phá', icon: <DesignServicesTwoToneIcon />, to: '/' }];
+  const menuList1 = [{ label: 'Tạo playlist mới', icon: <DesignServicesTwoToneIcon />, to: '/mymusic/playlist' }];
   const menuList2 = [
     { label: 'Chủ Đề & Thể Loại', icon: <DesignServicesTwoToneIcon />, to: '/chu-de' },
     { label: 'Album', icon: <DesignServicesTwoToneIcon />, to: '/albums' },
@@ -85,7 +95,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            {sidebarToggle ? renderSkeletonContent(menuList.length) : <SidebarMenu menus={menuList} />}
+            {loading ? renderSkeletonContent(menuList.length) : <SidebarMenu menus={menuList} />}
           </Box>
           <Box>
             <Divider
@@ -95,7 +105,7 @@ function Sidebar() {
               }}
             />
             <Scrollbar>
-              {sidebarToggle ? renderSkeletonContent(menuList2.length) : <SidebarMenu menus={menuList2} />}
+              {loading ? renderSkeletonContent(menuList2.length) : <SidebarMenu menus={menuList2} />}
             </Scrollbar>
           </Box>
           <Box>
@@ -106,7 +116,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[50],
               }}
             />
-            {sidebarToggle ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
+            {loading ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
           </Box>
         </Box>
       </SidebarWrapper>
@@ -148,7 +158,7 @@ function Sidebar() {
                   background: theme.colors.alpha.trueWhite[50],
                 }}
               />
-              {sidebarToggle ? renderSkeletonContent(menuList.length) : <SidebarMenu menus={menuList} />}
+              {loading ? renderSkeletonContent(menuList.length) : <SidebarMenu menus={menuList} />}
             </Box>
             <Divider
               sx={{
@@ -157,7 +167,7 @@ function Sidebar() {
               }}
             />
             <Scrollbar>
-              {sidebarToggle ? renderSkeletonContent(menuList2.length) : <SidebarMenu menus={menuList2} />}
+              {loading ? renderSkeletonContent(menuList2.length) : <SidebarMenu menus={menuList2} />}
             </Scrollbar>
             <Box>
               <Divider
@@ -167,7 +177,7 @@ function Sidebar() {
                   background: theme.colors.alpha.trueWhite[50],
                 }}
               />
-              {sidebarToggle ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
+              {loading ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
             </Box>
           </Box>
         </SidebarWrapper>

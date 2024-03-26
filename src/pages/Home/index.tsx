@@ -6,6 +6,7 @@ import HistoryContainer from '../../components/History';
 import Text from '../../components/Text';
 import { TextHeader } from '../../components/TextHeader';
 import { KContext } from '../../context';
+import { TextHeaderOnly } from '../../components/TextHeaderOnly';
 const theme = createTheme();
 
 function Homepage() {
@@ -75,9 +76,7 @@ function Homepage() {
         </div>
 
         <div style={{ marginTop: '52px' }}>
-          <Text color="black" style={{ fontWeight: 'bold', fontSize: '24px', marginLeft: '32px' }}>
-            {'Gần đây'}
-          </Text>
+          <TextHeaderOnly text={'Gần Đây'} />
           <HistoryContainer items={data} />
         </div>
         <div>

@@ -1,7 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Container, StyledChildPlaylistItem, StyledPlaylistItem } from './styles';
+import {
+  Container,
+  StyledAddPlaylist,
+  StyledAddPlaylistWrapper,
+  StyledChildPlaylistItem,
+  StyledPlaylistItem,
+} from './styles';
 import { RoundedSkeleton } from '../Skeleton';
+import { AddCircleOutline, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import Image from '../Image';
+import { StyledArtistWrapper } from '../ArtistInfo/styles';
+import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
@@ -30,12 +40,61 @@ function Playlist() {
       title: 'Mountain view',
       id: '1',
     },
+    {
+      src: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
+      title: 'Mountain view',
+      id: '1',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
+      title: 'Mountain view',
+      id: '1',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
+      title: 'Mountain view',
+      id: '1',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
+      title: 'Mountain view',
+      id: '1',
+    },
   ];
   return (
     <Container>
+      <StyledPlaylistItem>
+        <StyledChildPlaylistItem>
+          {loading ? (
+            <RoundedSkeleton />
+          ) : (
+            <StyledAddPlaylistWrapper>
+              <StyledAddPlaylist>
+                <AddCircleOutline />
+                Tạo playlist mới
+              </StyledAddPlaylist>
+            </StyledAddPlaylistWrapper>
+          )}
+        </StyledChildPlaylistItem>
+      </StyledPlaylistItem>
       {data.map((item, index) => (
         <StyledPlaylistItem key={index}>
-          <StyledChildPlaylistItem>{loading ? <RoundedSkeleton /> : <Box>{item.title}</Box>}</StyledChildPlaylistItem>
+          <StyledChildPlaylistItem>
+            {loading ? (
+              <RoundedSkeleton />
+            ) : (
+              <StyledWrapper>
+                <StyledLayerHover>
+                  <Box>
+                    <FavoriteBorder />
+                    <PlayCircleOutline />
+                    <MoreHoriz />
+                  </Box>
+                </StyledLayerHover>
+                <Image src={item.src}></Image>
+              </StyledWrapper>
+            )}
+          </StyledChildPlaylistItem>
         </StyledPlaylistItem>
       ))}
     </Container>

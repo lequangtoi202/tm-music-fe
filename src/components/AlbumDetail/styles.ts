@@ -49,14 +49,14 @@ const BoxCentered = styled.div`
 `;
 
 const PlayRandomSongButton = styled.div`
-  width: 64%;
-  height: 50px;
+  width: 60%;
+  height: 40px;
   border-radius: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: #0d6efd;
+  background-color: #1976d2;
   position: relative;
   color: #fff;
   padding: 0 12px;
@@ -67,9 +67,17 @@ const PlayRandomSongButton = styled.div`
     fill: #fff;
   }
 
+  & div {
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    width: 80%;
+  }
+
   @media (max-width: 480px) {
-    width: 55%;
-    height: 45px;
+    width: 54%;
+    height: 32px;
     padding: 0 6px;
   }
 `;
@@ -96,11 +104,20 @@ const PlaylistItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f3f3f3;
+    border-radius: 6px;
+  }
+`;
+
+const StyleMoreButton = styled.div`
+  cursor: pointer;
 `;
 
 const Box = styled.div`
   flex: 1;
-  text-align: center;
 `;
 
 const HeaderTitle = styled.div`
@@ -115,7 +132,7 @@ const HeaderTitle = styled.div`
 `;
 
 const SongTitle = styled.span`
-  flex: 2.25;
+  flex: 3;
   display: flex;
   align-items: center;
 
@@ -129,6 +146,13 @@ const SongTitle = styled.span`
   }
 
   @media (max-width: 480px) {
+    & > img {
+      width: 43px;
+      height: 43px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+
     & > div {
       & > div {
         &:nth-child(1) {
@@ -146,7 +170,7 @@ const SongTitle = styled.span`
 
 const AlbumTitle = styled.span`
   font-size: 14px;
-  flex: 1.75;
+  flex: 2;
 
   @media (max-width: 480px) {
     font-size: 12px;
@@ -166,11 +190,13 @@ const StyledBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex: 1;
 `;
 
 const StyledBoxTitle = styled.div`
   font-size: 14px;
   font-weight: normal;
+  max-width: 240px;
 
   @media (max-width: 480px) {
     font-size: 12px;
@@ -206,4 +232,5 @@ export {
   Time,
   StyledBoxTitle,
   StyledBox,
+  StyleMoreButton,
 };

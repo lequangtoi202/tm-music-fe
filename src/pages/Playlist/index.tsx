@@ -1,4 +1,4 @@
-import { Box, CssBaseline, Paper } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Playlist from '../../components/Playlist';
 import { TextHeaderOnly } from '../../components/TextHeaderOnly';

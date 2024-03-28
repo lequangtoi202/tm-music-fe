@@ -1,4 +1,9 @@
+import { AddCircleOutline, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
+import Image from '../Image';
+import { RoundedSkeleton } from '../Skeleton';
+import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 import {
   Container,
   StyledAddPlaylist,
@@ -6,12 +11,6 @@ import {
   StyledChildPlaylistItem,
   StyledPlaylistItem,
 } from './styles';
-import { RoundedSkeleton } from '../Skeleton';
-import { AddCircleOutline, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
-import { Box } from '@mui/material';
-import Image from '../Image';
-import { StyledArtistWrapper } from '../ArtistInfo/styles';
-import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
@@ -85,15 +84,30 @@ function Playlist() {
             ) : (
               <StyledWrapper>
                 <StyledLayerHover>
-                  <Box>
-                    <FavoriteBorder />
-                    <PlayCircleOutline />
-                    <MoreHoriz />
-                  </Box>
+                  <Tooltip placement="top" title="Yêu thích">
+                    <IconButton>
+                      <FavoriteBorder />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip placement="top" title="Phát">
+                    <IconButton>
+                      <PlayCircleOutline />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip placement="top" title="Khác">
+                    <IconButton>
+                      <MoreHoriz />
+                    </IconButton>
+                  </Tooltip>
                 </StyledLayerHover>
                 <Image src={item.src}></Image>
               </StyledWrapper>
             )}
+            {/* viết style lại */}
+            <Box display={'flex'} flexDirection={'column'} height={'20%'} paddingLeft={1}>
+              <Box>Tên title</Box>
+              <Box>Source</Box>
+            </Box>
           </StyledChildPlaylistItem>
         </StyledPlaylistItem>
       ))}

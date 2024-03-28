@@ -52,6 +52,14 @@ const StyledArtistInfo = styled.div`
     & > div:nth-child(1) {
       font-size: 14px;
     }
+
+    & > button > div {
+      font-size: 10px;
+    }
+
+    & > button {
+      padding: 6px 8px;
+    }
   }
 `;
 

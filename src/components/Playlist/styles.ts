@@ -84,8 +84,11 @@ const StyledAddPlaylist = styled.div`
 const StyledChildPlaylistItem = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
-  & div {
+  padding-bottom: 10px;
+
+  & div:first-child {
     width: 100%;
+    height: 80%;
   }
 
   &:hover::before {
@@ -94,7 +97,7 @@ const StyledChildPlaylistItem = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 80%;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 6px;
   }

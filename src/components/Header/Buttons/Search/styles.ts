@@ -27,7 +27,7 @@ const StyledSearchResult = styled.div`
   width: 100%;
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  border-radius: 6px;
   z-index: -1;
 `;
 

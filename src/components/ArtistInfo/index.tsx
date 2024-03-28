@@ -1,8 +1,8 @@
-import { Box } from '@mui/material';
-import { ArtistInfoProps } from './types';
-import { FollowButton, StyledArtistInfo, StyledArtistWrapper } from './styles';
-import Image from '../Image';
 import { PersonAddAlt } from '@mui/icons-material';
+import { Box, Button } from '@mui/material';
+import Image from '../Image';
+import { StyledArtistInfo, StyledArtistWrapper } from './styles';
+import { ArtistInfoProps } from './types';
 
 const ArtistInfo: React.FC<ArtistInfoProps> = ({ item }) => {
   return (
@@ -17,10 +17,9 @@ const ArtistInfo: React.FC<ArtistInfoProps> = ({ item }) => {
         <Box textAlign={'center'} fontSize={12}>
           70K quan tâm
         </Box>
-        <FollowButton>
-          <PersonAddAlt />
+        <Button sx={{ borderRadius: '18px' }} variant="contained" startIcon={<PersonAddAlt />}>
           <Box>Theo dõi</Box>
-        </FollowButton>
+        </Button>
       </StyledArtistInfo>
     </Box>
   );

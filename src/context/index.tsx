@@ -8,6 +8,7 @@ export const KContext = createContext<IGlobalContext>({} as IGlobalContext);
 
 export const KContextProvider = ({ children }: KContextProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isOpenMoreAction, setIsOpenMoreAction] = useState<boolean>(false);
   const isMobile = useMediaQuery(`(max-width: ${breakpointLarge}px)`);
 
   return (
@@ -15,6 +16,8 @@ export const KContextProvider = ({ children }: KContextProps) => {
       value={{
         isMobile,
         isLoggedIn,
+        isOpenMoreAction,
+        setIsOpenMoreAction,
       }}
     >
       {children}

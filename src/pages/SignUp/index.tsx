@@ -164,7 +164,7 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/sign-in" variant="body2">
-                  Đã có tài khoản? Đăng ký
+                  Đã có tài khoản? Đăng nhập
                 </Link>
               </Grid>
             </Grid>

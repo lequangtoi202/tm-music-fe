@@ -26,31 +26,56 @@ const StyledLayerHover = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  color: #fff;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   transition: opacity 0.5s ease;
   opacity: 0;
   z-index: 1;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 
-  & > div {
+  & > button {
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: none;
+    border: none;
 
     & > svg {
-      font-size: 30px;
+      font-size: 32px;
+      fill: #fff;
+      transition: fill 0.3s ease;
     }
 
-    & > svg:nth-child(2) {
+    &:hover > svg {
+      fill: #1976d2;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  & > button:nth-child(2) {
+    & > svg {
       font-size: 52px;
+      fill: #fff;
+      transition: fill 0.3s ease;
+    }
+
+    &:hover > svg {
+      fill: #1976d2;
+    }
+
+    &:hover {
+      cursor: pointer;
     }
   }
 `;
 
 const StyledWrapper = styled.div`
-  height: 100%;
-  width: 100%;
   flex: 1;
   overflow: hidden;
   border-radius: 6px;

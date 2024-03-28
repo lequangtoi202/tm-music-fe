@@ -7,7 +7,6 @@ const Container = styled.div`
 `;
 
 const StyledBanner = styled.div`
-  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
   height: 100%;
   & div {

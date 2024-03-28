@@ -1,9 +1,9 @@
-import { PlayCircleOutline, FavoriteBorder, MoreHoriz } from '@mui/icons-material';
+import { FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
 import Image from '../../Image';
 import { RoundedSkeleton } from '../../Skeleton';
-import { StyledWrapper, StyledLayerHover, StyledThemeItem } from '../styles';
+import { StyledLayerHover, StyledThemeItem, StyledWrapper } from '../styles';
 import { ThemeItemProps } from '../types';
-import { Box } from '@mui/material';
 
 const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
   return (
@@ -11,13 +11,23 @@ const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
       {loading ? (
         <RoundedSkeleton />
       ) : (
-        <StyledWrapper>
+        <StyledWrapper style={{ height: '80%' }}>
           <StyledLayerHover>
-            <Box>
-              <FavoriteBorder />
-              <PlayCircleOutline />
-              <MoreHoriz />
-            </Box>
+            <Tooltip placement="top" title="Yêu thích">
+              <IconButton>
+                <FavoriteBorder />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="top" title="Phát">
+              <IconButton>
+                <PlayCircleOutline />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="top" title="Khác">
+              <IconButton>
+                <MoreHoriz />
+              </IconButton>
+            </Tooltip>
           </StyledLayerHover>
           <Image src={item.src}></Image>
         </StyledWrapper>

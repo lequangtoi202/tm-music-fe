@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledBoxInner = styled(Box)`
   & > div > div:nth-child(2) {
-    border-radius: 10px;
+    border-radius: 6px;
   }
 `;
 

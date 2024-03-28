@@ -1007,7 +1007,7 @@ export const PureLightTheme = createTheme({
           position: 'absolute',
           height: '100%',
           top: 0,
-          borderRadius: 50,
+          borderRadius: 18,
           backgroundColor: colors.alpha.black[10],
         },
       },

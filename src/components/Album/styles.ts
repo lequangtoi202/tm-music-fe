@@ -51,7 +51,6 @@ const StyledAlbumItem = styled.div`
 `;
 
 const StyledChildAlbumItem = styled.div`
-  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
   & div {
     height: 100%;

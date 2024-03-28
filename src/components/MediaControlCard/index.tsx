@@ -1,19 +1,18 @@
-import { VolumeDown, VolumeOff, VolumeUp, Lyrics } from '@mui/icons-material';
+import { Lyrics, VolumeDown, VolumeOff, VolumeUp } from '@mui/icons-material';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import { Slider, Stack } from '@mui/material';
+import { Slider, Stack, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
+import { KContext } from '../../context';
 import { formatTime } from '../../utils/time';
 import Image from '../Image';
-import { KContext } from '../../context';
 import { CustomCardContent, CustomDisplayControl } from './styles';
 
 export default function MediaControlCard() {
@@ -111,19 +110,25 @@ export default function MediaControlCard() {
       </Box>
       <CustomDisplayControl>
         <Box sx={{ flex: '1 1 65%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <IconButton aria-label="previous">
-            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-          </IconButton>
-          <IconButton aria-label="play/pause" onClick={togglePlayPause}>
-            {isPlaying ? (
-              <PauseIcon sx={{ height: 38, width: 38 }} />
-            ) : (
-              <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-            )}
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-          </IconButton>
+          <Tooltip placement="top" title="Trước đó">
+            <IconButton aria-label="previous">
+              {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="top" title="Phát">
+            <IconButton aria-label="play/pause" onClick={togglePlayPause}>
+              {isPlaying ? (
+                <PauseIcon sx={{ height: 38, width: 38 }} />
+              ) : (
+                <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+              )}
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="top" title="Tiếp theo">
+            <IconButton aria-label="next">
+              {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+            </IconButton>
+          </Tooltip>
         </Box>
         {!isMobile && (
           <Box sx={{ flex: '1 1 35%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

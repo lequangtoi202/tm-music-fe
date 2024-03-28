@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 
 const CardContainer = styled.div`
@@ -14,7 +15,7 @@ const CardImage = styled.div`
   height: 60%;
   margin: 10px;
   background-color: green;
-  border-radius: 10px;
+  border-radius: 6px;
 
   @media (max-width: 768px) {
     height: 50%;
@@ -48,40 +49,6 @@ const BoxCentered = styled.div`
   }
 `;
 
-const PlayRandomSongButton = styled.div`
-  width: 60%;
-  height: 40px;
-  border-radius: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: #1976d2;
-  position: relative;
-  color: #fff;
-  padding: 0 12px;
-  margin-top: 6px;
-
-  .MuiSvgIcon-root {
-    width: 20%;
-    fill: #fff;
-  }
-
-  & div {
-    flex: 1;
-  }
-
-  @media (max-width: 768px) {
-    width: 80%;
-  }
-
-  @media (max-width: 480px) {
-    width: 54%;
-    height: 32px;
-    padding: 0 6px;
-  }
-`;
-
 const PlaylistContainer = styled.div`
   flex: 1;
   min-width: 68%;
@@ -98,7 +65,6 @@ const PlaylistContainer = styled.div`
 `;
 
 const PlaylistItem = styled.div`
-  padding: 8px;
   height: 60px;
   border-bottom: 1px solid #ddd;
   display: flex;
@@ -107,7 +73,7 @@ const PlaylistItem = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: #f3f3f3;
+    background-color: #e1e0e0;
     border-radius: 6px;
   }
 `;
@@ -116,8 +82,17 @@ const StyleMoreButton = styled.div`
   cursor: pointer;
 `;
 
-const Box = styled.div`
-  flex: 1;
+const StyledGroupAction = styled(Box)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+
+  & > *:hover {
+    color: #1976d2;
+    transition: fill 0.3s ease;
+    cursor: pointer;
+  }
 `;
 
 const HeaderTitle = styled.div`
@@ -223,7 +198,6 @@ export {
   PlaylistContainer,
   CardImage,
   BoxCentered,
-  PlayRandomSongButton,
   HeaderTitle,
   Box,
   PlaylistItem,
@@ -233,4 +207,5 @@ export {
   StyledBoxTitle,
   StyledBox,
   StyleMoreButton,
+  StyledGroupAction,
 };

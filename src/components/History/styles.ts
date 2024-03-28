@@ -31,7 +31,6 @@ const Container = styled.div`
 const StyledHistoryItem = styled.div`
   flex: 1;
   margin: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
   cursor: pointer;
   height: 140px;

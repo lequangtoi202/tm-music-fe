@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, Divider, Drawer, Skeleton, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
+import { Album, Category, Queue, TravelExplore } from '@mui/icons-material';
 import { sidebarWidth } from '../../constants';
 import { SidebarContext } from '../../context/SidebarContext';
 import Logo from '../Logo';
@@ -50,11 +50,11 @@ function Sidebar() {
       </>
     );
   };
-  const menuList = [{ label: 'Khám Phá', icon: <DesignServicesTwoToneIcon />, to: '/' }];
-  const menuList1 = [{ label: 'Tạo playlist mới', icon: <DesignServicesTwoToneIcon />, to: '/mymusic/playlist' }];
+  const menuList = [{ label: 'Khám Phá', icon: <TravelExplore />, to: '/' }];
+  const menuList1 = [{ label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist' }];
   const menuList2 = [
-    { label: 'Chủ Đề & Thể Loại', icon: <DesignServicesTwoToneIcon />, to: '/chu-de' },
-    { label: 'Album', icon: <DesignServicesTwoToneIcon />, to: '/albums' },
+    { label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de' },
+    { label: 'Album', icon: <Album />, to: '/albums' },
   ];
   return (
     <>

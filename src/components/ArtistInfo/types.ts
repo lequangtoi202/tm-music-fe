@@ -1,5 +1,6 @@
 interface ArtistInfoProps {
   item: Artist;
+  loading?: boolean;
 }
 
 interface Artist {

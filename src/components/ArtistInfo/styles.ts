@@ -5,7 +5,6 @@ const StyledArtistWrapper = styled.div`
   height: 192px;
   border-radius: 50%;
   flex: 1;
-  background-color: red;
   overflow: hidden;
 
   & > img {

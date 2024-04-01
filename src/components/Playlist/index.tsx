@@ -1,14 +1,16 @@
 import { AddCircleOutline, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Image from '../Image';
-import { RoundedSkeleton } from '../Skeleton';
+import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
+import { PLaylistTitle } from './PlaylistTitle';
 import {
   Container,
   StyledAddPlaylist,
   StyledAddPlaylistWrapper,
   StyledChildPlaylistItem,
+  StyledItemContainer,
   StyledPlaylistItem,
 } from './styles';
 
@@ -62,54 +64,50 @@ function Playlist() {
   ];
   return (
     <Container>
-      <StyledPlaylistItem>
-        <StyledChildPlaylistItem>
-          {loading ? (
-            <RoundedSkeleton />
-          ) : (
-            <StyledAddPlaylistWrapper>
-              <StyledAddPlaylist>
-                <AddCircleOutline />
-                Tạo playlist mới
-              </StyledAddPlaylist>
-            </StyledAddPlaylistWrapper>
-          )}
-        </StyledChildPlaylistItem>
-      </StyledPlaylistItem>
+      <StyledItemContainer>
+        {loading ? (
+          <RoundedSkeleton />
+        ) : (
+          <StyledAddPlaylistWrapper>
+            <StyledAddPlaylist>
+              <AddCircleOutline />
+              Tạo playlist mới
+            </StyledAddPlaylist>
+          </StyledAddPlaylistWrapper>
+        )}
+      </StyledItemContainer>
       {data.map((item, index) => (
-        <StyledPlaylistItem key={index}>
-          <StyledChildPlaylistItem>
-            {loading ? (
-              <RoundedSkeleton />
-            ) : (
-              <StyledWrapper>
-                <StyledLayerHover>
-                  <Tooltip placement="top" title="Yêu thích">
-                    <IconButton>
-                      <FavoriteBorder />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip placement="top" title="Phát">
-                    <IconButton>
-                      <PlayCircleOutline />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip placement="top" title="Khác">
-                    <IconButton>
-                      <MoreHoriz />
-                    </IconButton>
-                  </Tooltip>
-                </StyledLayerHover>
-                <Image src={item.src}></Image>
-              </StyledWrapper>
-            )}
-            {/* viết style lại */}
-            <Box display={'flex'} flexDirection={'column'} height={'20%'} paddingLeft={1}>
-              <Box>Tên title</Box>
-              <Box>Source</Box>
-            </Box>
-          </StyledChildPlaylistItem>
-        </StyledPlaylistItem>
+        <StyledItemContainer key={index}>
+          <StyledPlaylistItem>
+            <StyledChildPlaylistItem>
+              {loading ? (
+                <RoundedSkeleton />
+              ) : (
+                <StyledWrapper>
+                  <StyledLayerHover>
+                    <Tooltip placement="top" title="Yêu thích">
+                      <IconButton>
+                        <FavoriteBorder />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip placement="top" title="Phát">
+                      <IconButton>
+                        <PlayCircleOutline />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip placement="top" title="Khác">
+                      <IconButton>
+                        <MoreHoriz />
+                      </IconButton>
+                    </Tooltip>
+                  </StyledLayerHover>
+                  <Image src={item.src}></Image>
+                </StyledWrapper>
+              )}
+            </StyledChildPlaylistItem>
+          </StyledPlaylistItem>
+          {loading ? <TitleSkeleton /> : <PLaylistTitle title={item.title} />}
+        </StyledItemContainer>
       ))}
     </Container>
   );

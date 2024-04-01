@@ -1,14 +1,24 @@
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { useEffect, useState } from 'react';
+import AlbumContainer from '../../components/Album';
 import AlbumDetail from '../../components/AlbumDetail';
 import ArtistInfo from '../../components/ArtistInfo';
-import Text from '../../components/Text';
-import { StyledArtistList } from './styles';
 import { TextHeader } from '../../components/TextHeader';
-import AlbumContainer from '../../components/Album';
 import { TextHeaderOnly } from '../../components/TextHeaderOnly';
+import { StyledArtistList } from './styles';
 const theme = createTheme();
 
 function Album() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
   const artist = {
     src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
     name: 'Hoàng Dũng',
@@ -44,11 +54,11 @@ function Album() {
         <div style={{ marginTop: '52px' }}>
           <TextHeaderOnly text={'Nghệ Sĩ Tham Gia'} />
           <StyledArtistList>
-            <ArtistInfo item={artist} />
-            <ArtistInfo item={artist} />
-            <ArtistInfo item={artist} />
-            <ArtistInfo item={artist} />
-            <ArtistInfo item={artist} />
+            <ArtistInfo item={artist} loading={loading} />
+            <ArtistInfo item={artist} loading={loading} />
+            <ArtistInfo item={artist} loading={loading} />
+            <ArtistInfo item={artist} loading={loading} />
+            <ArtistInfo item={artist} loading={loading} />
           </StyledArtistList>
         </div>
 

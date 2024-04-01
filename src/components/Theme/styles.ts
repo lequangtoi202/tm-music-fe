@@ -34,7 +34,6 @@ const StyledLayerHover = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-
   & > button {
     display: flex;
     align-items: center;
@@ -47,6 +46,10 @@ const StyledLayerHover = styled.div`
       font-size: 32px;
       fill: #fff;
       transition: fill 0.3s ease;
+
+      @media (max-width: 480px) {
+        font-size: 18px;
+      }
     }
 
     &:hover > svg {
@@ -71,6 +74,12 @@ const StyledLayerHover = styled.div`
 
     &:hover {
       cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      & > svg {
+        font-size: 26px;
+      }
     }
   }
 `;

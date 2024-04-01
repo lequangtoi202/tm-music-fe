@@ -11,21 +11,19 @@ const Container = styled.div`
   @media (max-width: 480px) {
     padding: 0;
     & > div {
-      height: 120px;
       width: 100%;
     }
   }
 `;
 
-const StyledPlaylistItem = styled.div`
+const StyledItemContainer = styled.div`
   flex: 1;
   margin: 8px;
   cursor: pointer;
-  position: relative;
 
   @media (min-width: 1201px) {
     flex-basis: calc(25% - 16px);
-    & > div {
+    & > div > div {
       height: 216px;
       width: 100%;
     }
@@ -33,7 +31,7 @@ const StyledPlaylistItem = styled.div`
 
   @media (max-width: 1200px) {
     flex-basis: calc(33.33% - 16px);
-    & > div {
+    & > div > div {
       height: 180px;
       width: 100%;
     }
@@ -41,23 +39,30 @@ const StyledPlaylistItem = styled.div`
 
   @media (max-width: 768px) {
     flex-basis: calc(33.33% - 16px);
-    & > div {
+    & > div > div {
       height: 150px;
       width: 100%;
     }
   }
 
   @media (max-width: 480px) {
-    & > div {
+    & > div > div {
       height: 120px;
       width: 100%;
     }
   }
 `;
 
+const StyledPlaylistItem = styled.div`
+  cursor: pointer;
+  position: relative;
+`;
+
 const StyledAddPlaylistWrapper = styled.div`
   height: 100%;
   color: #1976d2;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
 `;
 
 const StyledAddPlaylist = styled.div`
@@ -84,11 +89,10 @@ const StyledAddPlaylist = styled.div`
 const StyledChildPlaylistItem = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
-  padding-bottom: 10px;
 
-  & div:first-child {
+  & div {
     width: 100%;
-    height: 80%;
+    height: 100%;
   }
 
   &:hover::before {
@@ -96,11 +100,28 @@ const StyledChildPlaylistItem = styled.div`
     position: absolute;
     top: 0;
     left: 0;
+    height: 100%;
     width: 100%;
-    height: 80%;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 6px;
   }
 `;
 
-export { Container, StyledPlaylistItem, StyledChildPlaylistItem, StyledAddPlaylistWrapper, StyledAddPlaylist };
+const StyledPlaylistTitle = styled(Box)`
+  padding: 4px;
+  font-weight: 500;
+
+  &:hover {
+    color: #1976d2;
+  }
+`;
+
+export {
+  Container,
+  StyledPlaylistItem,
+  StyledChildPlaylistItem,
+  StyledAddPlaylistWrapper,
+  StyledAddPlaylist,
+  StyledItemContainer,
+  StyledPlaylistTitle,
+};

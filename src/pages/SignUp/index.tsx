@@ -1,33 +1,17 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
+import { LockOutlined } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import * as React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { clearError, setError } from '../../redux/errorReducer';
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        TM-music
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { Copyright } from '../Login';
+import Text from '../../components/Text';
+import { StyledLink } from '../Login/styles';
+import { Link } from 'react-router-dom';
+import { Avatar, Box, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
+import { TButton } from '../../components/Button/Button';
 
 const defaultTheme = createTheme();
 
@@ -100,10 +84,10 @@ export default function SignUp() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+            <LockOutlined />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Đăng ký
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -111,19 +95,9 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+                  autoFocus
                   id="email"
-                  label="Email Address"
+                  label="Email"
                   name="email"
                   type="email"
                   value={formData.email}
@@ -136,12 +110,11 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Mật khẩu"
                   type="password"
                   id="password"
                   value={formData.password}
                   onChange={handleChange}
-                  autoComplete="new-password"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -149,7 +122,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="confirmPassword"
-                  label="Confirm password"
+                  label="Nhập lại mật khẩu"
                   type="password"
                   id="confirmPassword"
                   value={formData.confirmPassword}
@@ -158,14 +131,13 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign Up
-            </Button>
+            <TButton variant="contained" title="Đăng ký" fullWidth size="large" type="submit" sx={{ mt: 3, mb: 2 }} />
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/sign-in" variant="body2">
-                  Đã có tài khoản? Đăng nhập
-                </Link>
+                <Text style={{ fontSize: 16 }}>{'Đã có tài khoản?'}</Text>
+                <StyledLink>
+                  <Link to="/dang-nhap">{'Đăng nhập'}</Link>
+                </StyledLink>
               </Grid>
             </Grid>
           </Box>

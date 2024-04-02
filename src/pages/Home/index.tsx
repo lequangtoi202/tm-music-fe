@@ -3,15 +3,13 @@ import { useContext } from 'react';
 import AlbumContainer from '../../components/Album';
 import CarouselContainer from '../../components/Carousel';
 import HistoryContainer from '../../components/History';
-import Text from '../../components/Text';
 import { TextHeader } from '../../components/TextHeader';
-import { KContext } from '../../context';
 import { TextHeaderOnly } from '../../components/TextHeaderOnly';
+import { KContext } from '../../context';
 const theme = createTheme();
 
 function Homepage() {
   const { isMobile } = useContext(KContext);
-
   const data = [
     {
       src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
@@ -71,26 +69,25 @@ function Homepage() {
     <Box>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div>
+        <Box>
           <CarouselContainer items={data} />
-        </div>
-
-        <div style={{ marginTop: '52px' }}>
+        </Box>
+        <Box style={{ marginTop: '52px' }}>
           <TextHeaderOnly text={'Gần Đây'} />
           <HistoryContainer items={data} />
-        </div>
-        <div>
+        </Box>
+        <Box>
           <TextHeader text={'Chill'} />
           <AlbumContainer items={albumData} />
-        </div>
-        <div>
+        </Box>
+        <Box>
           <TextHeader text={'Tâm Trạng Tan Chậm'} />
           <AlbumContainer items={albumData} />
-        </div>
-        <div>
+        </Box>
+        <Box>
           <TextHeader text={'Hot'} />
           <AlbumContainer items={albumData} />
-        </div>
+        </Box>
       </ThemeProvider>
     </Box>
   );

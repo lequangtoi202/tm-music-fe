@@ -11,9 +11,9 @@ import { clientId } from './constants';
 import { DefaultLayout } from './layout/DefaultLayout';
 import ThemeProvider from './theme/ThemeProvider';
 import Login from './pages/Login';
-import Logout from './pages/Logout';
 import SignUp from './pages/SignUp';
 import { publicRoutes } from './routes';
+import Logout from './pages/Logout';
 type LayoutComponent = React.ComponentType<{ children?: ReactNode }>;
 
 function App() {

@@ -1,9 +1,9 @@
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
-import { Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import Carousel from 'react-bootstrap/Carousel';
 import CarouselItem from './CarouselItem';
-import { CarouselProps } from './types';
 import { StyledBoxInner } from './styles';
+import { CarouselProps } from './types';
 
 const CarouselContainer: React.FC<CarouselProps> = ({ items }) => {
   return (

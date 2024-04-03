@@ -1,12 +1,12 @@
-import { IHistory } from '../../types/History';
+import { ISong } from '../../types/Song';
 
 interface HistoryItemProps {
-  item: IHistory;
+  item: ISong;
   loading: boolean;
 }
 
 interface HistoryItemsProps {
-  items: IHistory[];
+  items: ISong[];
 }
 
 export type { HistoryItemProps, HistoryItemsProps };

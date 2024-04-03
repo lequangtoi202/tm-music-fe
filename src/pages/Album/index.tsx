@@ -6,6 +6,8 @@ import ArtistInfo from '../../components/ArtistInfo';
 import { TextHeader } from '../../components/TextHeader';
 import { TextHeaderOnly } from '../../components/TextHeaderOnly';
 import { StyledArtistList } from './styles';
+import { IAlbum } from '../../types/Album';
+import { ISinger } from '../../types/Singer';
 const theme = createTheme();
 
 function Album() {
@@ -19,31 +21,36 @@ function Album() {
 
     fetchData();
   }, []);
-  const artist = {
-    src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+  const singer: ISinger = {
+    avatar: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
     name: 'Hoàng Dũng',
     id: '3',
+    description: 'A brief description of Hoàng Dũng',
+    birthDate: '1990-01-01',
+    songs: [],
+    albums: [],
   };
-  const albumData = [
+  const albumData: IAlbum[] = [
     {
-      src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+      logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
       title: 'Night view',
       id: '3',
+      description: 'Description of Night view album',
+      songs: [],
     },
     {
-      src: 'https://images.unsplash.com/photo-1527549993586-dff825b37782',
+      logo: 'https://images.unsplash.com/photo-1527549993586-dff825b37782',
       title: 'Lake view',
       id: '2',
+      description: 'Description of Lake view album',
+      songs: [],
     },
     {
-      src: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
+      logo: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
       title: 'Mountain view',
       id: '1',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
-      title: 'Mountain view',
-      id: '1',
+      description: 'Description of Mountain view album',
+      songs: [],
     },
   ];
   return (
@@ -54,11 +61,11 @@ function Album() {
         <div style={{ marginTop: '52px' }}>
           <TextHeaderOnly text={'Nghệ Sĩ Tham Gia'} />
           <StyledArtistList>
-            <ArtistInfo item={artist} loading={loading} />
-            <ArtistInfo item={artist} loading={loading} />
-            <ArtistInfo item={artist} loading={loading} />
-            <ArtistInfo item={artist} loading={loading} />
-            <ArtistInfo item={artist} loading={loading} />
+            <ArtistInfo item={singer} loading={loading} />
+            <ArtistInfo item={singer} loading={loading} />
+            <ArtistInfo item={singer} loading={loading} />
+            <ArtistInfo item={singer} loading={loading} />
+            <ArtistInfo item={singer} loading={loading} />
           </StyledArtistList>
         </div>
 

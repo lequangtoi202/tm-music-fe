@@ -1,11 +1,12 @@
 import { ISong } from './Song';
 
-interface IAlbum {
+interface IGenre {
   title: string;
   id: string;
   description: string;
-  logo: string;
   songs: ISong[];
+  logo: string | null;
+  src: string;
 }
 
-export type { IAlbum };
+export type { IGenre };

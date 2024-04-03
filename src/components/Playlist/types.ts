@@ -1,12 +1,12 @@
-import { IPlaylist } from '../../types/Playlist';
+import { IAlbum } from '../../types/Album';
 
 interface PlaylistItemProps {
-  item: IPlaylist;
-  loading: boolean;
+  item: IAlbum;
+  loading?: boolean;
 }
 
 interface PlaylistItemsProps {
-  items: IPlaylist[];
+  items: IAlbum[];
 }
 
 export type { PlaylistItemProps, PlaylistItemsProps };

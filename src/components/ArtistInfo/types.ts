@@ -1,12 +1,8 @@
-interface ArtistInfoProps {
-  item: Artist;
-  loading?: boolean;
-}
+import { ISinger } from '../../types/Singer';
 
-interface Artist {
-  src: string;
-  id: string;
-  name: string;
+interface ArtistInfoProps {
+  item: ISinger;
+  loading?: boolean;
 }
 
 export type { ArtistInfoProps };

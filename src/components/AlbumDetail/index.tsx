@@ -2,6 +2,8 @@ import { FavoriteBorder, Headphones, MoreHoriz, MoreVert, PlayArrow, PlayCircleO
 import { Box, Button, IconButton, Skeleton, Tooltip, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
+import { IGenre } from '../../types/Genre';
+import { ISong } from '../../types/Song';
 import CardItem from '../Card';
 import Image from '../Image';
 import { MoreAction } from '../MoreAction';
@@ -42,10 +44,27 @@ const AlbumDetail = () => {
     fetchData();
   }, []);
 
-  const data = {
-    src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    title: 'Night view',
+  const mockGenre: IGenre = {
+    title: 'Pop',
+    id: '1',
+    description:
+      'A genre of popular music that originated in its modern form during the mid-1950s in the United States and the United Kingdom.',
+    songs: [],
+    logo: null,
+    src: 'https://example.com/pop-genre',
+  };
+
+  const songData: ISong = {
     id: '3',
+    title: 'Night view',
+    lyric: 'Lyrics of the song',
+    releaseDate: '2024-03-06',
+    duration: '3:30',
+    views: 100,
+    track_number: 1,
+    logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+    file: 'path/to/song/file.mp3',
+    genre: mockGenre,
   };
   return (
     <ResponsiveContainer>
@@ -55,7 +74,7 @@ const AlbumDetail = () => {
         ) : (
           <>
             <CardImage>
-              <CardItem item={data} />
+              <CardItem item={songData} />
             </CardImage>
             <BoxCentered>
               <StyledTextHeader>Title album</StyledTextHeader>
@@ -142,7 +161,7 @@ const AlbumDetail = () => {
                 ))}
           </>
         )}
-        <MoreAction song={data} />
+        <MoreAction song={songData} />
       </PlaylistContainer>
     </ResponsiveContainer>
   );

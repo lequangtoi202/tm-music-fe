@@ -1,4 +1,4 @@
-import { FC, useState, createContext, ReactNode } from 'react';
+import { ReactNode, createContext, useState } from 'react';
 type SidebarContext = {
   sidebarToggle: any;
   toggleSidebar: () => void;

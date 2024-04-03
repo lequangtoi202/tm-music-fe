@@ -18,6 +18,7 @@ import { login, loginWithGoogle } from '../../services/user';
 import { IUser } from '../../types/User';
 import { setToken } from '../../utils/storage';
 import { StyledLink } from './styles';
+import Cookies from 'js-cookie';
 const defaultTheme = createTheme();
 
 export function Copyright(props: any) {
@@ -52,17 +53,35 @@ function Login() {
   } = useForm<LoginForm>({
     resolver: zodResolver(schema),
     mode: 'onBlur',
-    defaultValues: {
-      email: '',
-      password: '',
-      remember: false,
+    defaultValues: async () => {
+      const storedEmail = Cookies.get('email');
+      const storedPassword = Cookies.get('password');
+
+      if (storedEmail && storedPassword) {
+        return {
+          email: storedEmail,
+          password: storedPassword,
+          remember: true,
+        };
+      }
+
+      return {
+        email: '',
+        password: '',
+        remember: false,
+      };
     },
   });
 
   const onSubmit = async (loginData: LoginForm) => {
+    const { email, password, remember } = loginData;
     try {
-      const response = await login({ email: loginData.email, password: loginData.password });
+      const response = await login({ email, password });
       if (response?.data?.token) {
+        if (remember) {
+          Cookies.set('email', email, { expires: 365 });
+          Cookies.set('password', password, { expires: 365 });
+        }
         setToken(response.data.token);
         setIsLoggedIn(true);
         navigate('/');
@@ -119,6 +138,7 @@ function Login() {
             <Controller
               name="email"
               control={control}
+              defaultValue=""
               rules={{ required: 'Email required' }}
               render={({ field }) => (
                 <TextField
@@ -126,10 +146,11 @@ function Login() {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
                   label="Email"
                   name="email"
                   autoFocus
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.target.value)}
                   error={!!errors.email}
                   helperText={errors.email ? errors.email.message : ''}
                 />
@@ -138,28 +159,40 @@ function Login() {
             <Controller
               name="password"
               control={control}
+              defaultValue=""
               rules={{ required: 'Password required' }}
               render={({ field }) => (
                 <TextField
                   {...field}
                   margin="normal"
                   required
+                  value={field.value}
                   fullWidth
                   name="password"
                   label="Mật khẩu"
                   type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  error={!!errors.password}
-                  helperText={errors.password ? errors.password.message : ''}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  error={!!errors.email}
+                  helperText={errors.email ? errors.email.message : ''}
                 />
               )}
             />
             <Controller
               name="remember"
               control={control}
+              defaultValue={false}
               render={({ field }) => (
-                <FormControlLabel control={<Checkbox {...field} color="primary" />} label="Nhớ mật khẩu" />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      {...field}
+                      checked={field.value}
+                      color="primary"
+                      onChange={(e) => field.onChange(e.target.checked)}
+                    />
+                  }
+                  label="Nhớ mật khẩu"
+                />
               )}
             />
             <TButton variant="contained" title="Đăng nhập" fullWidth size="large" type="submit" sx={{ mt: 3, mb: 2 }} />

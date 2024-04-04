@@ -4,12 +4,16 @@ import CarouselContainer from '../../components/Carousel';
 import HistoryContainer from '../../components/History';
 import { TextHeader } from '../../components/TextHeader';
 import { TextHeaderOnly } from '../../components/TextHeaderOnly';
-import { IGenre } from '../../types/Genre';
 import { IAlbum } from '../../types/Album';
+import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
+import { useEffect, useState } from 'react';
+import { getAllAlbums, getHistories } from '../../services/user';
 const theme = createTheme();
 
 function Homepage() {
+  const [histories, setHistories] = useState<ISong[]>([]);
+
   const mockGenre: IGenre = {
     title: 'Pop',
     id: '1',
@@ -116,6 +120,13 @@ function Homepage() {
       songs: [],
     },
   ];
+
+  useEffect(() => {
+    (async () => {
+      const resHistories = await getHistories();
+      console.log(resHistories);
+    })();
+  }, []);
 
   return (
     <Box>

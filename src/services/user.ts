@@ -88,6 +88,7 @@ export const createMyAlbum = async (data: any) => {
 export const getHistories = async () => {
   try {
     const response = await apiInstance.get(`/me/histories`);
+    console.log('Histories', response);
     return response.data;
   } catch (error) {
     console.error('Error fetching histories:', error);

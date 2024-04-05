@@ -110,6 +110,9 @@ const StyledChildPlaylistItem = styled.div`
 const StyledPlaylistTitle = styled(Box)`
   padding: 4px;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     color: #1976d2;

@@ -9,21 +9,21 @@ const Container = styled.div`
   @media (max-width: 1200px) {
     flex-wrap: nowrap;
     justify-content: flex-start;
-    overflow-x: auto;
+    overflow-x: scroll;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
   }
 
   @media (max-width: 768px) {
     & > div {
-      height: 100px;
-      width: 100px;
+      height: 160px;
+      width: 120px;
     }
   }
 
   @media (max-width: 480px) {
     & > div {
-      height: 100px;
+      height: 140px;
     }
   }
 `;
@@ -33,8 +33,7 @@ const StyledHistoryItem = styled.div`
   margin: 8px;
   border-radius: 6px;
   cursor: pointer;
-  height: 140px;
-  width: 120px;
+  width: 100px;
 
   @media (max-width: 768px) {
     & > div {

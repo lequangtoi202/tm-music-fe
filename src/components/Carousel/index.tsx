@@ -7,17 +7,17 @@ import { CarouselProps } from './types';
 
 const CarouselContainer: React.FC<CarouselProps> = ({ items }) => {
   return (
-    <Container style={{ height: `24vh`, marginTop: '30px' }}>
+    <Container style={{ height: `32vh`, marginTop: '30px' }}>
       <StyledBoxInner>
         <Carousel
-          style={{ height: '24vh', textAlign: 'center' }}
+          style={{ height: '32vh', textAlign: 'center' }}
           prevLabel=""
           nextLabel=""
           nextIcon={<ArrowForwardIos />}
           prevIcon={<ArrowBackIos />}
         >
           {items.map((item, index) => (
-            <Carousel.Item style={{ height: '24vh', borderRadius: '10px' }} key={index}>
+            <Carousel.Item style={{ height: '32vh', borderRadius: '10px' }} key={index}>
               <CarouselItem item={item} />
             </Carousel.Item>
           ))}

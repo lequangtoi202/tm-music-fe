@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -38,7 +39,7 @@ const StyledLayerHover = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px;
+    padding: 6px;
     background: none;
     border: none;
 
@@ -89,6 +90,7 @@ const StyledWrapper = styled.div`
   overflow: hidden;
   border-radius: 6px;
   position: relative;
+  height: 100%;
 
   &:hover {
     & > div {
@@ -138,4 +140,72 @@ const StyledThemeItem = styled.div`
   }
 `;
 
-export { Container, StyledThemeItem, StyledWrapper, StyledLayerHover };
+const StyledLayerHoverHistories = styled(Box)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  & > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background: none;
+    border: none;
+
+    & > svg {
+      font-size: 32px;
+      fill: #fff;
+      transition: fill 0.3s ease;
+
+      @media (max-width: 768px) {
+        font-size: 18px;
+      }
+    }
+
+    &:hover > svg {
+      fill: #1976d2;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      padding: 2px;
+    }
+  }
+
+  & > button:nth-child(2) {
+    & > svg {
+      font-size: 52px;
+      fill: #fff;
+      transition: fill 0.3s ease;
+    }
+
+    &:hover > svg {
+      fill: #1976d2;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      & > svg {
+        font-size: 28px;
+      }
+    }
+  }
+`;
+
+export { Container, StyledThemeItem, StyledWrapper, StyledLayerHover, StyledLayerHoverHistories };

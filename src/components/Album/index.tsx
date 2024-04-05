@@ -1,27 +1,28 @@
 import { FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Image from '../Image';
 import { RoundedSkeleton } from '../Skeleton';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
+import { PLaylistTitle } from '../Playlist/PlaylistTitle';
+import { KContext } from '../../context';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
+  const { setCurrentSong, currentSong, setCurrentAlbum } = useContext(KContext);
 
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setLoading(false);
-    };
-
-    fetchData();
+    })();
   }, []);
   return (
     <Container>
       {items.map((item, index) => (
-        <StyledAlbumItem key={index}>
+        <StyledAlbumItem key={item.id}>
           <StyledChildAlbumItem>
             {loading ? (
               <RoundedSkeleton />
@@ -34,7 +35,13 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                     </IconButton>
                   </Tooltip>
                   <Tooltip placement="top" title="Phát">
-                    <IconButton>
+                    <IconButton
+                      onClick={() => {
+                        const randomSong = item.songs[Math.floor(Math.random() * item.songs.length)];
+                        setCurrentSong(randomSong);
+                        setCurrentAlbum(item);
+                      }}
+                    >
                       <PlayCircleOutline />
                     </IconButton>
                   </Tooltip>
@@ -48,6 +55,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
               </StyledWrapper>
             )}
           </StyledChildAlbumItem>
+          <PLaylistTitle title={item.title} />
         </StyledAlbumItem>
       ))}
     </Container>

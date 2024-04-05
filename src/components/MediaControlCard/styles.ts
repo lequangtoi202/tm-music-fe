@@ -24,6 +24,7 @@ const CustomCardContent = styled.div`
     width: 43px;
     height: 43px;
     border-radius: 5px;
+    object-fit: cover;
   }
 
   @media (max-width: 480px) {

@@ -65,7 +65,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
   );
 };
 
-const Backdrop = forwardRef<HTMLDivElement, { open?: boolean; className: string }>((props, ref) => {
+export const Backdrop = forwardRef<HTMLDivElement, { open?: boolean; className: string }>((props, ref) => {
   const { open, className, ...other } = props;
   return <div className={clsx({ 'base-Backdrop-open': open }, className)} ref={ref} {...other} />;
 });
@@ -83,7 +83,7 @@ const grey = {
   900: '#1C2025',
 };
 
-const Modal = styled(BaseModal)`
+export const Modal = styled(BaseModal)`
   position: fixed;
   z-index: 1300;
   inset: 0;
@@ -92,7 +92,7 @@ const Modal = styled(BaseModal)`
   justify-content: center;
 `;
 
-const StyledBackdrop = styled(Backdrop)`
+export const StyledBackdrop = styled(Backdrop)`
   z-index: -1;
   position: fixed;
   inset: 0;
@@ -100,7 +100,7 @@ const StyledBackdrop = styled(Backdrop)`
   -webkit-tap-highlight-color: transparent;
 `;
 
-const ModalContent = styled('div')(
+export const ModalContent = styled('div')(
   ({ theme }) => css`
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;

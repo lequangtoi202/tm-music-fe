@@ -1,4 +1,4 @@
-import { Lyrics, VolumeDown, VolumeOff, VolumeUp } from '@mui/icons-material';
+import { Comment, Lyrics, VolumeDown, VolumeOff, VolumeUp } from '@mui/icons-material';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -21,9 +21,9 @@ export default function MediaControlCard() {
   const [duration, setDuration] = useState<number>(300);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(50);
-  const [prevVolume, setPrevVolume] = useState<number>(50);
+  const [prevVolume] = useState<number>(50);
   const [isMuted, setIsMuted] = useState(false);
-  const { isMobile, currentSong, currentAlbum, setCurrentSong } = useContext(KContext);
+  const { isMobile, currentSong, currentAlbum, setCurrentSong, setOpenCommentDialog } = useContext(KContext);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     const newVolume = newValue as number;
@@ -168,10 +168,16 @@ export default function MediaControlCard() {
 
       {!isMobile && (
         <Box sx={{ flex: '1 1 30%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Box sx={{ mr: 1 }}>
-            <Lyrics sx={{ cursor: 'pointer' }} />
-          </Box>
-
+          <Tooltip placement="top" title="Bình luận">
+            <IconButton aria-label="Comment" onClick={() => setOpenCommentDialog(true)}>
+              <Comment />
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="top" title="Lời bài hát">
+            <IconButton aria-label="Lyric">
+              <Lyrics />
+            </IconButton>
+          </Tooltip>
           <Stack spacing={2} direction="row" sx={{ mb: 1, width: '35%' }} alignItems="center">
             {isMuted && volume <= 0 ? (
               <VolumeOff onClick={handleIconClick} sx={{ cursor: 'pointer' }} />

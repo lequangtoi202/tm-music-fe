@@ -31,6 +31,7 @@ const SongTitle = styled.span`
     height: 43px;
     border-radius: 4px;
     margin-right: 6px;
+    object-fit: cover;
   }
 
   @media (max-width: 480px) {

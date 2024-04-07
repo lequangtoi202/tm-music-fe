@@ -211,7 +211,7 @@ function Homepage() {
   useEffect(() => {
     (async () => {
       // lấy danh sách lịch sử nghe
-      // const resHistories = await getHistories();
+      //const resHistories = await getHistories();
       setHistories(data);
       // lấy danh sách các albums
       // const resAlbums = await getAllAlbums();
@@ -237,7 +237,6 @@ function Homepage() {
           {genres.length > 0 &&
             genres.map((genre, idx) => {
               // lấy danh sách các albums theo genre
-              console.log(albumData);
               return (
                 <Box key={genre.id}>
                   <TextHeader text={genre.title} />

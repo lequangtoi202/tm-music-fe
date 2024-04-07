@@ -1,17 +1,17 @@
 import { FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
+import { KContext } from '../../context';
 import Image from '../Image';
-import { RoundedSkeleton } from '../Skeleton';
+import { PLaylistTitle } from '../Playlist/PlaylistTitle';
+import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
-import { PLaylistTitle } from '../Playlist/PlaylistTitle';
-import { KContext } from '../../context';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
-  const { setCurrentSong, currentSong, setCurrentAlbum } = useContext(KContext);
+  const { setCurrentSong, setCurrentAlbum } = useContext(KContext);
 
   useEffect(() => {
     (async () => {
@@ -55,7 +55,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
               </StyledWrapper>
             )}
           </StyledChildAlbumItem>
-          <PLaylistTitle title={item.title} />
+          {loading ? <TitleSkeleton /> : <PLaylistTitle title={item.title} />}
         </StyledAlbumItem>
       ))}
     </Container>

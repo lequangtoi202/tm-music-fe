@@ -5,9 +5,13 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { FullScreenMediaControlCard } from '../../pages/Home/styles';
 import MediaControlCard from '../../components/MediaControlCard';
+import CommentModal from '../../components/Comment/CommentModal';
+import { useContext } from 'react';
+import { KContext } from '../../context';
 
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();
+  const { currentSong } = useContext(KContext);
   return (
     <div style={{ position: 'relative' }}>
       <Box
@@ -54,6 +58,7 @@ const DefaultLayout = ({ children }: any) => {
       </Box>
       <FullScreenMediaControlCard>
         <MediaControlCard />
+        {currentSong && <CommentModal song={currentSong} />}
       </FullScreenMediaControlCard>
     </div>
   );

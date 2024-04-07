@@ -14,7 +14,7 @@ import { GoogleIcon } from '../../assets/icons/GoogleIcon';
 import { TButton } from '../../components/Button/Button';
 import Text from '../../components/Text';
 import { KContext } from '../../context';
-import { login, loginWithGoogle } from '../../services/user';
+import { login, loginWithFaceBook, loginWithGoogle } from '../../services/user';
 import { IUser } from '../../types/User';
 import { setToken } from '../../utils/storage';
 import { StyledLink } from './styles';
@@ -109,8 +109,10 @@ function Login() {
     },
   });
 
-  const onLoginFacebookSuccess = (res: SuccessResponse) => {
-    console.log(res);
+  const onLoginFacebookSuccess = async (response: SuccessResponse) => {
+    const res = await loginWithFaceBook({
+      token: response.accessToken,
+    });
   };
   const onLoginFacebookFailed = (res: FailResponse) => {
     console.log(res);

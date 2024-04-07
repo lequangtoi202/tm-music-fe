@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { removeToken } from '../utils/storage';
 import apiInstance from './api';
 import apiNoAuthInstance from './apiNoAuth';
@@ -10,11 +11,42 @@ export enum TYPE_THIRD_PARTY {
 export const loginWithGoogle = async ({ token }: { token?: string }) => {
   if (!token) return;
   try {
-    console.log(token);
+    const res = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(res.data);
+    const userInfo = {
+      email: res.data.email,
+      avatar: res.data.picture,
+      name: res.data.name,
+    };
+    // gửi userInfo cho BE
     //chỗ này cal api lấy access token mới
     // const res = await verifyThirdPartyLogin({
     //   token,
     //   type: TYPE_THIRD_PARTY.GOOGLE,
+    // });
+    return 1;
+  } catch (error) {
+    console.error('Error login with google:', error);
+  }
+};
+
+export const loginWithFaceBook = async ({ token }: { token?: string }) => {
+  if (!token) return;
+  try {
+    const res = await axios.get(`https://graph.facebook.com/me?fields=email,name,picture&access_token=${token}`);
+    console.log(res.data);
+    const userInfo = {
+      email: res.data.email,
+      avatar: res.data.picture.url,
+      name: res.data.name,
+    };
+    // gửi userInfo cho BE
+    //chỗ này cal api lấy access token mới
+    // const res = await verifyThirdPartyLogin({
+    //   token,
+    //   type: TYPE_THIRD_PARTY.FACEBOOK,
     // });
     return 1;
   } catch (error) {

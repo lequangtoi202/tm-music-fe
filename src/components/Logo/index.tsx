@@ -7,7 +7,6 @@ const LogoWrapper = styled(Link)(
         padding: ${theme.spacing(0, 1, 0, 0)};
         display: flex;
         text-decoration: none;
-        font-weight: ${theme.typography.fontWeightBold};
 `,
 );
 
@@ -70,48 +69,14 @@ const LogoSignInner = styled(Box)(
 `,
 );
 
-const LogoTextWrapper = styled(Box)(
-  ({ theme }) => `
-        padding-left: ${theme.spacing(1)};
-`,
-);
-
-const VersionBadge = styled(Box)(
-  ({ theme }) => `
-        background: ${theme.palette.success.main};
-        color: ${theme.palette.success.contrastText};
-        padding: ${theme.spacing(0.4, 1)};
-        border-radius: ${theme.general.borderRadiusSm};
-        text-align: center;
-        display: inline-block;
-        line-height: 1;
-        font-size: ${theme.typography.pxToRem(11)};
-`,
-);
-
-const LogoText = styled(Box)(
-  ({ theme }) => `
-        font-size: ${theme.typography.pxToRem(15)};
-        font-weight: ${theme.typography.fontWeightBold};
-`,
-);
-
 function Logo() {
   return (
-    <LogoWrapper to="/overview">
+    <LogoWrapper to="/">
       <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
         </LogoSign>
       </LogoSignWrapper>
-      <Box
-        component="span"
-        sx={{
-          display: { xs: 'none', sm: 'inline-block' },
-        }}
-      >
-        <LogoTextWrapper></LogoTextWrapper>
-      </Box>
     </LogoWrapper>
   );
 }

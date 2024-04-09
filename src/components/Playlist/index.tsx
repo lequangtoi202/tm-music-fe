@@ -69,7 +69,7 @@ function Playlist() {
           <RoundedSkeleton />
         ) : (
           <StyledAddPlaylistWrapper>
-            <StyledAddPlaylist>
+            <StyledAddPlaylist style={{ height: '100%' }}>
               <AddCircleOutline />
               Tạo playlist mới
             </StyledAddPlaylist>

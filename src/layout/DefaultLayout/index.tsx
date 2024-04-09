@@ -38,7 +38,6 @@ const DefaultLayout = ({ children }: any) => {
       >
         <Header />
         <Sidebar />
-
         <Box
           sx={{
             position: 'relative',
@@ -52,7 +51,6 @@ const DefaultLayout = ({ children }: any) => {
           }}
         >
           <Box display="block">{children || <Outlet />}</Box>
-
           <Footer />
         </Box>
       </Box>

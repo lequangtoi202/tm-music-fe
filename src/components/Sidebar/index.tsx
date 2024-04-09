@@ -76,11 +76,11 @@ function Sidebar() {
           height: '100%',
         }}
       >
-        <Box mt={3}>
+        <Box mt={3} display={'flex'} justifyContent={'center'}>
           <Box
             mx={2}
             sx={{
-              width: 52,
+              width: 62,
             }}
           >
             <Logo />
@@ -138,11 +138,11 @@ function Sidebar() {
                 : darken(theme.colors.alpha.black[100], 0.5),
           }}
         >
-          <Box mt={3}>
+          <Box mt={3} display={'flex'} justifyContent={'center'}>
             <Box
               mx={2}
               sx={{
-                width: 52,
+                width: 62,
               }}
             >
               <Logo />

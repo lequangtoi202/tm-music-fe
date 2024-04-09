@@ -65,7 +65,7 @@ const StyledAddPlaylistWrapper = styled.div`
   border-radius: 6px;
 `;
 
-const StyledAddPlaylist = styled.div`
+const StyledAddPlaylist = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;

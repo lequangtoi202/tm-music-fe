@@ -18,7 +18,7 @@ export const loginWithGoogle = async ({ token }: { token?: string }) => {
     const userInfo = {
       email: res.data.email,
       avatar: res.data.picture,
-      name: res.data.name,
+      first_name: res.data.name,
     };
     // gửi userInfo cho BE
     //chỗ này cal api lấy access token mới
@@ -40,7 +40,7 @@ export const loginWithFaceBook = async ({ token }: { token?: string }) => {
     const userInfo = {
       email: res.data.email,
       avatar: res.data.picture.url,
-      name: res.data.name,
+      first_name: res.data.name,
     };
     // gửi userInfo cho BE
     //chỗ này cal api lấy access token mới

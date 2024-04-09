@@ -106,7 +106,7 @@ function Playlist() {
               )}
             </StyledChildPlaylistItem>
           </StyledPlaylistItem>
-          {loading ? <TitleSkeleton /> : <PLaylistTitle title={item.title} />}
+          {loading ? <TitleSkeleton /> : <PLaylistTitle id={item.id} title={item.title} />}
         </StyledItemContainer>
       ))}
     </Container>

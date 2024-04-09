@@ -1,7 +1,9 @@
 import { FavoriteBorder, Headphones, MoreHoriz, MoreVert, PlayArrow, PlayCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, Skeleton, Tooltip, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { KContext } from '../../context';
+import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
 import CardItem from '../Card';
@@ -28,10 +30,19 @@ import {
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
-  const { isMobile, setIsOpenMoreAction, isOpenMoreAction } = useContext(KContext);
-
+  const [album, setAlbum] = useState<IAlbum | null>(null);
+  const [singers, setSingers] = useState<{}[]>([]);
+  const { setCurrentSong, setCurrentAlbum } = useContext(KContext);
+  const { albumId } = useParams();
+  const { isMobile, setIsOpenMoreAction } = useContext(KContext);
+  const albumData: IAlbum = {
+    logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+    title: 'Night view',
+    id: '3',
+    description: 'Description of Night view album',
+    songs: [],
+  };
   const handleOpenMoreAction = () => {
-    console.log(isOpenMoreAction);
     setIsOpenMoreAction(true);
   };
 
@@ -39,10 +50,13 @@ const AlbumDetail = () => {
     const fetchData = async () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setLoading(false);
+      // const res = await getAlbumDetail(albumId || '');
+      // setAlbum(res.data);
+      // setSingers(res.data.singers);
     };
 
     fetchData();
-  }, []);
+  }, [albumId]);
 
   const mockGenre: IGenre = {
     title: 'Pop',
@@ -74,14 +88,25 @@ const AlbumDetail = () => {
         ) : (
           <>
             <CardImage>
-              <CardItem item={songData} />
+              <CardItem item={albumData} />
             </CardImage>
             <BoxCentered>
-              <StyledTextHeader>Title album</StyledTextHeader>
+              <StyledTextHeader>{albumData.title}</StyledTextHeader>
+              {/* sau này thêm field createdDate */}
               <Box>Cập nhật: 2024-03-06</Box>
+              {/* lấy data singers từ useState ra và max 4 ca sĩ */}
               <Box>Harri Won</Box>
+              {/* sau này thêm field likes */}
               <Box>100 Views</Box>
-              <Button sx={{ borderRadius: '18px' }} variant="contained" startIcon={<PlayArrow />}>
+              <Button
+                sx={{ borderRadius: '18px' }}
+                onClick={() => {
+                  const randomSong = albumData?.songs[Math.floor(Math.random() * albumData.songs.length)];
+                  setCurrentSong(randomSong || null);
+                }}
+                variant="contained"
+                startIcon={<PlayArrow />}
+              >
                 PHÁT NGẪU NHIÊN
               </Button>
             </BoxCentered>
@@ -115,12 +140,17 @@ const AlbumDetail = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip placement="top" title="Phát">
-                        <IconButton>
+                        <IconButton
+                          onClick={() => {
+                            const randomSong = albumData?.songs[Math.floor(Math.random() * albumData.songs.length)];
+                            setCurrentSong(randomSong || null);
+                          }}
+                        >
                           <PlayCircleOutline />
                         </IconButton>
                       </Tooltip>
                       <Tooltip placement="top" title="Khác">
-                        <IconButton>
+                        <IconButton onClick={handleOpenMoreAction}>
                           <MoreHoriz />
                         </IconButton>
                       </Tooltip>
@@ -151,8 +181,8 @@ const AlbumDetail = () => {
                       </StyledBox>
                       <StyleMoreButton>
                         <Tooltip placement="top" title="Khác">
-                          <IconButton>
-                            <MoreVert onClick={handleOpenMoreAction} />
+                          <IconButton onClick={handleOpenMoreAction}>
+                            <MoreVert />
                           </IconButton>
                         </Tooltip>
                       </StyleMoreButton>

@@ -14,7 +14,6 @@ const CardContainer = styled.div`
 const CardImage = styled.div`
   height: 60%;
   margin: 10px;
-  background-color: green;
   border-radius: 6px;
 
   @media (max-width: 768px) {

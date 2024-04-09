@@ -49,7 +49,7 @@ const StyledLayerHover = styled.div`
       transition: fill 0.3s ease;
 
       @media (max-width: 480px) {
-        font-size: 18px;
+        font-size: 24px;
       }
     }
 

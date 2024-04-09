@@ -19,10 +19,11 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
       setLoading(false);
     })();
   }, []);
+
   return (
     <Container>
-      {items.map((item, index) => (
-        <StyledAlbumItem key={item.id}>
+      {items.map((item, idx) => (
+        <StyledAlbumItem key={idx}>
           <StyledChildAlbumItem>
             {loading ? (
               <RoundedSkeleton />
@@ -55,7 +56,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
               </StyledWrapper>
             )}
           </StyledChildAlbumItem>
-          {loading ? <TitleSkeleton /> : <PLaylistTitle title={item.title} />}
+          {loading ? <TitleSkeleton /> : <PLaylistTitle id={item.id} title={item.title} />}
         </StyledAlbumItem>
       ))}
     </Container>

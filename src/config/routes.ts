@@ -1,7 +1,7 @@
 const routes: { [key: string]: string } = {
   home: '/',
   categories: '/chu-de',
-  albums: '/albums',
+  albums: '/albums/:albumId',
   account: '/ho-so',
   myplaylist: '/mymusic/playlist',
 };

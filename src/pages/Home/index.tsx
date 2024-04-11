@@ -8,6 +8,7 @@ import { TextHeaderOnly } from '../../components/TextHeaderOnly';
 import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
+import { PlaylistModal } from '../../components/PlaylistModal';
 const theme = createTheme();
 
 function Homepage() {
@@ -245,6 +246,8 @@ function Homepage() {
               );
             })}
         </Box>
+
+        <PlaylistModal />
       </ThemeProvider>
     </Box>
   );

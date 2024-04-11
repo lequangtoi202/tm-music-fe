@@ -1,6 +1,6 @@
 import { AddCircleOutline, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Image from '../Image';
 import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
@@ -13,9 +13,12 @@ import {
   StyledItemContainer,
   StyledPlaylistItem,
 } from './styles';
+import { KContext } from '../../context';
+import { PlaylistModal } from '../PlaylistModal';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
+  const { setIsOpenAddPlaylistModal } = useContext(KContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +72,7 @@ function Playlist() {
           <RoundedSkeleton />
         ) : (
           <StyledAddPlaylistWrapper>
-            <StyledAddPlaylist style={{ height: '100%' }}>
+            <StyledAddPlaylist onClick={() => setIsOpenAddPlaylistModal(true)} style={{ height: '100%' }}>
               <AddCircleOutline />
               Tạo playlist mới
             </StyledAddPlaylist>
@@ -109,6 +112,7 @@ function Playlist() {
           {loading ? <TitleSkeleton /> : <PLaylistTitle title={item.title} />}
         </StyledItemContainer>
       ))}
+      <PlaylistModal />
     </Container>
   );
 }

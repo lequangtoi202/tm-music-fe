@@ -6,8 +6,11 @@ import { RoundedSkeleton } from '../../Skeleton';
 import { StyledLayerHoverHistories, StyledWrapper } from '../../Theme/styles';
 import { StyledHistoryItem } from '../styles';
 import { HistoryItemProps } from '../types';
+import { useContext } from 'react';
+import { KContext } from '../../../context';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
+  const { setIsOpenMoreAction } = useContext(KContext);
   return (
     <StyledHistoryItem>
       {loading ? (
@@ -29,7 +32,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
                 </IconButton>
               </Tooltip>
               <Tooltip placement="top" title="Khác">
-                <IconButton>
+                <IconButton onClick={() => setIsOpenMoreAction(true)}>
                   <MoreHoriz />
                 </IconButton>
               </Tooltip>

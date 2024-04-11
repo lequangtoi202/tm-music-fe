@@ -8,6 +8,7 @@ import { TextHeaderOnly } from '../../components/TextHeaderOnly';
 import { StyledArtistList } from './styles';
 import { IAlbum } from '../../types/Album';
 import { ISinger } from '../../types/Singer';
+import { PlaylistModal } from '../../components/PlaylistModal';
 const theme = createTheme();
 
 function Album() {
@@ -73,6 +74,8 @@ function Album() {
           <TextHeader text={'Có Thể Bạn Quan Tâm'} />
           <AlbumContainer items={albumData} />
         </Box>
+
+        <PlaylistModal />
       </ThemeProvider>
     </div>
   );

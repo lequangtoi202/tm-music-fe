@@ -1,3 +1,4 @@
+import { ListItemIcon } from '@mui/material';
 import styled from 'styled-components';
 
 const PlaylistItem = styled.div`
@@ -69,4 +70,16 @@ const StyledBoxTitle = styled.div`
   }
 `;
 
-export { PlaylistItem, SongTitle, StyledBoxTitle, StyledBox };
+const StyledPopover = styled.div`
+  width: 100%;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+`;
+
+const StyledListItemIcon = styled(ListItemIcon)`
+  & > svg {
+    color: #1976d2;
+  }
+`;
+
+export { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledPopover, StyledListItemIcon };

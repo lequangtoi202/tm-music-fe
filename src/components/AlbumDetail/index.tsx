@@ -25,6 +25,7 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
+import { PlaylistModal } from '../PlaylistModal';
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
@@ -163,6 +164,7 @@ const AlbumDetail = () => {
         )}
         <MoreAction song={songData} />
       </PlaylistContainer>
+      <PlaylistModal />
     </ResponsiveContainer>
   );
 };

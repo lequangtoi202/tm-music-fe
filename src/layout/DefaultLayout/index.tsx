@@ -1,13 +1,13 @@
 import { Box, alpha, lighten, useTheme } from '@mui/material';
+import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
+import CommentModal from '../../components/Comment/CommentModal';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
-import { FullScreenMediaControlCard } from '../../pages/Home/styles';
 import MediaControlCard from '../../components/MediaControlCard';
-import CommentModal from '../../components/Comment/CommentModal';
-import { useContext } from 'react';
+import Sidebar from '../../components/Sidebar';
 import { KContext } from '../../context';
+import { FullScreenMediaControlCard } from '../../pages/Home/styles';
 
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();

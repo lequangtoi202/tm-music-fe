@@ -8,10 +8,11 @@ import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
+import { MoreAction } from '../MoreAction';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
-  const { setCurrentSong, setCurrentAlbum } = useContext(KContext);
+  const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, currentSong } = useContext(KContext);
 
   useEffect(() => {
     (async () => {
@@ -46,7 +47,11 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                     </IconButton>
                   </Tooltip>
                   <Tooltip placement="top" title="Khác">
-                    <IconButton>
+                    <IconButton
+                      onClick={() => {
+                        setIsOpenMoreAction(true);
+                      }}
+                    >
                       <MoreHoriz />
                     </IconButton>
                   </Tooltip>
@@ -58,6 +63,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
           {loading ? <TitleSkeleton /> : <PLaylistTitle title={item.title} />}
         </StyledAlbumItem>
       ))}
+      <MoreAction song={currentSong} />
     </Container>
   );
 };

@@ -7,6 +7,7 @@ export interface IGlobalContext {
   isMobile: boolean;
   isLoggedIn: boolean;
   isOpenMoreAction: boolean;
+  isOpenAddPlaylistModal: boolean;
   currentSong: ISong | null;
   currentUser: IUser | null;
   currentAlbum: IAlbum | null;
@@ -15,6 +16,7 @@ export interface IGlobalContext {
   setCurrentSong: Dispatch<SetStateAction<ISong | null>>;
   setCurrentAlbum: Dispatch<SetStateAction<IAlbum | null>>;
   setIsOpenMoreAction: Dispatch<SetStateAction<boolean>>;
+  setIsOpenAddPlaylistModal: Dispatch<SetStateAction<boolean>>;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
   setOpenCommentDialog: Dispatch<SetStateAction<boolean>>;
 }

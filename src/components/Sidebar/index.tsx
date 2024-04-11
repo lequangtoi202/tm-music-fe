@@ -55,6 +55,7 @@ function Sidebar() {
   const menuList2 = [
     { label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de' },
     { label: 'Album', icon: <Album />, to: '/albums' },
+    { label: 'Nhập mã mời', icon: <Album />, to: '/albums' },
   ];
   return (
     <>

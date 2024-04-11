@@ -1,11 +1,11 @@
-import { ISong } from '../../types/Song';
+import { IAlbum } from '../../types/Album';
 
 interface CardItemProps {
-  item: ISong;
+  item: IAlbum | null;
 }
 
 interface CardItemsProps {
-  items: ISong[];
+  items?: IAlbum[];
 }
 
 export type { CardItemProps, CardItemsProps };

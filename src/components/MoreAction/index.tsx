@@ -2,6 +2,7 @@ import { Modal as BaseModal } from '@mui/base/Modal';
 import { AddBox, ControlPoint, Download, QueueMusic } from '@mui/icons-material';
 import { DialogContent, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
+import axios from 'axios';
 import clsx from 'clsx';
 import fileDownload from 'js-file-download';
 import { forwardRef, useContext, useState } from 'react';
@@ -9,7 +10,6 @@ import { KContext } from '../../context';
 import Image from '../Image';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledListItemIcon, StyledPopover } from './styles';
 import { IMoreActionProps } from './types';
-import axios from 'axios';
 
 export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
   const { isOpenMoreAction, setIsOpenMoreAction, setIsOpenAddPlaylistModal } = useContext(KContext);
@@ -39,7 +39,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
       open={isOpenMoreAction}
-      onClose={handleClose}
+      onClose={() => setIsOpenMoreAction(false)}
       slots={{ backdrop: StyledBackdrop }}
     >
       <ModalContent sx={{ width: 280 }}>

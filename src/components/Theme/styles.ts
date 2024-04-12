@@ -13,7 +13,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     justify-content: center;
     padding: 0 16px;
-    gap: 8px;
+    gap: 16px;
   }
 
   @media (max-width: 480px) {
@@ -122,6 +122,19 @@ const StyledThemeItem = styled.div`
   cursor: pointer;
   height: 200px;
   width: 200px;
+  @media (min-width: 1201px) {
+    & > div:first-child {
+      height: 216px;
+      width: 100%;
+    }
+  }
+  @media (max-width: 1200px) {
+    flex-basis: calc(33.33% - 16px);
+    & > div:first-child {
+      height: 180px;
+      width: 100%;
+    }
+  }
 
   @media (max-width: 768px) {
     flex-basis: calc(50% - 16px);

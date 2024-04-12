@@ -192,8 +192,8 @@ const AlbumDetail = () => {
                 ))}
           </>
         )}
-        <MoreAction song={songData} />
       </PlaylistContainer>
+      <MoreAction song={songData} />
       <PlaylistModal />
     </ResponsiveContainer>
   );

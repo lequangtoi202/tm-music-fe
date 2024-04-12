@@ -1,12 +1,12 @@
-import { ITheme } from '../../types/Theme';
+import { IAlbum } from '../../types/Album';
 
 interface ThemeItemProps {
-  item: ITheme;
+  item: IAlbum;
   loading: boolean;
 }
 
 interface ThemeItemsProps {
-  items: ITheme[];
+  items: IAlbum[];
   loading: boolean;
 }
 

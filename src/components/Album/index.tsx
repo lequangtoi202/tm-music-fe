@@ -12,7 +12,7 @@ import { MoreAction } from '../MoreAction';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
-  const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, currentSong } = useContext(KContext);
+  const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, currentAlbum } = useContext(KContext);
 
   useEffect(() => {
     (async () => {
@@ -51,20 +51,21 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                     <IconButton
                       onClick={() => {
                         setIsOpenMoreAction(true);
+                        setCurrentAlbum(item);
                       }}
                     >
                       <MoreHoriz />
                     </IconButton>
                   </Tooltip>
                 </StyledLayerHover>
-                <Image src={item.logo}></Image>
+                <Image src={item.logo} />
               </StyledWrapper>
             )}
           </StyledChildAlbumItem>
           {loading ? <TitleSkeleton /> : <PLaylistTitle id={item.id} title={item.title} />}
         </StyledAlbumItem>
       ))}
-      <MoreAction song={currentSong} />
+      <MoreAction song={currentAlbum} />
     </Container>
   );
 };

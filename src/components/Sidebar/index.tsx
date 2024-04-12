@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, Divider, Drawer, Skeleton, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
-import { Album, Category, Queue, TravelExplore } from '@mui/icons-material';
+import { Album, Category, Queue, Send, TravelExplore } from '@mui/icons-material';
 import { sidebarWidth } from '../../constants';
 import { SidebarContext } from '../../context/SidebarContext';
 import Logo from '../Logo';
 import Scrollbar from '../Scrollbar';
 import SidebarMenu from './SidebarMenu';
+import { MenuType } from './types';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -50,12 +51,14 @@ function Sidebar() {
       </>
     );
   };
-  const menuList = [{ label: 'Khám Phá', icon: <TravelExplore />, to: '/' }];
-  const menuList1 = [{ label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist' }];
+  const menuList = [{ label: 'Khám Phá', icon: <TravelExplore />, to: '/', type: MenuType.LINK_ITEM }];
+  const menuList1 = [
+    { label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist', type: MenuType.LINK_ITEM },
+    { label: 'Nhập mã chia sẽ', icon: <Send />, type: MenuType.BUTTON_ITEM },
+  ];
   const menuList2 = [
-    { label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de' },
-    { label: 'Album', icon: <Album />, to: '/albums' },
-    { label: 'Nhập mã mời', icon: <Album />, to: '/albums' },
+    { label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de', type: MenuType.LINK_ITEM },
+    { label: 'Album', icon: <Album />, to: '/albums', type: MenuType.LINK_ITEM },
   ];
   return (
     <>

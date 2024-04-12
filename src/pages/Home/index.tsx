@@ -246,7 +246,6 @@ function Homepage() {
               );
             })}
         </Box>
-
         <PlaylistModal />
       </ThemeProvider>
     </Box>

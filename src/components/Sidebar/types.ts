@@ -1,7 +1,12 @@
+export enum MenuType {
+  LINK_ITEM = 'link_item',
+  BUTTON_ITEM = 'button_item',
+}
 interface MenuItem {
   label: string;
   icon: React.ReactNode;
-  to: string;
+  to?: string;
+  type: MenuType;
 }
 
 interface SidebarMenuProps {

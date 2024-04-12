@@ -4,7 +4,7 @@ import { Box, Button, List, ListItem, alpha, styled } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 
 import { SidebarContext } from '../../../context/SidebarContext';
-import { SidebarMenuProps } from '../types';
+import { MenuType, SidebarMenuProps } from '../types';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -32,14 +32,11 @@ const MenuWrapper = styled(Box)(
 const SubMenuWrapper = styled(Box)(
   ({ theme }) => `
     .MuiList-root {
-
       .MuiListItem-root {
         padding: 1px 0;
-
         .MuiBadge-root {
           position: absolute;
           right: ${theme.spacing(3.2)};
-
           .MuiBadge-standard {
             background: ${theme.colors.primary.main};
             font-size: ${theme.typography.pxToRem(14)};
@@ -48,7 +45,6 @@ const SubMenuWrapper = styled(Box)(
             color: ${theme.palette.primary.contrastText};
           }
         }
-    
         .MuiButton-root {
           display: flex;
           font-family: 'ProximaNova', sans-serif; 
@@ -58,68 +54,54 @@ const SubMenuWrapper = styled(Box)(
           font-size: 16px;
           justify-content: flex-start;
           padding: ${theme.spacing(1.2, 3)};
-
           .MuiButton-startIcon,
           .MuiButton-endIcon {
             transition: ${theme.transitions.create(['color'])};
-
             .MuiSvgIcon-root {
               font-size: inherit;
               transition: none;
             }
           }
-
           .MuiButton-startIcon {
             color: ${theme.colors.alpha.trueWhite[30]};
             font-size: ${theme.typography.pxToRem(20)};
             margin-right: ${theme.spacing(1)};
           }
-          
           .MuiButton-endIcon {
             color: ${theme.colors.alpha.trueWhite[50]};
             margin-left: auto;
             opacity: .8;
             font-size: ${theme.typography.pxToRem(20)};
           }
-
           &.active,
           &:hover {
             background-color: ${alpha(theme.colors.alpha.trueWhite[100], 0.06)};
             color: ${theme.colors.alpha.trueWhite[100]};
-
             .MuiButton-startIcon,
             .MuiButton-endIcon {
               color: ${theme.colors.alpha.trueWhite[100]};
             }
           }
         }
-
         &.Mui-children {
           flex-direction: column;
-
           .MuiBadge-root {
             position: absolute;
             right: ${theme.spacing(7)};
           }
         }
-
         .MuiCollapse-root {
           width: 100%;
-
           .MuiList-root {
             padding: ${theme.spacing(1, 0)};
           }
-
           .MuiListItem-root {
             padding: 1px 0;
-
             .MuiButton-root {
               padding: ${theme.spacing(0.8, 3)};
-
               .MuiBadge-root {
                 right: ${theme.spacing(3.2)};
               }
-
               &:before {
                 content: ' ';
                 background: ${theme.colors.alpha.trueWhite[100]};
@@ -132,10 +114,8 @@ const SubMenuWrapper = styled(Box)(
                 border-radius: 20px;
                 margin-right: ${theme.spacing(1.8)};
               }
-
               &.active,
               &:hover {
-
                 &:before {
                   transform: scale(1);
                   opacity: 1;
@@ -157,11 +137,23 @@ function SidebarMenu({ menus }: SidebarMenuProps) {
       <MenuWrapper>
         <SubMenuWrapper>
           <List component="div">
-            {menus.map((menu, index) => (
+            {menus.map((item, index) => (
               <ListItem key={index} component="div">
-                <Button disableRipple component={RouterLink} onClick={closeSidebar} to={menu.to} startIcon={menu.icon}>
-                  {menu.label}
-                </Button>
+                {item.type === MenuType.LINK_ITEM ? (
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to={item?.to ?? '/'}
+                    startIcon={item.icon}
+                  >
+                    {item.label}
+                  </Button>
+                ) : (
+                  <Button disableRipple onClick={closeSidebar} startIcon={item.icon}>
+                    {item.label}
+                  </Button>
+                )}
               </ListItem>
             ))}
           </List>

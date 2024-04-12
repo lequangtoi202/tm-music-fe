@@ -75,7 +75,7 @@ export const StyledBackdrop = styled(Backdrop)`
   z-index: -1;
   position: fixed;
   inset: 0;
-  background-color: rgb(0 0 0 / 0.4);
+  background-color: rgb(0 0 0 / 0.2);
   -webkit-tap-highlight-color: transparent;
 `;
 

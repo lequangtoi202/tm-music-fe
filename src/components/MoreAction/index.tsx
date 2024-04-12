@@ -1,5 +1,5 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { AddBox, ControlPoint, Download, QueueMusic } from '@mui/icons-material';
+import { AddBox, Comment, ControlPoint, Download, QueueMusic } from '@mui/icons-material';
 import { DialogContent, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import axios from 'axios';
@@ -12,7 +12,8 @@ import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledListItemIcon,
 import { IMoreActionProps } from './types';
 
 export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
-  const { isOpenMoreAction, setIsOpenMoreAction, setIsOpenAddPlaylistModal } = useContext(KContext);
+  const { isOpenMoreAction, isMobile, setIsOpenMoreAction, setIsOpenAddPlaylistModal, setOpenCommentDialog } =
+    useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -39,7 +40,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
       open={isOpenMoreAction}
-      onClose={() => setIsOpenMoreAction(false)}
+      onClose={handleClose}
       slots={{ backdrop: StyledBackdrop }}
     >
       <ModalContent sx={{ width: 280 }}>
@@ -65,6 +66,14 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
           component="nav"
           aria-labelledby="nested-list-subheader"
         >
+          {isMobile && (
+            <ListItemButton onClick={() => setOpenCommentDialog(true)}>
+              <StyledListItemIcon>
+                <Comment />
+              </StyledListItemIcon>
+              <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Bình luận" />
+            </ListItemButton>
+          )}
           <ListItemButton
             onClick={() => {
               handleDownloadFile(
@@ -151,7 +160,7 @@ export const StyledBackdrop = styled(Backdrop)`
   z-index: -1;
   position: fixed;
   inset: 0;
-  background-color: rgb(0 0 0 / 0.4);
+  background-color: rgb(0 0 0 / 0.2);
   -webkit-tap-highlight-color: transparent;
 `;
 

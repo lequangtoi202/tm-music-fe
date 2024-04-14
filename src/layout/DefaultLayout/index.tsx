@@ -1,4 +1,4 @@
-import { Box, alpha, lighten, useTheme } from '@mui/material';
+import { Box, Snackbar, alpha, lighten, useTheme } from '@mui/material';
 import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import CommentModal from '../../components/Comment/CommentModal';
@@ -9,10 +9,11 @@ import OTPInput from '../../components/OTP';
 import Sidebar from '../../components/Sidebar';
 import { KContext } from '../../context';
 import { FullScreenMediaControlCard } from '../../pages/Home/styles';
+import Snackbars from '../../components/Snackbar';
 
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();
-  const { currentSong } = useContext(KContext);
+  const { currentSong, error, success } = useContext(KContext);
   return (
     <div style={{ position: 'relative' }}>
       <Box
@@ -60,6 +61,8 @@ const DefaultLayout = ({ children }: any) => {
         <MediaControlCard />
         {currentSong && <CommentModal song={currentSong} />}
       </FullScreenMediaControlCard>
+      {error && <Snackbars status="error" open={true} message={error} />}
+      {success && <Snackbars status="success" open={true} message={success} />}
     </div>
   );
 };

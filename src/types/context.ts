@@ -5,6 +5,8 @@ import { IAlbum } from './Album';
 
 export interface IGlobalContext {
   isMobile: boolean;
+  error: string | null;
+  success: string | null;
   isLoggedIn: boolean;
   isOpenMoreAction: boolean;
   isOpenOTP: boolean;
@@ -14,6 +16,8 @@ export interface IGlobalContext {
   currentUser: IUser | null;
   currentAlbum: IAlbum | null;
   openCommentDialog: boolean;
+  setError: Dispatch<SetStateAction<string | null>>;
+  setSuccess: Dispatch<SetStateAction<string | null>>;
   setCurrentUser: Dispatch<SetStateAction<IUser | null>>;
   setCurrentSong: Dispatch<SetStateAction<ISong | null>>;
   setCurrentAlbum: Dispatch<SetStateAction<IAlbum | null>>;

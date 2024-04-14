@@ -12,6 +12,8 @@ export const KContext = createContext<IGlobalContext>({} as IGlobalContext);
 export const KContextProvider = ({ children }: KContextProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [openCommentDialog, setOpenCommentDialog] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [currentAlbum, setCurrentAlbum] = useState<IAlbum | null>(null);
   const [currentSong, setCurrentSong] = useState<ISong | null>(null);
@@ -34,6 +36,10 @@ export const KContextProvider = ({ children }: KContextProps) => {
         isOpenAddPlaylistModal,
         isOpenOTP,
         isOpenSendToEmail,
+        error,
+        success,
+        setSuccess,
+        setError,
         setIsOpenAddPlaylistModal,
         setIsOpenMoreAction,
         setCurrentAlbum,

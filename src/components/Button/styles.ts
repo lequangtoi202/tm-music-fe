@@ -1,8 +1,8 @@
+import LoadingButton from '@mui/lab/LoadingButton';
 import styled from 'styled-components';
 import { TButtonProps } from './types';
-import { Button } from '@mui/material';
 
-const StyledButton = styled(Button)<TButtonProps>`
+const StyledButton = styled(LoadingButton)<TButtonProps>`
   text-decoration: none;
   display: flex;
   align-items: center;

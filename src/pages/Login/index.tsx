@@ -19,6 +19,7 @@ import { IUser } from '../../types/User';
 import { setToken } from '../../utils/storage';
 import { StyledLink } from './styles';
 import Cookies from 'js-cookie';
+import Snackbars from '../../components/Snackbar';
 const defaultTheme = createTheme();
 
 export function Copyright(props: any) {
@@ -43,8 +44,8 @@ const schema = z.object({
 type LoginForm = z.infer<typeof schema>;
 
 function Login() {
-  const { isMobile, setCurrentUser, setIsLoggedIn } = useContext(KContext);
-  const [error, setError] = useState(false);
+  const { isMobile, setCurrentUser, setIsLoggedIn, error, success, setError, setSuccess } = useContext(KContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
     control,
@@ -74,6 +75,7 @@ function Login() {
   });
 
   const onSubmit = async (loginData: LoginForm) => {
+    setLoading(true);
     const { email, password, remember } = loginData;
     try {
       const response = await login({ email, password });
@@ -84,13 +86,16 @@ function Login() {
         }
         setToken(response.data.token);
         setIsLoggedIn(true);
+        setSuccess('Đăng nhập thành công');
         navigate('/');
       } else {
-        setError(true);
+        setLoading(false);
+        setError('Đăng nhập không thành công');
       }
     } catch (error) {
+      setLoading(false);
       console.error('Login error:', error);
-      setError(true);
+      setError('Đăng nhập không thành công');
     }
   };
 
@@ -99,13 +104,13 @@ function Login() {
       const res = await loginWithGoogle({
         token: response.access_token,
       });
-      if (res && error) setError(false);
       setCurrentUser({} as IUser);
+      setSuccess('Đăng nhập thành công');
       setIsLoggedIn(true);
       navigate('/');
     },
     onError: () => {
-      setError(true);
+      setError('Đăng nhập google không thành công!');
     },
   });
 
@@ -115,7 +120,7 @@ function Login() {
     });
   };
   const onLoginFacebookFailed = (res: FailResponse) => {
-    console.log(res);
+    setError('Đăng nhập facebook không thành công!');
   };
 
   return (
@@ -197,7 +202,15 @@ function Login() {
                 />
               )}
             />
-            <TButton variant="contained" title="Đăng nhập" fullWidth size="large" type="submit" sx={{ mt: 3, mb: 2 }} />
+            <TButton
+              loading={loading}
+              variant="contained"
+              title="Đăng nhập"
+              fullWidth
+              size="large"
+              type="submit"
+              sx={{ mt: 3, mb: 2 }}
+            />
           </Box>
           <Grid container sx={{ flexDirection: isMobile ? 'column' : 'row' }}>
             <Grid item xs={12} sm>
@@ -239,6 +252,8 @@ function Login() {
           </Grid>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
+        {error && <Snackbars status="error" open={true} message={error} />}
+        {success && <Snackbars status="success" open={true} message={success} />}
       </Container>
     </ThemeProvider>
   );

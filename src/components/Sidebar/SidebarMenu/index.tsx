@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { Box, Button, List, ListItem, alpha, styled } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 
+import { KContext } from '../../../context';
 import { SidebarContext } from '../../../context/SidebarContext';
 import { MenuType, SidebarMenuProps } from '../types';
 
@@ -131,6 +132,7 @@ const SubMenuWrapper = styled(Box)(
 
 function SidebarMenu({ menus }: SidebarMenuProps) {
   const { closeSidebar } = useContext(SidebarContext);
+  const { setIsOpenOTP } = useContext(KContext);
 
   return (
     <>
@@ -150,7 +152,14 @@ function SidebarMenu({ menus }: SidebarMenuProps) {
                     {item.label}
                   </Button>
                 ) : (
-                  <Button disableRipple onClick={closeSidebar} startIcon={item.icon}>
+                  <Button
+                    disableRipple
+                    onClick={() => {
+                      setIsOpenOTP(true);
+                      closeSidebar();
+                    }}
+                    startIcon={item.icon}
+                  >
                     {item.label}
                   </Button>
                 )}

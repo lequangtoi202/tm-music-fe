@@ -5,6 +5,7 @@ import CommentModal from '../../components/Comment/CommentModal';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import MediaControlCard from '../../components/MediaControlCard';
+import OTPInput from '../../components/OTP';
 import Sidebar from '../../components/Sidebar';
 import { KContext } from '../../context';
 import { FullScreenMediaControlCard } from '../../pages/Home/styles';
@@ -54,6 +55,7 @@ const DefaultLayout = ({ children }: any) => {
           <Footer />
         </Box>
       </Box>
+      <OTPInput />
       <FullScreenMediaControlCard>
         <MediaControlCard />
         {currentSong && <CommentModal song={currentSong} />}

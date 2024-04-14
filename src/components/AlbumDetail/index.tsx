@@ -9,6 +9,8 @@ import { ISong } from '../../types/Song';
 import CardItem from '../Card';
 import Image from '../Image';
 import { MoreAction } from '../MoreAction';
+import { SendEmail } from '../OTP/SendEmailModal';
+import { PlaylistModal } from '../PlaylistModal';
 import { PlaylistItemSkeleton } from '../Skeleton';
 import { StyledTextHeader } from '../TextHeader/styles';
 import {
@@ -27,15 +29,13 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
-import { PlaylistModal } from '../PlaylistModal';
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [singers, setSingers] = useState<{}[]>([]);
-  const { setCurrentSong, setCurrentAlbum } = useContext(KContext);
+  const { setCurrentSong, setCurrentAlbum, isMobile, setIsOpenMoreAction, setIsOpenSendToEmail } = useContext(KContext);
   const { albumId } = useParams();
-  const { isMobile, setIsOpenMoreAction } = useContext(KContext);
   const albumData: IAlbum = {
     logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
     title: 'Night view',
@@ -194,6 +194,7 @@ const AlbumDetail = () => {
         )}
       </PlaylistContainer>
       <MoreAction song={songData} />
+      <SendEmail song={songData} />
       <PlaylistModal />
     </ResponsiveContainer>
   );

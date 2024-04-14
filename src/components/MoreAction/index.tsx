@@ -1,20 +1,28 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { AddBox, Comment, ControlPoint, Download, QueueMusic } from '@mui/icons-material';
-import { DialogContent, List, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { AddBox, Comment, ControlPoint, Download, QueueMusic, Share } from '@mui/icons-material';
+import { DialogContent, Fade, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import axios from 'axios';
 import clsx from 'clsx';
 import fileDownload from 'js-file-download';
 import { forwardRef, useContext, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { KContext } from '../../context';
 import Image from '../Image';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledListItemIcon, StyledPopover } from './styles';
 import { IMoreActionProps } from './types';
 
 export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
-  const { isOpenMoreAction, isMobile, setIsOpenMoreAction, setIsOpenAddPlaylistModal, setOpenCommentDialog } =
-    useContext(KContext);
+  const {
+    isOpenMoreAction,
+    isMobile,
+    setIsOpenMoreAction,
+    setIsOpenAddPlaylistModal,
+    setOpenCommentDialog,
+    setIsOpenSendToEmail,
+  } = useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
+  const { pathname } = useLocation();
 
   const handleClick = () => {
     setIsOpenPlaylistList(!isOpenPlaylistList);
@@ -43,88 +51,98 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       onClose={handleClose}
       slots={{ backdrop: StyledBackdrop }}
     >
-      <ModalContent sx={{ width: 280 }}>
-        <PlaylistItem>
-          <SongTitle>
-            <Image src={song?.logo} alt={song?.title} />
-            <StyledBox>
-              <StyledBoxTitle>
-                <Typography fontWeight={700} variant="inherit" noWrap>
-                  {song?.title}
-                </Typography>
-              </StyledBoxTitle>
-              <StyledBoxTitle>
-                <Typography variant="inherit" noWrap>
-                  Harri Won
-                </Typography>
-              </StyledBoxTitle>
-            </StyledBox>
-          </SongTitle>
-        </PlaylistItem>
-        <List
-          sx={{ width: '100%', maxWidth: 280, bgcolor: 'background.paper' }}
-          component="nav"
-          aria-labelledby="nested-list-subheader"
-        >
-          {isMobile && (
-            <ListItemButton onClick={() => setOpenCommentDialog(true)}>
-              <StyledListItemIcon>
-                <Comment />
-              </StyledListItemIcon>
-              <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Bình luận" />
-            </ListItemButton>
-          )}
-          <ListItemButton
-            onClick={() => {
-              handleDownloadFile(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEBqYEUHs9SPync2bo8AmdYjzW5WYicOWF8lreCXnMcQ&s',
-                'test-download.jpg',
-              );
-            }}
+      <Fade in={isOpenMoreAction}>
+        <ModalContent sx={{ width: 280 }}>
+          <PlaylistItem>
+            <SongTitle>
+              <Image src={song?.logo} alt={song?.title} />
+              <StyledBox>
+                <StyledBoxTitle>
+                  <Typography fontWeight={700} variant="inherit" noWrap>
+                    {song?.title}
+                  </Typography>
+                </StyledBoxTitle>
+                <StyledBoxTitle>
+                  <Typography variant="inherit" noWrap>
+                    Harri Won
+                  </Typography>
+                </StyledBoxTitle>
+              </StyledBox>
+            </SongTitle>
+          </PlaylistItem>
+          <List
+            sx={{ width: '100%', maxWidth: 280, bgcolor: 'background.paper' }}
+            component="nav"
+            aria-labelledby="nested-list-subheader"
           >
-            <StyledListItemIcon>
-              <Download />
-            </StyledListItemIcon>
-            <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải xuống" />
-          </ListItemButton>
-          <ListItemButton onClick={handleClick}>
-            <StyledListItemIcon>
-              <ControlPoint />
-            </StyledListItemIcon>
-            <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Thêm vào playlist" />
-          </ListItemButton>
-          {isOpenPlaylistList && (
-            <StyledPopover>
-              <DialogContent sx={{ p: 0 }}>
-                <ListItemButton
-                  onClick={() => {
-                    setIsOpenMoreAction(false);
-                    setIsOpenPlaylistList(false);
-                    setIsOpenAddPlaylistModal(true);
-                  }}
-                >
-                  <StyledListItemIcon>
-                    <AddBox />
-                  </StyledListItemIcon>
-                  <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tạo playlist mới" />
-                </ListItemButton>
-                <ListItemButton>
-                  <StyledListItemIcon>
-                    <QueueMusic />
-                  </StyledListItemIcon>
-                  <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="playlist 1" />
-                </ListItemButton>
-                <ListItemButton>
-                  <StyledListItemIcon>
-                    <QueueMusic />
-                  </StyledListItemIcon>
-                  <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="playlist 2" />
-                </ListItemButton>
-              </DialogContent>
-            </StyledPopover>
-          )}
-        </List>
-      </ModalContent>
+            {isMobile && (
+              <ListItemButton onClick={() => setOpenCommentDialog(true)}>
+                <StyledListItemIcon>
+                  <Comment />
+                </StyledListItemIcon>
+                <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Bình luận" />
+              </ListItemButton>
+            )}
+            <ListItemButton
+              onClick={() => {
+                handleDownloadFile(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEBqYEUHs9SPync2bo8AmdYjzW5WYicOWF8lreCXnMcQ&s',
+                  'test-download.jpg',
+                );
+              }}
+            >
+              <StyledListItemIcon>
+                <Download />
+              </StyledListItemIcon>
+              <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải xuống" />
+            </ListItemButton>
+            {pathname.includes('/albums/') && (
+              <ListItemButton onClick={() => setIsOpenSendToEmail(true)}>
+                <StyledListItemIcon>
+                  <Share />
+                </StyledListItemIcon>
+                <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Chia sẻ bài hát" />
+              </ListItemButton>
+            )}
+            <ListItemButton onClick={handleClick}>
+              <StyledListItemIcon>
+                <ControlPoint />
+              </StyledListItemIcon>
+              <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Thêm vào playlist" />
+            </ListItemButton>
+            {isOpenPlaylistList && (
+              <StyledPopover>
+                <DialogContent sx={{ p: 0 }}>
+                  <ListItemButton
+                    onClick={() => {
+                      setIsOpenMoreAction(false);
+                      setIsOpenPlaylistList(false);
+                      setIsOpenAddPlaylistModal(true);
+                    }}
+                  >
+                    <StyledListItemIcon>
+                      <AddBox />
+                    </StyledListItemIcon>
+                    <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tạo playlist mới" />
+                  </ListItemButton>
+                  <ListItemButton>
+                    <StyledListItemIcon>
+                      <QueueMusic />
+                    </StyledListItemIcon>
+                    <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="playlist 1" />
+                  </ListItemButton>
+                  <ListItemButton>
+                    <StyledListItemIcon>
+                      <QueueMusic />
+                    </StyledListItemIcon>
+                    <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="playlist 2" />
+                  </ListItemButton>
+                </DialogContent>
+              </StyledPopover>
+            )}
+          </List>
+        </ModalContent>
+      </Fade>
     </Modal>
   );
 };

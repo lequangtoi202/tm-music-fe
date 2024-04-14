@@ -7,6 +7,8 @@ export interface IGlobalContext {
   isMobile: boolean;
   isLoggedIn: boolean;
   isOpenMoreAction: boolean;
+  isOpenOTP: boolean;
+  isOpenSendToEmail: boolean;
   isOpenAddPlaylistModal: boolean;
   currentSong: ISong | null;
   currentUser: IUser | null;
@@ -19,6 +21,8 @@ export interface IGlobalContext {
   setIsOpenAddPlaylistModal: Dispatch<SetStateAction<boolean>>;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
   setOpenCommentDialog: Dispatch<SetStateAction<boolean>>;
+  setIsOpenOTP: Dispatch<SetStateAction<boolean>>;
+  setIsOpenSendToEmail: Dispatch<SetStateAction<boolean>>;
 }
 
 interface KContextProps {

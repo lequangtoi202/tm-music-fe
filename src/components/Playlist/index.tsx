@@ -2,7 +2,11 @@ import { AddCircleOutline, Close, MoreHoriz, PlayCircleOutline } from '@mui/icon
 import { IconButton, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
+import { IAlbum } from '../../types/Album';
+import { IGenre } from '../../types/Genre';
+import { ISong } from '../../types/Song';
 import Image from '../Image';
+import { MoreAction } from '../MoreAction';
 import { PlaylistModal } from '../PlaylistModal';
 import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
@@ -15,10 +19,6 @@ import {
   StyledItemContainer,
   StyledPlaylistItem,
 } from './styles';
-import { MoreAction } from '../MoreAction';
-import { IAlbum } from '../../types/Album';
-import { IGenre } from '../../types/Genre';
-import { ISong } from '../../types/Song';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);

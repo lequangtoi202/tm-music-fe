@@ -16,7 +16,9 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [currentAlbum, setCurrentAlbum] = useState<IAlbum | null>(null);
   const [currentSong, setCurrentSong] = useState<ISong | null>(null);
   const [isOpenMoreAction, setIsOpenMoreAction] = useState<boolean>(false);
+  const [isOpenSendToEmail, setIsOpenSendToEmail] = useState<boolean>(false);
   const [isOpenAddPlaylistModal, setIsOpenAddPlaylistModal] = useState<boolean>(false);
+  const [isOpenOTP, setIsOpenOTP] = useState<boolean>(false);
   const isMobile = useMediaQuery(`(max-width: ${breakpointLarge}px)`);
 
   return (
@@ -30,6 +32,8 @@ export const KContextProvider = ({ children }: KContextProps) => {
         currentAlbum,
         openCommentDialog,
         isOpenAddPlaylistModal,
+        isOpenOTP,
+        isOpenSendToEmail,
         setIsOpenAddPlaylistModal,
         setIsOpenMoreAction,
         setCurrentAlbum,
@@ -37,6 +41,8 @@ export const KContextProvider = ({ children }: KContextProps) => {
         setCurrentSong,
         setIsLoggedIn,
         setOpenCommentDialog,
+        setIsOpenOTP,
+        setIsOpenSendToEmail,
       }}
     >
       {children}

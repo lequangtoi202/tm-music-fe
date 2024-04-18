@@ -1,14 +1,28 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
+import { Close } from '@mui/icons-material';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import clsx from 'clsx';
-import { forwardRef, useContext } from 'react';
+import { forwardRef, useContext, useState } from 'react';
 import { KContext } from '../../context';
+import { createMyAlbum } from '../../services/user';
 import { StyledInput } from './styles';
-import { Close } from '@mui/icons-material';
 
 export const PlaylistModal = () => {
-  const { isOpenAddPlaylistModal, setIsOpenAddPlaylistModal } = useContext(KContext);
+  const { isOpenAddPlaylistModal, setIsOpenAddPlaylistModal, setSuccess } = useContext(KContext);
+  const [playlistName, setPlaylistName] = useState('');
+
+  const handleCreateNewPlaylist = async () => {
+    const formData = new FormData();
+    formData.append('title', playlistName);
+
+    const res = await createMyAlbum(formData);
+    if (res) {
+      setSuccess('Tạo playlist thành công!');
+      setPlaylistName('');
+      setIsOpenAddPlaylistModal(false);
+    }
+  };
 
   return (
     <Modal
@@ -32,9 +46,15 @@ export const PlaylistModal = () => {
           Tạo playlist mới
         </Typography>
         <Box width={'100%'}>
-          <StyledInput autoFocus disableUnderline={true} placeholder="Nhập tên playlist" />
+          <StyledInput
+            autoFocus
+            disableUnderline={true}
+            value={playlistName}
+            onChange={(event) => setPlaylistName(event.target.value)}
+            placeholder="Nhập tên playlist"
+          />
           <Box sx={{ mt: 2 }} display={'flex'} justifyContent={'center'}>
-            <Button sx={{ borderRadius: '18px', flex: 1 }} variant="contained">
+            <Button sx={{ borderRadius: '18px', flex: 1 }} onClick={handleCreateNewPlaylist} variant="contained">
               TẠO MỚI
             </Button>
           </Box>

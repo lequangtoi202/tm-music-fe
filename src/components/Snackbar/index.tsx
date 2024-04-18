@@ -12,7 +12,7 @@ function Snackbars({ status, message, open }: { status: AlertColor | undefined; 
           setSuccess(null);
         }}
         open={open}
-        autoHideDuration={5000}
+        autoHideDuration={3000}
       >
         <Alert severity={status} variant="filled" sx={{ width: '100%' }}>
           {message}

@@ -19,15 +19,18 @@ import {
   StyledItemContainer,
   StyledPlaylistItem,
 } from './styles';
+import { getMyAlbums } from '../../services/user';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
-  const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, setIsOpenAddPlaylistModal, currentSong, currentAlbum } =
+  const [myAlbums, setMyAlbums] = useState<IAlbum[]>([]);
+  const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, setIsOpenAddPlaylistModal, currentAlbum } =
     useContext(KContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const res = await getMyAlbums();
+      setMyAlbums(res);
       setLoading(false);
     };
 
@@ -152,6 +155,11 @@ function Playlist() {
     },
   ];
 
+  const handleDeletePlaylist = (id: string) => {
+    console.log(id);
+    // TODO: delete playlist
+  };
+
   return (
     <Container>
       <StyledItemContainer>
@@ -166,7 +174,7 @@ function Playlist() {
           </StyledAddPlaylistWrapper>
         )}
       </StyledItemContainer>
-      {albumData.map((item, index) => (
+      {myAlbums.map((item, index) => (
         <StyledItemContainer key={index}>
           <StyledPlaylistItem>
             <StyledChildPlaylistItem>
@@ -176,7 +184,7 @@ function Playlist() {
                 <StyledWrapper>
                   <StyledLayerHover>
                     <Tooltip placement="top" title="Xóa">
-                      <IconButton>
+                      <IconButton onClick={() => handleDeletePlaylist(item.id)}>
                         <Close />
                       </IconButton>
                     </Tooltip>

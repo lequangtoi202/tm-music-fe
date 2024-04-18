@@ -10,7 +10,7 @@ function MyPlaylist() {
     <div>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box>
+        <Box sx={{ pb: 3 }}>
           <TextHeaderOnly text={'Gần Đây'} />
           <Playlist />
         </Box>

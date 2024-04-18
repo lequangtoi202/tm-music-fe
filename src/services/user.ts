@@ -19,7 +19,10 @@ export const loginWithGoogle = async ({ token }: { token?: string }) => {
       email: res.data.email,
       avatar: res.data.picture,
       first_name: res.data.name,
+      last_name: res.data.name,
     };
+    const response = await apiInstance.post('/google_oauth2', userInfo);
+    console.log(response);
     // gửi userInfo cho BE
     //chỗ này cal api lấy access token mới
     // const res = await verifyThirdPartyLogin({

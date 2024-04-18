@@ -45,7 +45,7 @@ function Homepage() {
       duration: '3:30',
       views: 100,
       track_number: 1,
-      logo: 'https://avatar-ex-swe.nixcdn.com/playlist/2023/07/11/f/e/e/1/1689072251792_300.jpg',
+      logo: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       file: 'path/to/song/file.mp3',
       genre: mockGenre[0],
     },
@@ -57,7 +57,7 @@ function Homepage() {
       duration: '3:30',
       views: 100,
       track_number: 1,
-      logo: 'https://avatar-ex-swe.nixcdn.com/playlist/2024/03/27/a/a/8/e/1711529602440_300.jpg',
+      logo: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       file: 'path/to/song/file.mp3',
       genre: mockGenre[0],
     },
@@ -187,21 +187,21 @@ function Homepage() {
   ];
   const albumData: IAlbum[] = [
     {
-      logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+      logo: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       title: 'Night view',
       id: '3',
       description: 'Description of Night view album',
       songs: carousel,
     },
     {
-      logo: 'https://images.unsplash.com/photo-1527549993586-dff825b37782',
+      logo: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       title: 'Lake view',
       id: '2',
       description: 'Description of Lake view album',
       songs: carousel,
     },
     {
-      logo: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
+      logo: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       title: 'Mountain view',
       id: '1',
       description: 'Description of Mountain view album',

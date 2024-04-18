@@ -18,7 +18,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
           <RoundedSkeleton />
         </Box>
       ) : (
-        <Box display={'flex'} flexDirection={'column'}>
+        <Box display={'flex'} flexDirection={'column'} height={'100%'}>
           <StyledWrapper>
             <StyledLayerHoverHistories>
               <Tooltip placement="top" title="Yêu thích">

@@ -72,6 +72,8 @@ const StyledBoxTitle = styled.div`
 
 const StyledPopover = styled.div`
   width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
   border-radius: 6px;
 `;

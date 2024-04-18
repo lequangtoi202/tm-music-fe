@@ -8,6 +8,8 @@ import fileDownload from 'js-file-download';
 import { forwardRef, useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { KContext } from '../../context';
+import { getMyAlbums } from '../../services/user';
+import { IAlbum } from '../../types/Album';
 import Image from '../Image';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledListItemIcon, StyledPopover } from './styles';
 import { IMoreActionProps } from './types';
@@ -22,9 +24,14 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
     setIsOpenSendToEmail,
   } = useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
+  const [playlists, setPlaylists] = useState<IAlbum[]>([]);
   const { pathname } = useLocation();
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    if (!isOpenPlaylistList) {
+      const res = await getMyAlbums();
+      setPlaylists(res);
+    }
     setIsOpenPlaylistList(!isOpenPlaylistList);
   };
 
@@ -52,7 +59,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       slots={{ backdrop: StyledBackdrop }}
     >
       <Fade in={isOpenMoreAction}>
-        <ModalContent sx={{ width: 280 }}>
+        <ModalContent sx={{ width: 320 }}>
           <PlaylistItem>
             <SongTitle>
               <Image src={song?.logo} alt={song?.title} />
@@ -71,7 +78,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
             </SongTitle>
           </PlaylistItem>
           <List
-            sx={{ width: '100%', maxWidth: 280, bgcolor: 'background.paper' }}
+            sx={{ width: '100%', maxWidth: 320, bgcolor: 'background.paper' }}
             component="nav"
             aria-labelledby="nested-list-subheader"
           >
@@ -125,18 +132,14 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
                     </StyledListItemIcon>
                     <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tạo playlist mới" />
                   </ListItemButton>
-                  <ListItemButton>
-                    <StyledListItemIcon>
-                      <QueueMusic />
-                    </StyledListItemIcon>
-                    <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="playlist 1" />
-                  </ListItemButton>
-                  <ListItemButton>
-                    <StyledListItemIcon>
-                      <QueueMusic />
-                    </StyledListItemIcon>
-                    <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="playlist 2" />
-                  </ListItemButton>
+                  {playlists.map((playlist, idx) => (
+                    <ListItemButton key={idx}>
+                      <StyledListItemIcon>
+                        <QueueMusic />
+                      </StyledListItemIcon>
+                      <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary={playlist.title} />
+                    </ListItemButton>
+                  ))}
                 </DialogContent>
               </StyledPopover>
             )}

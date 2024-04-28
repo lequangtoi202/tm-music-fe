@@ -9,12 +9,24 @@ import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
 import { PlaylistModal } from '../../components/PlaylistModal';
+import axios from 'axios';
 const theme = createTheme();
 
 function Homepage() {
   const [histories, setHistories] = useState<ISong[]>([]);
   const [albums, setAlbums] = useState<IAlbum[]>([]);
   const [genres, setGenres] = useState<IGenre[]>([]);
+
+  useEffect(() => {
+    const param = 'đây là bài hát tệ nhất từng nghe'
+    axios.get(`http://127.0.0.1:8000/answers/vietnamese_classification?text=${param}`)
+      .then(response => {
+        console.log('response: ', response);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, []);
 
   const mockGenre: IGenre[] = [
     {

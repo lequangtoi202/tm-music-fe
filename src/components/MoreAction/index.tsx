@@ -1,5 +1,5 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { AddBox, Comment, ControlPoint, Download, QueueMusic, Share } from '@mui/icons-material';
+import { AddBox, CloudUpload, Comment, ControlPoint, Download, QueueMusic, Share } from '@mui/icons-material';
 import { DialogContent, Fade, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import axios from 'axios';
@@ -22,6 +22,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
     setIsOpenAddPlaylistModal,
     setOpenCommentDialog,
     setIsOpenSendToEmail,
+    setIsOpenUpload,
   } = useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
   const [playlists, setPlaylists] = useState<IAlbum[]>([]);
@@ -111,6 +112,14 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
                 <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Chia sẻ bài hát" />
               </ListItemButton>
             )}
+            {pathname.includes('/mymusic/playlist') && (
+              <ListItemButton onClick={() => setIsOpenUpload(true)}>
+                <StyledListItemIcon>
+                  <CloudUpload />
+                </StyledListItemIcon>
+                <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Upload" />
+              </ListItemButton>
+            )}
             <ListItemButton onClick={handleClick}>
               <StyledListItemIcon>
                 <ControlPoint />
@@ -132,7 +141,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
                     </StyledListItemIcon>
                     <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tạo playlist mới" />
                   </ListItemButton>
-                  {playlists.map((playlist, idx) => (
+                  {playlists?.map((playlist, idx) => (
                     <ListItemButton key={idx}>
                       <StyledListItemIcon>
                         <QueueMusic />

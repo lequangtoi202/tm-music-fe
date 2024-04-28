@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
 import App from './App';
 import GlobalStyles from './components/GlobalStyles/GlobalStyles';
-import { store } from './redux/store';
-import reportWebVitals from './reportWebVitals';
-import { SidebarProvider } from './context/SidebarContext';
 import { KContextProvider } from './context';
+import { SidebarProvider } from './context/SidebarContext';
+import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -14,9 +12,7 @@ root.render(
     <GlobalStyles>
       <KContextProvider>
         <SidebarProvider>
-          <Provider store={store}>
-            <App />
-          </Provider>
+          <App />
         </SidebarProvider>
       </KContextProvider>
     </GlobalStyles>

@@ -20,6 +20,7 @@ import {
   StyledPlaylistItem,
 } from './styles';
 import { getMyAlbums } from '../../services/user';
+import UploadModal from '../Upload';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
@@ -174,7 +175,7 @@ function Playlist() {
           </StyledAddPlaylistWrapper>
         )}
       </StyledItemContainer>
-      {myAlbums.map((item, index) => (
+      {albumData.map((item, index) => (
         <StyledItemContainer key={index}>
           <StyledPlaylistItem>
             <StyledChildPlaylistItem>
@@ -220,6 +221,7 @@ function Playlist() {
       ))}
       <PlaylistModal />
       <MoreAction song={currentAlbum} />
+      <UploadModal />
     </Container>
   );
 }

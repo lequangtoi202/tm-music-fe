@@ -44,8 +44,11 @@ export const loginWithFaceBook = async ({ token }: { token?: string }) => {
       email: res.data.email,
       avatar: res.data.picture.url,
       first_name: res.data.name,
+      last_name: res.data.name,
     };
     // gửi userInfo cho BE
+    const response = await apiInstance.post('/google_oauth2', userInfo);
+    console.log(response);
     //chỗ này cal api lấy access token mới
     // const res = await verifyThirdPartyLogin({
     //   token,

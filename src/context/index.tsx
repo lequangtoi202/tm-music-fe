@@ -21,6 +21,7 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [isOpenSendToEmail, setIsOpenSendToEmail] = useState<boolean>(false);
   const [isOpenAddPlaylistModal, setIsOpenAddPlaylistModal] = useState<boolean>(false);
   const [isOpenOTP, setIsOpenOTP] = useState<boolean>(false);
+  const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false);
   const isMobile = useMediaQuery(`(max-width: ${breakpointLarge}px)`);
 
   return (
@@ -38,6 +39,7 @@ export const KContextProvider = ({ children }: KContextProps) => {
         isOpenSendToEmail,
         error,
         success,
+        isOpenUpload,
         setSuccess,
         setError,
         setIsOpenAddPlaylistModal,
@@ -49,6 +51,7 @@ export const KContextProvider = ({ children }: KContextProps) => {
         setOpenCommentDialog,
         setIsOpenOTP,
         setIsOpenSendToEmail,
+        setIsOpenUpload,
       }}
     >
       {children}

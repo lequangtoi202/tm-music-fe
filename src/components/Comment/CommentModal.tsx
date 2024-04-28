@@ -10,6 +10,7 @@ import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle } from '../MoreActio
 import CommentMapping from './CommentMapping';
 import FormComment from './FormComment';
 import { CommentContainer, CommentWrapper, StyledComment, StyledName, UserAvatar, UserWrapper } from './styles';
+import { Client } from '@gradio/client';
 
 function CommentModal({ song }: { song: ISong }) {
   const { openCommentDialog, setOpenCommentDialog } = useContext(KContext);
@@ -138,7 +139,9 @@ function CommentModal({ song }: { song: ISong }) {
 
   const onSubmit = async (data: any) => {
     //call api to create comment
-
+    const app = await Client.duplicate('ShynBui/Vietnamese_classification', {
+      hf_token: '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',
+    });
     setComments([
       ...comments,
       {

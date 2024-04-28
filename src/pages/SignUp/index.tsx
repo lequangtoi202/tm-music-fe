@@ -5,7 +5,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { clearError, setError } from '../../redux/errorReducer';
 import { Copyright } from '../Login';
 import Text from '../../components/Text';
 import { StyledLink } from '../Login/styles';
@@ -17,7 +16,6 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
   const [userRegistered, setUserRegistered] = useState({});
-  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     fullName: '',
     username: '',
@@ -64,10 +62,7 @@ export default function SignUp() {
       setUserRegistered(response.data);
       clearInputData();
     } catch (err) {
-      dispatch(setError('Đăng ký thất bại'));
-      setTimeout(() => {
-        dispatch(clearError());
-      }, 3000);
+      setTimeout(() => {}, 3000);
     }
   };
 

@@ -9,6 +9,7 @@ export interface IGlobalContext {
   success: string | null;
   isLoggedIn: boolean;
   isOpenMoreAction: boolean;
+  isOpenUpload: boolean;
   isOpenOTP: boolean;
   isOpenSendToEmail: boolean;
   isOpenAddPlaylistModal: boolean;
@@ -27,6 +28,7 @@ export interface IGlobalContext {
   setOpenCommentDialog: Dispatch<SetStateAction<boolean>>;
   setIsOpenOTP: Dispatch<SetStateAction<boolean>>;
   setIsOpenSendToEmail: Dispatch<SetStateAction<boolean>>;
+  setIsOpenUpload: Dispatch<SetStateAction<boolean>>;
 }
 
 interface KContextProps {

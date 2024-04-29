@@ -21,6 +21,7 @@ import {
 } from './styles';
 import { getMyAlbums } from '../../services/user';
 import UploadModal from '../Upload';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
@@ -195,6 +196,8 @@ function Playlist() {
                           const randomSong = item.songs[Math.floor(Math.random() * item.songs.length)];
                           setCurrentSong(randomSong);
                           setCurrentAlbum(item);
+                          setTempCurrentSong(randomSong);
+                          setTempCurrentAlbum(item);
                         }}
                       >
                         <PlayCircleOutline />

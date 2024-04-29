@@ -7,6 +7,7 @@ import { ThemeItemProps } from '../types';
 import { useContext } from 'react';
 import { KContext } from '../../../context';
 import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../../utils/storage';
 
 const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
   const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction } = useContext(KContext);
@@ -28,6 +29,8 @@ const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
                   const randomSong = item.songs[Math.floor(Math.random() * item.songs.length)];
                   setCurrentSong(randomSong);
                   setCurrentAlbum(item);
+                  setTempCurrentSong(randomSong);
+                  setTempCurrentAlbum(item);
                 }}
               >
                 <PlayCircleOutline />

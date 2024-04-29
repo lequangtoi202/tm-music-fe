@@ -29,6 +29,7 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
@@ -144,7 +145,8 @@ const AlbumDetail = () => {
                         <IconButton
                           onClick={() => {
                             const randomSong = albumData?.songs[Math.floor(Math.random() * albumData.songs.length)];
-                            setCurrentSong(randomSong || null);
+                          setCurrentSong(randomSong || null);
+                          setTempCurrentSong(randomSong);
                           }}
                         >
                           <PlayCircleOutline />

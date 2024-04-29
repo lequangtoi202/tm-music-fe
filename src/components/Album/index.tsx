@@ -9,6 +9,7 @@ import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
 import { MoreAction } from '../MoreAction';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
@@ -41,6 +42,8 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                       onClick={() => {
                         const randomSong = item.songs[Math.floor(Math.random() * item.songs.length)];
                         setCurrentSong(randomSong);
+                        setTempCurrentSong(randomSong);
+                        setTempCurrentAlbum(item);
                         setCurrentAlbum(item);
                       }}
                     >

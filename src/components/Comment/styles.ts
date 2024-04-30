@@ -10,6 +10,7 @@ const CommentWrapper = styled(Box)`
   margin: 6px 0;
   padding: 0;
   position: relative;
+  display: flex;
 `;
 
 const UserWrapper = styled(Box)`
@@ -36,9 +37,10 @@ const UserAvatar = styled(Box)`
 const StyledComment = styled(Box)`
   font-size: 14px;
   font-weight: 400;
-  padding-left: 36px;
+  padding-left: 12px;
   & > button {
-    padding: 0 4px;
+    padding: 2px 6px;
+    font-weight: 700;
     & > svg {
       font-size: 14px;
       margin-right: 4px;

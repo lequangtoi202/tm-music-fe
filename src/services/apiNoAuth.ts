@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { apiTmMusicUrl } from '../constants';
 
 const apiNoAuthInstance = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: apiTmMusicUrl,
 });
 
 apiNoAuthInstance.interceptors.response.use(

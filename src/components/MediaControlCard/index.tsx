@@ -117,7 +117,7 @@ export default function MediaControlCard() {
         }}
       >
         <CustomCardContent>
-          <Image src={currentSong?.logo} alt="Live from space album cover" />
+          <Image src={currentSong?.image} alt="Live from space album cover" />
           <Box sx={{ pl: 1 }}>
             <Typography component="div" variant="h5">
               {currentSong?.title}

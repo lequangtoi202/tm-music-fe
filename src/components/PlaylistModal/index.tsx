@@ -11,6 +11,7 @@ import { StyledInput } from './styles';
 export const PlaylistModal = () => {
   const { isOpenAddPlaylistModal, setIsOpenAddPlaylistModal, setSuccess } = useContext(KContext);
   const [playlistName, setPlaylistName] = useState('');
+  const [disabled, setDisabled] = useState<boolean>(true);
 
   const handleCreateNewPlaylist = async () => {
     const formData = new FormData();
@@ -50,11 +51,19 @@ export const PlaylistModal = () => {
             autoFocus
             disableUnderline={true}
             value={playlistName}
-            onChange={(event) => setPlaylistName(event.target.value)}
+            onChange={(event) => {
+              setPlaylistName(event.target.value);
+              setDisabled(event.target.value.length === 0);
+            }}
             placeholder="Nhập tên playlist"
           />
           <Box sx={{ mt: 2 }} display={'flex'} justifyContent={'center'}>
-            <Button sx={{ borderRadius: '18px', flex: 1 }} onClick={handleCreateNewPlaylist} variant="contained">
+            <Button
+              sx={{ borderRadius: '18px', flex: 1 }}
+              disabled={disabled}
+              onClick={handleCreateNewPlaylist}
+              variant="contained"
+            >
               TẠO MỚI
             </Button>
           </Box>

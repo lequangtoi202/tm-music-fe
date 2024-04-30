@@ -1,6 +1,6 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
 
@@ -12,6 +12,8 @@ import { styled } from '@mui/material/styles';
 import { KContext } from '../../../context';
 import { StyledIcon } from './styles';
 import { ActionItem } from './types';
+import { getCurrentUser } from '../../../utils/storage';
+import { IUser } from '../../../types/User';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -44,12 +46,7 @@ const UserBoxLabel = styled(Typography)(
 
 function HeaderUserbox() {
   const navigate = useNavigate();
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager',
-  };
-
+  const [user, setUser] = useState<IUser | null>(null);
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
   const { isLoggedIn } = useContext(KContext);
@@ -72,15 +69,22 @@ function HeaderUserbox() {
         { title: 'Đăng ký', to: '/dang-ky', icon: <VpnKeyIcon /> },
       ];
 
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      setUser({ ...JSON.parse(currentUser) });
+    }
+  }, []);
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="circular" alt={'Avatar user'} src={''} />
+        <Avatar variant="circular" alt={user?.firstName} src={user?.avatar ?? '../../../assets/images/no-image.png'} />
         {isLoggedIn && (
           <>
             <Hidden mdDown>
               <UserBoxText>
-                <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+                <UserBoxLabel variant="body1">{user?.firstName}</UserBoxLabel>
               </UserBoxText>
             </Hidden>
             <Hidden smDown>
@@ -103,10 +107,17 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex" alignItems={'center'} justifyContent={'center'}>
-          <Avatar variant="circular" alt={'Avatar user'} src={''} />
+          <Link to="/ho-so">
+            <Avatar
+              variant="circular"
+              alt={user?.firstName}
+              src={user?.avatar ?? '../../../assets/images/no-image.png'}
+            />
+          </Link>
+
           {isLoggedIn && (
             <UserBoxText>
-              <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+              <UserBoxLabel variant="body1">{user?.firstName}</UserBoxLabel>
             </UserBoxText>
           )}
         </MenuUserBox>

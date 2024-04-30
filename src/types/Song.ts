@@ -1,16 +1,19 @@
 import { IGenre } from './Genre';
+import { ISinger } from './Singer';
 
 interface ISong {
   title: string;
   id: string;
   lyric: string;
-  releaseDate: string;
+  release_date: string;
   duration: string;
   views: number;
   track_number: number;
-  logo?: string;
-  file?: string;
+  image?: string;
+  singers: ISinger[];
   genre: IGenre;
+  audio?: string;
+  liked: boolean;
 }
 
 export type { ISong };

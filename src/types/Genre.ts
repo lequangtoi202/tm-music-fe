@@ -5,7 +5,7 @@ interface IGenre {
   id: string;
   description: string;
   songs: ISong[];
-  logo: string | null;
+  image: string | null;
   src: string;
 }
 

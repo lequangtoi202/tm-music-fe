@@ -16,7 +16,7 @@ import Text from '../../components/Text';
 import { KContext } from '../../context';
 import { login, loginWithFaceBook, loginWithGoogle } from '../../services/user';
 import { IUser } from '../../types/User';
-import { setToken } from '../../utils/storage';
+import { setToken, setCurrentUser } from '../../utils/storage';
 import { StyledLink } from './styles';
 import Cookies from 'js-cookie';
 import Snackbars from '../../components/Snackbar';
@@ -44,7 +44,7 @@ const schema = z.object({
 type LoginForm = z.infer<typeof schema>;
 
 function Login() {
-  const { isMobile, setCurrentUser, setIsLoggedIn, error, success, setError, setSuccess } = useContext(KContext);
+  const { isMobile, setIsLoggedIn, error, success, setError, setSuccess } = useContext(KContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -101,10 +101,17 @@ function Login() {
 
   const loginGoogle = useGoogleLogin({
     onSuccess: async (response) => {
-      const res = await loginWithGoogle({
+      const { token, client } = await loginWithGoogle({
         token: response.access_token,
       });
-      setCurrentUser({} as IUser);
+      setToken(token);
+      setCurrentUser({
+        firstName: client.first_name,
+        lastName: client.last_name,
+        avatar: client.avatar_oauth2,
+        email: client.email,
+        id: client.id,
+      });
       setSuccess('Đăng nhập thành công');
       setIsLoggedIn(true);
       navigate('/');

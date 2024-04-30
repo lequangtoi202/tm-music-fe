@@ -23,7 +23,7 @@ const CardItem: React.FC<CardItemProps> = ({ item }) => {
           </IconButton>
         </Tooltip>
       </StyledLayerHover>
-      <Image src={item?.logo} alt="" />
+      <Image src={item?.image} alt="" />
     </StyleCardImage>
   );
 };

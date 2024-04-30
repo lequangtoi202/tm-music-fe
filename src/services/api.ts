@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { getToken } from '../utils/storage';
+import { apiTmMusicUrl } from '../constants';
 
 const apiInstance = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: apiTmMusicUrl,
 });
 
 apiInstance.interceptors.request.use(

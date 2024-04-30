@@ -1,4 +1,4 @@
-import { Box, Snackbar, alpha, lighten, useTheme } from '@mui/material';
+import { Box, alpha, lighten, useTheme } from '@mui/material';
 import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import CommentModal from '../../components/Comment/CommentModal';
@@ -7,9 +7,9 @@ import Header from '../../components/Header';
 import MediaControlCard from '../../components/MediaControlCard';
 import OTPInput from '../../components/OTP';
 import Sidebar from '../../components/Sidebar';
+import Snackbars from '../../components/Snackbar';
 import { KContext } from '../../context';
 import { FullScreenMediaControlCard } from '../../pages/Home/styles';
-import Snackbars from '../../components/Snackbar';
 
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();

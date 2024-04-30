@@ -2,24 +2,18 @@ import { Avatar, Box, Paper, Tab, Tabs, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Playlist from '../Playlist';
 import ListItem from '../ListItem';
+import { IUser } from '../../types/User';
+import { getCurrentUser } from '../../utils/storage';
 
 function AccountInfo() {
-  const [loading, setLoading] = useState(true);
-
+  const [user, setUser] = useState<IUser | null>(null);
   useEffect(() => {
-    const fetchData = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setLoading(false);
-    };
-
-    fetchData();
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      setUser(JSON.parse(currentUser));
+    }
   }, []);
 
-  const data = {
-    src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    title: 'Night view',
-    id: '3',
-  };
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -28,10 +22,14 @@ function AccountInfo() {
     <Box>
       <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
         <Box display="flex" alignItems="center">
-          <Avatar src={data.src} alt={data.title} sx={{ width: 80, height: 80 }} />
+          <Avatar
+            src={user?.avatar ?? '../../assets/images/no-image.png'}
+            alt={user?.firstName}
+            sx={{ width: 80, height: 80 }}
+          />
           <Box ml={2}>
-            <Typography variant="h6">{data.title}</Typography>
-            <Typography variant="body1">Account ID: {data.id}</Typography>
+            <Typography variant="h6">{user?.firstName}</Typography>
+            <Typography variant="body1">Account ID: {user?.id}</Typography>
           </Box>
         </Box>
       </Paper>

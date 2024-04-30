@@ -33,25 +33,31 @@ function Album() {
   };
   const albumData: IAlbum[] = [
     {
-      logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+      image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
       title: 'Night view',
       id: '3',
       description: 'Description of Night view album',
       songs: [],
+      created_at: new Date().toISOString(),
+      liked: false,
     },
     {
-      logo: 'https://images.unsplash.com/photo-1527549993586-dff825b37782',
+      image: 'https://images.unsplash.com/photo-1527549993586-dff825b37782',
       title: 'Lake view',
       id: '2',
       description: 'Description of Lake view album',
       songs: [],
+      created_at: new Date().toISOString(),
+      liked: false,
     },
     {
-      logo: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
+      image: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
       title: 'Mountain view',
       id: '1',
       description: 'Description of Mountain view album',
       songs: [],
+      created_at: new Date().toISOString(),
+      liked: false,
     },
   ];
   return (

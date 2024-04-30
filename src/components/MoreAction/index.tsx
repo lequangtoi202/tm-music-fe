@@ -8,7 +8,7 @@ import fileDownload from 'js-file-download';
 import { forwardRef, useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { KContext } from '../../context';
-import { getMyAlbums } from '../../services/user';
+import { addSongsToPlaylist, getMyAlbums } from '../../services/user';
 import { IAlbum } from '../../types/Album';
 import Image from '../Image';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledListItemIcon, StyledPopover } from './styles';
@@ -51,6 +51,15 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       });
   };
 
+  const handleAddSongsToPlaylist = async (playlistId: string) => {
+    if (song && 'songs' in song) {
+      const songIds = song.songs?.map((song) => Number(song.id));
+      await addSongsToPlaylist(playlistId, songIds);
+    } else {
+      await addSongsToPlaylist(playlistId, [Number(song?.id)]);
+    }
+  };
+
   return (
     <Modal
       aria-labelledby="unstyled-modal-title"
@@ -63,7 +72,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
         <ModalContent sx={{ width: 320 }}>
           <PlaylistItem>
             <SongTitle>
-              <Image src={song?.logo} alt={song?.title} />
+              <Image src={'song?.logo'} alt={song?.title} />
               <StyledBox>
                 <StyledBoxTitle>
                   <Typography fontWeight={700} variant="inherit" noWrap>
@@ -105,7 +114,12 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
               <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải xuống" />
             </ListItemButton>
             {pathname.includes('/albums/') && (
-              <ListItemButton onClick={() => setIsOpenSendToEmail(true)}>
+              <ListItemButton
+                onClick={() => {
+                  setIsOpenMoreAction(false);
+                  setIsOpenSendToEmail(true);
+                }}
+              >
                 <StyledListItemIcon>
                   <Share />
                 </StyledListItemIcon>
@@ -142,7 +156,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
                     <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tạo playlist mới" />
                   </ListItemButton>
                   {playlists?.map((playlist, idx) => (
-                    <ListItemButton key={idx}>
+                    <ListItemButton key={idx} onClick={() => handleAddSongsToPlaylist(playlist.id)}>
                       <StyledListItemIcon>
                         <QueueMusic />
                       </StyledListItemIcon>

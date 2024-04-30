@@ -37,7 +37,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
                 </IconButton>
               </Tooltip>
             </StyledLayerHoverHistories>
-            <Image src={item.logo}></Image>
+            <Image src={item.image ?? '../../../assets/images/no-image.png'}></Image>
           </StyledWrapper>
           <PLaylistTitle id={item.id} title={item.title} />
         </Box>

@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { removeToken } from '../utils/storage';
+import { getToken, removeToken } from '../utils/storage';
 import apiInstance from './api';
 import apiNoAuthInstance from './apiNoAuth';
+import { apiTmMusicUrl } from '../constants';
 
 export enum TYPE_THIRD_PARTY {
   GOOGLE = 'google',
@@ -14,47 +15,41 @@ export const loginWithGoogle = async ({ token }: { token?: string }) => {
     const res = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(res.data);
     const userInfo = {
       email: res.data.email,
       avatar: res.data.picture,
       first_name: res.data.name,
       last_name: res.data.name,
+      login_by: TYPE_THIRD_PARTY.GOOGLE,
     };
     const response = await apiInstance.post('/google_oauth2', userInfo);
-    console.log(response);
-    // gửi userInfo cho BE
-    //chỗ này cal api lấy access token mới
-    // const res = await verifyThirdPartyLogin({
-    //   token,
-    //   type: TYPE_THIRD_PARTY.GOOGLE,
-    // });
-    return 1;
+    return response.data?.data;
   } catch (error) {
     console.error('Error login with google:', error);
   }
 };
 
+export const validateComment = async (comment: string) => {
+  try {
+    const { data } = await axios.get(`http://localhost:8000/answers/vietnamese_classification?text=${comment}`);
+    return data;
+  } catch (error) {
+    console.error('Can not validate this comment', error);
+  }
+};
 export const loginWithFaceBook = async ({ token }: { token?: string }) => {
   if (!token) return;
   try {
     const res = await axios.get(`https://graph.facebook.com/me?fields=email,name,picture&access_token=${token}`);
-    console.log(res.data);
     const userInfo = {
       email: res.data.email,
       avatar: res.data.picture.url,
       first_name: res.data.name,
       last_name: res.data.name,
+      login_by: TYPE_THIRD_PARTY.FACEBOOK,
     };
-    // gửi userInfo cho BE
     const response = await apiInstance.post('/google_oauth2', userInfo);
-    console.log(response);
-    //chỗ này cal api lấy access token mới
-    // const res = await verifyThirdPartyLogin({
-    //   token,
-    //   type: TYPE_THIRD_PARTY.FACEBOOK,
-    // });
-    return 1;
+    return response.data?.data;
   } catch (error) {
     console.error('Error login with google:', error);
   }
@@ -152,7 +147,9 @@ export const getMeLikes = async () => {
 
 export const createLike = async (data: any) => {
   try {
-    const response = await apiInstance.post(`/me/likes`, data);
+    const response = await apiInstance.post(`/me/likes`, {
+      song_ids: data,
+    });
     return response.data;
   } catch (error) {
     console.error('Error like songs:', error);
@@ -161,10 +158,14 @@ export const createLike = async (data: any) => {
 
 export const retrieveLike = async (data: any) => {
   try {
-    const response = await apiInstance.delete(`/me/likes`, data);
+    const response = await apiInstance.request({
+      method: 'DELETE',
+      url: '/me/likes/destroys',
+      data: data,
+    });
     return response.data;
   } catch (error) {
-    console.error('Error like songs:', error);
+    console.error('Error retrieving like:', error);
   }
 };
 
@@ -187,8 +188,16 @@ export const unfollowArtist = async (id: string) => {
 };
 
 export const createComment = async (data: any) => {
+  const formData = new FormData();
+  formData.append('content', data.content);
+  formData.append('song_id', data.songId);
   try {
-    const response = await apiInstance.post(`/me/comments`, data);
+    const response = await axios.post(`${apiTmMusicUrl}/me/comments`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error create comment:', error);
@@ -297,6 +306,38 @@ export const getAlbumsOfSinger = async (ids: string[]) => {
 export const getCommentsOfSong = async (id: string) => {
   try {
     const response = await apiInstance.get(`/songs/${id}/comments`);
+    return response.data;
+  } catch (error) {
+    console.error('Error get genres:', error);
+  }
+};
+
+export const addSongsToPlaylist = async (playlistId: string, ids: number[]) => {
+  const formData = new FormData();
+  formData.append('song_ids', JSON.stringify(ids));
+  try {
+    const response = await apiInstance.post(`me/albums/${playlistId}/add_song_ids`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error get genres:', error);
+  }
+};
+
+export const deleteSongsFromPlaylist = async (playlistId: string, ids: number[]) => {
+  const formData = new FormData();
+  formData.append('song_ids', JSON.stringify(ids));
+  try {
+    const response = await apiInstance.post(`me/albums/${playlistId}/remove_song_ids`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error get genres:', error);

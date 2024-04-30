@@ -15,6 +15,9 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
   const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, currentAlbum } = useContext(KContext);
 
+  const handleLikeSong = (id: string) => {
+    console.log(id);
+  };
   useEffect(() => {
     (async () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -33,7 +36,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
               <StyledWrapper>
                 <StyledLayerHover>
                   <Tooltip placement="top" title="Yêu thích">
-                    <IconButton>
+                    <IconButton onClick={() => handleLikeSong(item.id)}>
                       <FavoriteBorder />
                     </IconButton>
                   </Tooltip>
@@ -61,7 +64,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                     </IconButton>
                   </Tooltip>
                 </StyledLayerHover>
-                <Image src={item.logo} />
+                <Image src={item.image} />
               </StyledWrapper>
             )}
           </StyledChildAlbumItem>

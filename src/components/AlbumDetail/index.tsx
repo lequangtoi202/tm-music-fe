@@ -38,11 +38,13 @@ const AlbumDetail = () => {
   const { setCurrentSong, setCurrentAlbum, isMobile, setIsOpenMoreAction, setIsOpenSendToEmail } = useContext(KContext);
   const { albumId } = useParams();
   const albumData: IAlbum = {
-    logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+    image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
     title: 'Night view',
     id: '3',
     description: 'Description of Night view album',
     songs: [],
+    liked: false,
+    created_at: new Date().toISOString(),
   };
   const handleOpenMoreAction = () => {
     setIsOpenMoreAction(true);
@@ -66,7 +68,7 @@ const AlbumDetail = () => {
     description:
       'A genre of popular music that originated in its modern form during the mid-1950s in the United States and the United Kingdom.',
     songs: [],
-    logo: null,
+    image: null,
     src: 'https://example.com/pop-genre',
   };
 
@@ -74,13 +76,15 @@ const AlbumDetail = () => {
     id: '3',
     title: 'Night view',
     lyric: 'Lyrics of the song',
-    releaseDate: '2024-03-06',
+    release_date: '2024-03-06',
     duration: '3:30',
     views: 100,
     track_number: 1,
-    logo: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    file: 'path/to/song/file.mp3',
+    image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
+    audio: 'path/to/song/file.mp3',
     genre: mockGenre,
+    singers: [],
+    liked: false,
   };
   return (
     <ResponsiveContainer>
@@ -145,8 +149,8 @@ const AlbumDetail = () => {
                         <IconButton
                           onClick={() => {
                             const randomSong = albumData?.songs[Math.floor(Math.random() * albumData.songs.length)];
-                          setCurrentSong(randomSong || null);
-                          setTempCurrentSong(randomSong);
+                            setCurrentSong(randomSong || null);
+                            setTempCurrentSong(randomSong);
                           }}
                         >
                           <PlayCircleOutline />

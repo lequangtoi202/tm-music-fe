@@ -53,7 +53,7 @@ export const SendEmail: React.FC<IShareProps> = ({ song }) => {
           </Typography>
           <PlaylistItem>
             <SongTitle>
-              <Image src={song?.logo} alt={song?.title} />
+              <Image src={song?.image} alt={song?.title} />
               <StyledBox>
                 <StyledBoxTitle>
                   <Typography fontWeight={700} variant="inherit" noWrap>

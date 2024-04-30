@@ -9,9 +9,7 @@ const ThemeContainer: React.FC<ThemeItemsProps> = ({ items, loading }) => {
   const { currentAlbum } = useContext(KContext);
   return (
     <Container>
-      {items.map((item, index) => (
-        <ThemeItem key={index} item={item} loading={loading} />
-      ))}
+      {items?.map((item, index) => <ThemeItem key={index} item={item} loading={loading} />)}
       <MoreAction song={currentAlbum} />
     </Container>
   );

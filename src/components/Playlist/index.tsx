@@ -2,7 +2,7 @@ import { AddCircleOutline, Close, MoreHoriz, PlayCircleOutline } from '@mui/icon
 import { IconButton, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
-import { getMyAlbums } from '../../services/user';
+import { deleteMyAlbum, getMyAlbums } from '../../services/user';
 import { IAlbum } from '../../types/Album';
 import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 import Image from '../Image';
@@ -27,18 +27,19 @@ function Playlist() {
   const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, setIsOpenAddPlaylistModal, currentAlbum } =
     useContext(KContext);
 
+  const fetchData = async () => {
+    const res = await getMyAlbums();
+    setMyAlbums(res);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getMyAlbums();
-      setMyAlbums(res);
-      setLoading(false);
-    };
-
     fetchData();
-  }, [myAlbums]);
+  }, []);
 
-  const handleDeletePlaylist = (id: string) => {
-    console.log(id);
+  const handleDeletePlaylist = async (id: string) => {
+    await deleteMyAlbum(id);
+    fetchData();
   };
 
   return (

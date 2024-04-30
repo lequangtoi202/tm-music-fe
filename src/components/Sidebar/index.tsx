@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, Divider, Drawer, Skeleton, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
-import { Album, Category, Queue, Send, TravelExplore } from '@mui/icons-material';
+import { Album, Category, Queue, Send, TravelExplore, Upgrade } from '@mui/icons-material';
 import { sidebarWidth } from '../../constants';
 import { SidebarContext } from '../../context/SidebarContext';
 import Logo from '../Logo';
@@ -56,7 +56,10 @@ function Sidebar() {
     { label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist', type: MenuType.LINK_ITEM },
     { label: 'Nhập mã chia sẽ', icon: <Send />, type: MenuType.BUTTON_ITEM },
   ];
-  const menuList2 = [{ label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de', type: MenuType.LINK_ITEM }];
+  const menuList2 = [
+    { label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de', type: MenuType.LINK_ITEM },
+    { label: 'Nâng cấp Premium', icon: <Upgrade />, type: MenuType.BUTTON_ITEM },
+  ];
   return (
     <>
       <SidebarWrapper

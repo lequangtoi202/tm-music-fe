@@ -213,6 +213,15 @@ export const deleteComment = async (id: string) => {
   }
 };
 
+export const deleteMyAlbum = async (id: string) => {
+  try {
+    const response = await apiInstance.delete(`/me/albums/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error delete comment:', error);
+  }
+};
+
 export const getCommentDetail = async (id: string) => {
   try {
     const response = await apiInstance.get(`/me/comments/${id}`);
@@ -316,7 +325,7 @@ export const addSongsToPlaylist = async (playlistId: string, ids: number[]) => {
   const formData = new FormData();
   formData.append('song_ids', JSON.stringify(ids));
   try {
-    const response = await apiInstance.post(`me/albums/${playlistId}/add_song_ids`, formData, {
+    const response = await apiInstance.post(`/me/albums/${playlistId}/add_song_ids`, formData, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
         'Content-Type': 'multipart/form-data',
@@ -332,12 +341,38 @@ export const deleteSongsFromPlaylist = async (playlistId: string, ids: number[])
   const formData = new FormData();
   formData.append('song_ids', JSON.stringify(ids));
   try {
-    const response = await apiInstance.post(`me/albums/${playlistId}/remove_song_ids`, formData, {
+    const response = await apiInstance.post(`/me/albums/${playlistId}/remove_song_ids`, formData, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
         'Content-Type': 'multipart/form-data',
       },
     });
+    return response.data;
+  } catch (error) {
+    console.error('Error get genres:', error);
+  }
+};
+
+export const createInvitation = async (data: any) => {
+  const formData = new FormData();
+  formData.append('email', data.email);
+  formData.append('song_id', data.songId);
+  try {
+    const response = await apiInstance.post(`/me/invitations`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error get genres:', error);
+  }
+};
+
+export const verifyInvitation = async (code: string) => {
+  try {
+    const response = await apiInstance.get(`/me/invitations/${code}`);
     return response.data;
   } catch (error) {
     console.error('Error get genres:', error);

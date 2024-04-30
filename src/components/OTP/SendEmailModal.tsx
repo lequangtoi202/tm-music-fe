@@ -8,6 +8,7 @@ import { StyledInput } from '../PlaylistModal/styles';
 import { IShareProps } from './types';
 import Image from '../Image';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle } from '../MoreAction/styles';
+import { createInvitation } from '../../services/user';
 
 export const SendEmail: React.FC<IShareProps> = ({ song }) => {
   const { isOpenSendToEmail, setIsOpenSendToEmail } = useContext(KContext);
@@ -29,8 +30,9 @@ export const SendEmail: React.FC<IShareProps> = ({ song }) => {
     }
   };
 
-  const handleSubmitShareSong = () => {
-    //call api to share song
+  const handleSubmitShareSong = async () => {
+    await createInvitation({ email: recipientEmail, songId: song?.id });
+    setIsOpenSendToEmail(false);
   };
 
   const validateEmail = (email: string) => {

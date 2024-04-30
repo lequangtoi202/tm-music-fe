@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import React, { forwardRef, useContext, useState } from 'react';
 import { KContext } from '../../context';
 import { StyledOTPButton } from './styles';
+import { verifyInvitation } from '../../services/user';
 
 function OTP({
   separator,
@@ -192,12 +193,14 @@ export default function OTPInput() {
   const [OTPValid, setOTPValid] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmitOTP = () => {
-    console.log(otp);
+  const handleSubmitOTP = async () => {
     if (otp.length === 6) {
-      //hanle submit to BE
       setOTPValid(true);
       setLoading(true);
+      await verifyInvitation(otp);
+      setLoading(false);
+      setIsOpenOTP(false);
+      // cần xử lý báo thành công ở đây
     } else {
       setOTPValid(false);
     }

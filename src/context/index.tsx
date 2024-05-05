@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 import { useMediaQuery } from '@react-hook/media-query';
 import { breakpointLarge } from '../constants';
@@ -6,6 +6,7 @@ import { ISong } from '../types/Song';
 import { IUser } from '../types/User';
 import { IGlobalContext, KContextProps } from '../types/context';
 import { IAlbum } from '../types/Album';
+import { getSongDetail } from '../services/user';
 
 export const KContext = createContext<IGlobalContext>({} as IGlobalContext);
 
@@ -23,6 +24,36 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [isOpenOTP, setIsOpenOTP] = useState<boolean>(false);
   const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false);
   const isMobile = useMediaQuery(`(max-width: ${breakpointLarge}px)`);
+
+
+  const fetchData = async () => {
+    try {
+      const data = await getSongDetail('18');
+      console.log('data:', data);
+      setCurrentSong({
+        title: data.title,
+        id: data.id,
+        lyric: data.lyric,
+        release_date: data.release_date,
+        duration: "4:30",
+        views: data.views,
+        track_number: data.track_number,
+        image: data.image,
+        singers: data.singers,
+        genre: data.genre,
+        audio: data.audio,
+        liked: data.liked,
+        owner: data.owner
+      });    
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log('currentSong: ', currentSong)
 
   return (
     <KContext.Provider

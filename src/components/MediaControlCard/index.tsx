@@ -18,7 +18,7 @@ import Snackbars from '../Snackbar';
 
 export default function MediaControlCard() {
   const theme = useTheme();
-  const [currentTime, setCurrentTime] = useState<number | number[]>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(300);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(50);
@@ -28,16 +28,30 @@ export default function MediaControlCard() {
     useContext(KContext);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
     const newVolume = newValue as number;
+    if (audio) {
+      audio.volume = newVolume/100;
+    }
     setVolume(newVolume);
     setIsMuted(newVolume === 0);
   };
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
+    if (audio) {
+      audio.currentTime = currentTime; 
+    }
     setCurrentTime(newValue as number);
   };
 
   const togglePlayPause = () => {
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
     setIsPlaying((prevIsPlaying) => !prevIsPlaying);
   };
 
@@ -69,13 +83,19 @@ export default function MediaControlCard() {
 
       setCurrentTime(0);
       setDuration(maxDuration);
-      setIsPlaying(true);
+      // setIsPlaying(true);
       setIsMuted(false);
     }
   }, [currentSong]);
 
   const handleIconClick = () => {
     const newIsMuted = !isMuted;
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
+    if (audio && newIsMuted) {
+      audio.volume = 0;
+    } else {
+      audio.volume = prevVolume/100;
+    }
     setIsMuted(newIsMuted);
     setVolume(newIsMuted ? 0 : prevVolume);
   };
@@ -151,6 +171,11 @@ export default function MediaControlCard() {
               {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
             </IconButton>
           </Tooltip>
+          <audio  
+            id="audioPlayer"
+            // controls={true}  
+            src={currentSong?.audio} 
+          />
         </Box>
         {!isMobile && (
           <Box sx={{ flex: '1 1 35%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

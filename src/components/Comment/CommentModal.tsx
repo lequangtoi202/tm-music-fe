@@ -72,7 +72,7 @@ function CommentModal({ song }: { song: ISong }) {
             </StyledBox>
           </SongTitle>
         </PlaylistItem>
-        <CommentContainer>
+        {/* <CommentContainer>
           <Box sx={{ fontWeight: 700, fontSize: 14 }}>Bình luận</Box>
           {comments?.map((comment, idx) => (
             <CommentWrapper key={idx}>
@@ -95,7 +95,7 @@ function CommentModal({ song }: { song: ISong }) {
               </StyledComment>
             </CommentWrapper>
           ))}
-        </CommentContainer>
+        </CommentContainer> */}
         <FormComment reset={reset} onSubmit={onSubmit} handleSubmit={handleSubmit} register={register} />
       </ModalContent>
     </Modal>

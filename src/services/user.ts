@@ -118,10 +118,10 @@ export const createMyAlbum = async (data: any) => {
   }
 };
 
-export const getHistories = async () => {
+export const getHistories = async (page: number) => {
   try {
-    const response = await apiInstance.get(`/me/histories`);
-    return response.data;
+    const response = await apiInstance.get(`/me/histories?page=${page}`);
+    return response;
   } catch (error) {
     console.error('Error fetching histories:', error);
   }
@@ -156,12 +156,14 @@ export const createLike = async (data: number[], params: string) => {
   }
 };
 
-export const retrieveLike = async (data: number[], params: string) => {
+export const unlike = async (data: number[], params: string) => {
   try {
     const response = await apiInstance.request({
       method: 'DELETE',
       url: '/me/likes/destroys',
-      [params]: data,
+      data: {
+        [params]: data,
+      },
     });
     return response;
   } catch (error) {
@@ -221,7 +223,7 @@ export const deleteComment = async (id: string) => {
   }
 };
 
-export const deleteMyAlbum = async (id: string) => {
+export const deleteMyAlbum = async (id: number) => {
   try {
     const response = await apiInstance.delete(`/me/albums/${id}`);
     return response;
@@ -293,10 +295,10 @@ export const getSongDetail = async (id: string) => {
   }
 };
 
-export const getAllGenres = async () => {
+export const getAllGenres = async (page: number) => {
   try {
-    const response = await apiInstance.get(`/genres`);
-    return response.data;
+    const response = await apiInstance.get(`/genres?page=${page}`);
+    return response;
   } catch (error) {
     console.error('Error get all genres:', error);
   }
@@ -320,7 +322,7 @@ export const getAlbumsOfSinger = async (ids: string[]) => {
   }
 };
 
-export const getCommentsOfSong = async (id: string) => {
+export const getCommentsOfSong = async (id: number) => {
   try {
     const response = await apiInstance.get(`/songs/${id}/comments`);
     return response;
@@ -329,7 +331,7 @@ export const getCommentsOfSong = async (id: string) => {
   }
 };
 
-export const addSongsToPlaylist = async (playlistId: string, ids: number[]) => {
+export const addSongsToPlaylist = async (playlistId: number, ids: number[]) => {
   const formData = new FormData();
   formData.append('song_ids', JSON.stringify(ids));
   try {

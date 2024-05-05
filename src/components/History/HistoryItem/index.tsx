@@ -1,4 +1,4 @@
-import { FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
+import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import Image from '../../Image';
 import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
@@ -6,26 +6,48 @@ import { RoundedSkeleton } from '../../Skeleton';
 import { StyledLayerHoverHistories, StyledWrapper } from '../../Theme/styles';
 import { StyledHistoryItem } from '../styles';
 import { HistoryItemProps } from '../types';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { KContext } from '../../../context';
+import { createLike, unlike } from '../../../services/user';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
   const { setIsOpenMoreAction } = useContext(KContext);
+  const [liked, setLiked] = useState(item.liked);
+
+  const handleToggleLike = async () => {
+    const songIds = item.id;
+    if (!liked) {
+      await createLike([songIds], 'song_ids');
+      setLiked(true);
+    } else {
+      await unlike([songIds], 'song_ids');
+      setLiked(false);
+    }
+  };
+
   return (
     <StyledHistoryItem>
       {loading ? (
-        <Box height={'200px'} width={'100%'}>
+        <Box height={'216px'} width={'100%'}>
           <RoundedSkeleton />
         </Box>
       ) : (
-        <Box display={'flex'} flexDirection={'column'} height={'100%'}>
+        <Box display={'flex'} flexDirection={'column'} height={'216px'}>
           <StyledWrapper>
             <StyledLayerHoverHistories>
-              <Tooltip placement="top" title="Yêu thích">
-                <IconButton>
-                  <FavoriteBorder />
-                </IconButton>
-              </Tooltip>
+              {!liked ? (
+                <Tooltip placement="top" title="Yêu thích">
+                  <IconButton onClick={() => handleToggleLike()}>
+                    <FavoriteBorder />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Tooltip placement="top" title="Bỏ Yêu thích">
+                  <IconButton onClick={() => handleToggleLike()}>
+                    <Favorite />
+                  </IconButton>
+                </Tooltip>
+              )}
               <Tooltip placement="top" title="Phát">
                 <IconButton>
                   <PlayCircleOutline />
@@ -39,7 +61,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
             </StyledLayerHoverHistories>
             <Image src={item.image ?? '../../../assets/images/no-image.png'}></Image>
           </StyledWrapper>
-          <PLaylistTitle id={item.id} title={item.title} />
+          <PLaylistTitle id={item.id} title={item.title} isSong={true} />
         </Box>
       )}
     </StyledHistoryItem>

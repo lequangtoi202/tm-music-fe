@@ -1,4 +1,4 @@
-import { FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
+import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
@@ -10,14 +10,24 @@ import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
 import { MoreAction } from '../MoreAction';
 import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
+import { createLike, unlike } from '../../services/user';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
+  const [likedAlbums, setLikedAlbums] = useState<Record<number, boolean>>({});
   const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, currentAlbum } = useContext(KContext);
 
-  const handleLikeSong = (id: string) => {
-    console.log(id);
+  const handleToggleLike = async (id: number) => {
+    const liked = likedAlbums[id];
+    if (!liked) {
+      await createLike([id], 'album_ids');
+      setLikedAlbums({ ...likedAlbums, [id]: true });
+    } else {
+      await unlike([id], 'album_ids');
+      setLikedAlbums({ ...likedAlbums, [id]: false });
+    }
   };
+
   useEffect(() => {
     (async () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -35,11 +45,19 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
             ) : (
               <StyledWrapper>
                 <StyledLayerHover>
-                  <Tooltip placement="top" title="Yêu thích">
-                    <IconButton onClick={() => handleLikeSong(item.id)}>
-                      <FavoriteBorder />
-                    </IconButton>
-                  </Tooltip>
+                  {!likedAlbums[item.id] ? (
+                    <Tooltip placement="top" title="Yêu thích">
+                      <IconButton onClick={() => handleToggleLike(item.id)}>
+                        <FavoriteBorder />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip placement="top" title="Bỏ Yêu thích">
+                      <IconButton onClick={() => handleToggleLike(item.id)}>
+                        <Favorite />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                   <Tooltip placement="top" title="Phát">
                     <IconButton
                       onClick={() => {

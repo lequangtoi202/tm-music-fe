@@ -3,9 +3,9 @@ import { ISong } from './Song';
 interface ISinger {
   id: string;
   name: string;
-  avatar: string;
+  image: string;
   description: string;
-  birthDate: string;
+  birthdate: string;
   songs?: ISong[];
   albums: [];
   followed: boolean;

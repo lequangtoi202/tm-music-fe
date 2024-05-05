@@ -3,18 +3,20 @@ import { ISinger } from './Singer';
 
 interface ISong {
   title: string;
-  id: string;
+  id: number;
   lyric: string;
   release_date: string;
   duration: string;
   views: number;
-  track_number: number;
+  track_number?: number;
   image?: string;
-  singers: ISinger[];
+  singers?: ISinger[];
   genre: IGenre;
+  genre_id?: number;
   audio?: string;
-  liked: boolean;
-  owner: boolean;
+  liked?: boolean;
+  owner?: boolean;
+  copyright?: boolean;
 }
 
 export type { ISong };

@@ -1,19 +1,22 @@
 import { FC } from 'react';
-import { StyledPlaylistTitle } from './styles';
 import { useNavigate } from 'react-router-dom';
+import { StyledPlaylistTitle } from './styles';
 
 interface PlaylistTitleProps {
-  id: string;
+  id: number;
   title: string;
+  isSong?: boolean;
   mymusic?: boolean;
 }
-export const PLaylistTitle: FC<PlaylistTitleProps> = ({ title, id, mymusic = false }) => {
+export const PLaylistTitle: FC<PlaylistTitleProps> = ({ title, id, isSong = false, mymusic = false }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    if (mymusic) {
-      navigate(`/mymusic/albums/${id}`);
-    } else {
-      navigate(`/albums/${id}`);
+    if (!isSong) {
+      if (mymusic) {
+        navigate(`/mymusic/albums/${id}`);
+      } else {
+        navigate(`/albums/${id}`);
+      }
     }
   };
 

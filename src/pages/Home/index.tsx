@@ -9,129 +9,38 @@ import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
 import { PlaylistModal } from '../../components/PlaylistModal';
+import { getAllAlbums, getAllGenres, getHistories } from '../../services/user';
 const theme = createTheme();
 
 function Homepage() {
   const [histories, setHistories] = useState<ISong[]>([]);
   const [albums, setAlbums] = useState<IAlbum[]>([]);
   const [genres, setGenres] = useState<IGenre[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const mockGenre: IGenre[] = [
     {
       title: 'Pop',
-      id: '1',
+      id: 1,
       description:
         'A genre of popular music that originated in its modern form during the mid-1950s in the United States and the United Kingdom.',
       songs: [],
-      image: null,
-      src: 'https://example.com/pop-genre',
+      image: 'https://example.com/pop-genre',
     },
     {
       title: 'Rock',
-      id: '2',
+      id: 2,
       description:
         'A genre of popular music that originated in its modern form during the mid-1950s in the United States and the United Kingdom.',
       songs: [],
-      image: null,
-      src: 'https://example.com/pop-genre',
-    },
-  ];
-  const data: ISong[] = [
-    {
-      id: '3',
-      title: 'Night view',
-      lyric: 'Lyrics of the song',
-      release_date: '2024-03-06',
-      duration: '3:30',
-      views: 100,
-      track_number: 1,
-      image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
-      audio: 'path/to/song/audio.mp3',
-      genre: mockGenre[0],
-      liked: false,
-      singers: [],
-      owner: false,
-    },
-    {
-      id: '2',
-      title: 'Night view',
-      lyric: 'Lyrics of the song',
-      release_date: '2024-03-06',
-      duration: '3:30',
-      views: 100,
-      track_number: 1,
-      image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
-      audio: 'path/to/song/audio.mp3',
-      genre: mockGenre[0],
-      liked: false,
-      singers: [],
-      owner: false,
-    },
-    {
-      id: '1',
-      title: 'Night view',
-      lyric: 'Lyrics of the song',
-      release_date: '2024-03-06',
-      duration: '3:30',
-      views: 100,
-      track_number: 1,
-      image: 'https://avatar-ex-swe.nixcdn.com/playlist/2024/03/08/c/8/0/0/1709863624708_300.jpg',
-      audio: 'path/to/song/audio.mp3',
-      genre: mockGenre[0],
-      liked: false,
-      singers: [],
-      owner: false,
-    },
-    {
-      id: '4',
-      title: 'Night view',
-      lyric: 'Lyrics of the song',
-      release_date: '2024-03-06',
-      duration: '3:30',
-      views: 100,
-      track_number: 1,
-      image: 'https://avatar-ex-swe.nixcdn.com/playlist/2024/01/05/6/8/3/8/1704444239098_300.jpg',
-      audio: 'path/to/song/audio.mp3',
-      genre: mockGenre[0],
-      liked: false,
-      singers: [],
-      owner: false,
-    },
-    {
-      id: '5',
-      title: 'Night view',
-      lyric: 'Lyrics of the song',
-      release_date: '2024-03-06',
-      duration: '3:30',
-      views: 100,
-      track_number: 1,
-      image: 'https://avatar-ex-swe.nixcdn.com/playlist/2023/09/14/d/6/6/b/1694680131219_300.jpg',
-      audio: 'path/to/song/audio.mp3',
-      genre: mockGenre[0],
-      liked: false,
-      singers: [],
-      owner: false,
-    },
-    {
-      id: '6',
-      title: 'Mountain view',
-      lyric: 'Lyrics of the song',
-      release_date: '2024-03-06',
-      duration: '3:30',
-      views: 100,
-      track_number: 1,
-      image: 'https://avatar-ex-swe.nixcdn.com/song/2023/12/06/4/e/b/7/1701843103796_300.jpg',
-      audio: 'path/to/song/audio.mp3',
-      genre: mockGenre[0],
-      liked: false,
-      singers: [],
-      owner: false,
+      image: 'https://example.com/pop-genre',
     },
   ];
 
   const carousel: ISong[] = [
     {
-      id: '3',
+      id: 3,
       title: 'Night view',
       lyric: 'Lyrics of the song',
       release_date: '2024-03-06',
@@ -146,7 +55,7 @@ function Homepage() {
       owner: false,
     },
     {
-      id: '2',
+      id: 2,
       title: 'Night view',
       lyric: 'Lyrics of the song',
       release_date: '2024-03-06',
@@ -161,7 +70,7 @@ function Homepage() {
       owner: false,
     },
     {
-      id: '1',
+      id: 1,
       title: 'Night view',
       lyric: 'Lyrics of the song',
       release_date: '2024-03-06',
@@ -176,7 +85,7 @@ function Homepage() {
       owner: false,
     },
     {
-      id: '4',
+      id: 4,
       title: 'Night view',
       lyric: 'Lyrics of the song',
       release_date: '2024-03-06',
@@ -191,7 +100,7 @@ function Homepage() {
       owner: false,
     },
     {
-      id: '5',
+      id: 5,
       title: 'Night view',
       lyric: 'Lyrics of the song',
       release_date: '2024-03-06',
@@ -206,7 +115,7 @@ function Homepage() {
       owner: false,
     },
     {
-      id: '6',
+      id: 6,
       title: 'Mountain view',
       lyric: 'Lyrics of the song',
       release_date: '2024-03-06',
@@ -225,7 +134,7 @@ function Homepage() {
     {
       image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       title: 'Night view',
-      id: '3',
+      id: 3,
       description: 'Description of Night view album',
       songs: carousel,
       created_at: new Date().toISOString(),
@@ -235,7 +144,7 @@ function Homepage() {
     {
       image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       title: 'Lake view',
-      id: '2',
+      id: 2,
       description: 'Description of Lake view album',
       songs: carousel,
       created_at: new Date().toISOString(),
@@ -245,7 +154,17 @@ function Homepage() {
     {
       image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
       title: 'Mountain view',
-      id: '1',
+      id: 1,
+      description: 'Description of Mountain view album',
+      songs: carousel,
+      created_at: new Date().toISOString(),
+      liked: false,
+      owner: false,
+    },
+    {
+      image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
+      title: 'Mountain view',
+      id: 5,
       description: 'Description of Mountain view album',
       songs: carousel,
       created_at: new Date().toISOString(),
@@ -256,15 +175,14 @@ function Homepage() {
 
   useEffect(() => {
     (async () => {
-      // lấy danh sách lịch sử nghe
-      //const resHistories = await getHistories();
-      setHistories(data);
-      // lấy danh sách các albums
-      // const resAlbums = await getAllAlbums();
-      setAlbums(albumData);
-      // LẤY danh sách các genres
-      // const resGenres = await getGenres();
-      setGenres(mockGenre);
+      const resHistories = await getHistories(page);
+      const histories = resHistories?.data?.histories ?? [];
+      const uniqueHistories = Array.from(new Set(histories.map((history: ISong) => history.id)));
+      setHistories(uniqueHistories.map((id) => histories.find((history: ISong) => history.id === id)) ?? []);
+      const resAlbums = await getAllAlbums(page);
+      setAlbums(resAlbums?.data?.albums ?? []);
+      const resGenres = await getAllGenres(page);
+      setGenres(resGenres?.data?.genres ?? []);
     })();
   }, []);
 
@@ -282,11 +200,11 @@ function Homepage() {
           </Box>
           {genres.length > 0 &&
             genres.map((genre, idx) => {
-              // lấy danh sách các albums theo genre
+              const albumItems = albumData.slice(0, 4);
               return (
                 <Box key={genre.id}>
                   <TextHeader text={genre.title} />
-                  <AlbumContainer items={albumData} />
+                  <AlbumContainer items={albumItems} />
                 </Box>
               );
             })}

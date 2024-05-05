@@ -2,11 +2,12 @@ import { ISong } from './Song';
 
 interface IGenre {
   title: string;
-  id: string;
+  id: number;
   description: string;
-  songs: ISong[];
-  image: string | null;
-  src: string;
+  songs?: ISong[];
+  image?: string | null;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export type { IGenre };

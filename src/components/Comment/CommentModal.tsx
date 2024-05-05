@@ -44,7 +44,7 @@ function CommentModal({ song }: { song: ISong }) {
     getComments(song.id);
   };
 
-  const getComments = async (id: string, append: boolean = false) => {
+  const getComments = async (id: number, append: boolean = false) => {
     const res = await getCommentsOfSong(id);
     const data = res?.data;
     const newComments = data?.comments ?? [];
@@ -60,7 +60,7 @@ function CommentModal({ song }: { song: ISong }) {
     if (openCommentDialog) {
       getComments(song.id);
     }
-    setSingers(song.singers?.map((singer) => singer.name).join(', '));
+    setSingers(song.singers?.map((singer) => singer.name).join(', ') || ''); // Provide a default value of an empty string
   }, [song, openCommentDialog]);
 
   const handleViewMore = () => {

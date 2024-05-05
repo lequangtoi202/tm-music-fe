@@ -2,7 +2,7 @@ import { ISong } from './Song';
 
 interface IAlbum {
   title: string;
-  id: string;
+  id: number;
   description: string;
   liked: boolean;
   image: string;

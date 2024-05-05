@@ -1,12 +1,15 @@
+import { IUser } from './User';
+
 interface IComment {
   id: number;
   content: string;
   song_id: number;
-  user_id: number;
+  replies: IComment[];
+  count_reply: number;
   parent_comment_id?: string;
   created_at: Date;
   updated_at: Date;
-  created_by: object;
+  user: IUser;
   status: boolean;
 }
 

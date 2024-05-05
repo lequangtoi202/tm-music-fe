@@ -1,4 +1,12 @@
-import { FavoriteBorder, Headphones, MoreHoriz, MoreVert, PlayArrow, PlayCircleOutline } from '@mui/icons-material';
+import {
+  Favorite,
+  FavoriteBorder,
+  Headphones,
+  MoreHoriz,
+  MoreVert,
+  PlayArrow,
+  PlayCircleOutline,
+} from '@mui/icons-material';
 import { Box, Button, IconButton, Skeleton, Tooltip, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -30,17 +38,19 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
+import { createLike, unlike } from '../../services/user';
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [singers, setSingers] = useState<{}[]>([]);
+  const [likedSongs, setLikedSongs] = useState<Record<number, boolean>>({});
   const { setCurrentSong, setCurrentAlbum, isMobile, setIsOpenMoreAction, setIsOpenSendToEmail } = useContext(KContext);
   const { albumId } = useParams();
   const albumData: IAlbum = {
     image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
     title: 'Night view',
-    id: '3',
+    id: 3,
     description: 'Description of Night view album',
     songs: [],
     liked: false,
@@ -49,6 +59,17 @@ const AlbumDetail = () => {
   };
   const handleOpenMoreAction = () => {
     setIsOpenMoreAction(true);
+  };
+
+  const handleToggleLike = async (id: number) => {
+    const liked = likedSongs[id];
+    if (!liked) {
+      await createLike([id], 'song_ids');
+      setLikedSongs({ ...likedSongs, [id]: true });
+    } else {
+      await unlike([id], 'song_ids');
+      setLikedSongs({ ...likedSongs, [id]: false });
+    }
   };
 
   useEffect(() => {
@@ -65,16 +86,15 @@ const AlbumDetail = () => {
 
   const mockGenre: IGenre = {
     title: 'Pop',
-    id: '1',
+    id: 1,
     description:
       'A genre of popular music that originated in its modern form during the mid-1950s in the United States and the United Kingdom.',
     songs: [],
-    image: null,
-    src: 'https://example.com/pop-genre',
+    image: 'https://example.com/pop-genre',
   };
 
   const songData: ISong = {
-    id: '3',
+    id: 3,
     title: 'Night view',
     lyric: 'Lyrics of the song',
     release_date: '2024-03-06',
@@ -142,11 +162,20 @@ const AlbumDetail = () => {
                     </SongTitle>
                     <AlbumTitle>Tên album</AlbumTitle>
                     <StyledGroupAction>
-                      <Tooltip placement="top" title="Yêu thích">
-                        <IconButton>
-                          <FavoriteBorder />
-                        </IconButton>
-                      </Tooltip>
+                      {/* Nhớ sửa số 1 thành item.id */}
+                      {!likedSongs[1] ? (
+                        <Tooltip placement="top" title="Yêu thích">
+                          <IconButton onClick={() => handleToggleLike(1)}>
+                            <FavoriteBorder />
+                          </IconButton>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip placement="top" title="Bỏ Yêu thích">
+                          <IconButton onClick={() => handleToggleLike(1)}>
+                            <Favorite />
+                          </IconButton>
+                        </Tooltip>
+                      )}
                       <Tooltip placement="top" title="Phát">
                         <IconButton
                           onClick={() => {

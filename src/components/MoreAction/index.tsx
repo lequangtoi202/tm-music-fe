@@ -69,7 +69,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       });
   };
 
-  const handleAddSongsToPlaylist = async (playlistId: string) => {
+  const handleAddSongsToPlaylist = async (playlistId: number) => {
     if (song && 'songs' in song) {
       const songIds = song.songs?.map((song) => Number(song.id)) ?? [];
       await addSongsToPlaylist(playlistId, songIds);

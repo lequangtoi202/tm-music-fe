@@ -1,31 +1,33 @@
 import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
+import { useContext, useState } from 'react';
+import { KContext } from '../../../context';
+import { createLike, unlike } from '../../../services/user';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../../utils/storage';
 import Image from '../../Image';
+import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
 import { RoundedSkeleton, TitleSkeleton } from '../../Skeleton';
 import { StyledLayerHover, StyledThemeItem, StyledWrapper } from '../styles';
 import { ThemeItemProps } from '../types';
-import { useContext } from 'react';
-import { KContext } from '../../../context';
-import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
-import { setTempCurrentAlbum, setTempCurrentSong } from '../../../utils/storage';
-import { createLike, retrieveLike } from '../../../services/user';
 
 const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
   const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction } = useContext(KContext);
+  const [liked, setLiked] = useState(item.liked);
 
   const handleToggleLike = async () => {
-    if (!item.liked) {
-      const songIds = item.songs?.map((song) => Number(song.id));
-      await createLike(songIds, 'album_ids');
+    const songIds = item.id;
+    if (!liked) {
+      await createLike([songIds], 'album_ids');
+      setLiked(true);
     } else {
-      const songIds = item.songs?.map((song) => Number(song.id));
-      await retrieveLike(songIds, 'album_ids');
+      await unlike([songIds], 'album_ids');
+      setLiked(false);
     }
   };
 
   const handlePLayAlbum = () => {
     if (item.songs?.length > 0) {
-      const randomSong = item.songs[Math.floor(Math.random() * item.songs.length)];
+      const randomSong = item.songs[Math.floor(Math.random() * item.songs?.length)];
       setCurrentSong(randomSong);
       setCurrentAlbum(item);
       setTempCurrentSong(randomSong);
@@ -40,7 +42,7 @@ const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
       ) : (
         <StyledWrapper>
           <StyledLayerHover>
-            {!item.liked ? (
+            {!liked ? (
               <Tooltip placement="top" title="Yêu thích">
                 <IconButton onClick={() => handleToggleLike()}>
                   <FavoriteBorder />

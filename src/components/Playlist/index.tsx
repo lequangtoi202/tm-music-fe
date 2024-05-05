@@ -50,7 +50,7 @@ function Playlist() {
     fetchData();
   }, []);
 
-  const handleDeletePlaylist = async (id: string) => {
+  const handleDeletePlaylist = async (id: number) => {
     const res = await deleteMyAlbum(id);
     if (res?.status === 200) {
       setSuccess('Xóa playlist thành công');

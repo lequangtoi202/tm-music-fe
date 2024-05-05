@@ -85,7 +85,7 @@ export const getMyAlbums = async (page: number) => {
 export const getAllAlbums = async (page: number) => {
   try {
     const response = await apiInstance.get(`/albums?page=${page}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error fetching albums:', error);
   }
@@ -145,23 +145,23 @@ export const getMeLikes = async () => {
   }
 };
 
-export const createLike = async (data: any) => {
+export const createLike = async (data: number[], params: string) => {
   try {
     const response = await apiInstance.post(`/me/likes`, {
-      song_ids: data,
+      [params]: data,
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error like songs:', error);
   }
 };
 
-export const retrieveLike = async (data: any) => {
+export const retrieveLike = async (data: number[], params: string) => {
   try {
     const response = await apiInstance.request({
       method: 'DELETE',
       url: '/me/likes/destroys',
-      data: data,
+      [params]: data,
     });
     return response;
   } catch (error) {

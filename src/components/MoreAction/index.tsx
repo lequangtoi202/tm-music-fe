@@ -43,7 +43,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
   const handleClick = async () => {
     if (!isOpenPlaylistList) {
       const res = await getMyAlbums(pageDefault);
-      setPlaylists(res);
+      setPlaylists(res.albums);
       if (res.totalPages > 1) {
         for (let i = 2; i <= res.totalPages; i++) {
           const additionalRes = await getMyAlbums(i);

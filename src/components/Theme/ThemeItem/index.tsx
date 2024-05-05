@@ -13,17 +13,15 @@ import { createLike, retrieveLike } from '../../../services/user';
 const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
   const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction } = useContext(KContext);
 
-  // CẦN PHẢI XỬ LÝ THÊM => ĐANG ĐỢI API
   const handleToggleLike = async () => {
     if (!item.liked) {
       const songIds = item.songs?.map((song) => Number(song.id));
-      await createLike(songIds);
+      await createLike(songIds, 'album_ids');
     } else {
       const songIds = item.songs?.map((song) => Number(song.id));
-      await retrieveLike(songIds);
+      await retrieveLike(songIds, 'album_ids');
     }
   };
-  ///////////////////////////////////////////////////
 
   const handlePLayAlbum = () => {
     if (item.songs?.length > 0) {

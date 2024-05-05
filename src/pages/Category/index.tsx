@@ -15,10 +15,12 @@ function Category() {
   const [albums, setAlbums] = useState<IAlbum[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
+
   const fetchData = async () => {
-    const res = await getAllAlbums(page);
-    setAlbums(res.albums);
-    setTotalPages(res.totalPages);
+    const response = await getAllAlbums(page);
+    const data = response?.data;
+    setAlbums(data?.albums ?? []);
+    setTotalPages(data?.totalPages ?? 0);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };

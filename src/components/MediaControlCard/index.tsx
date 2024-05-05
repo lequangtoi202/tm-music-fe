@@ -173,7 +173,7 @@ export default function MediaControlCard() {
           </Tooltip>
           <audio  
             id="audioPlayer"
-            controls={true}  
+            // controls={true}  
             src={currentSong?.audio} 
           />
         </Box>

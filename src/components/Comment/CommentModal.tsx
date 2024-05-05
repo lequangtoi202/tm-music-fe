@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Button, Icon, IconButton, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { KContext } from '../../context';
@@ -8,49 +8,76 @@ import Image from '../Image';
 import { Modal, ModalContent, StyledBackdrop } from '../MoreAction';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle } from '../MoreAction/styles';
 import FormComment from './FormComment';
-import { CommentContainer, CommentWrapper, StyledComment, StyledName, UserAvatar, UserWrapper } from './styles';
+import {
+  CommentContainer,
+  CommentWrapper,
+  StyledComment,
+  StyledName,
+  StyledNegative,
+  StyledPositive,
+  StyledViewMoreComment,
+  UserAvatar,
+  UserWrapper,
+} from './styles';
+import { CheckCircle, Warning } from '@mui/icons-material';
 
 function CommentModal({ song }: { song: ISong }) {
-  const { openCommentDialog, setOpenCommentDialog, currentSong } = useContext(KContext);
+  const { openCommentDialog, setOpenCommentDialog, currentSong, setError } = useContext(KContext);
   const [comments, setComments] = useState<any[]>([]);
   const [singers, setSingers] = useState<string>('');
-
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = async (data: any) => {
     const result = await validateComment(data.comment);
-    if (result[0] === 'POSITIVE') {
-      const res = await createComment({
-        content: data.comment,
-        songId: currentSong?.id,
-      });
-      setComments([...comments, res]);
-    } else {
-      alert('Bình luận không hợp lệ');
-      //THAY ĐỔI LẠI THÀNH THÔNG BÁO LỖI
-    }
+    const res = await createComment({
+      content: data.comment,
+      songId: currentSong?.id,
+      status: result[0] === 'POSITIVE' ? true : false,
+    });
+    setComments([...comments, res]);
   };
 
   const handleDeleteComment = async (id: string) => {
     await deleteComment(id);
-    await getComments(song.id);
+    getComments(song.id);
   };
 
-  const getComments = async (id: string) => {
-    const res = await getCommentsOfSong(song.id);
-    setComments(res);
-    setSingers(song.singers?.map((singer) => singer.name).join(', '));
+  const getComments = async (id: string, append: boolean = false) => {
+    const res = await getCommentsOfSong(id);
+    const data = res?.data;
+    const newComments = data?.comments ?? [];
+    if (append) {
+      setComments((prevComments) => [...prevComments, ...newComments]);
+    } else {
+      setComments(newComments);
+    }
+    setTotalPages(data?.total_pages);
   };
 
   useEffect(() => {
-    getComments(song.id);
-  }, [song]);
+    if (openCommentDialog) {
+      getComments(song.id);
+    }
+    setSingers(song.singers?.map((singer) => singer.name).join(', '));
+  }, [song, openCommentDialog]);
+
+  const handleViewMore = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+      getComments(song.id, true);
+    }
+  };
 
   return (
     <Modal
       open={openCommentDialog}
       sx={{ margin: '0 20px' }}
-      onClose={() => setOpenCommentDialog(false)}
+      onClose={() => {
+        setOpenCommentDialog(false);
+        setComments([]);
+      }}
       aria-labelledby="modal-modal-title"
       slots={{ backdrop: StyledBackdrop }}
     >
@@ -72,7 +99,7 @@ function CommentModal({ song }: { song: ISong }) {
             </StyledBox>
           </SongTitle>
         </PlaylistItem>
-        {/* <CommentContainer>
+        <CommentContainer>
           <Box sx={{ fontWeight: 700, fontSize: 14 }}>Bình luận</Box>
           {comments?.map((comment, idx) => (
             <CommentWrapper key={idx}>
@@ -86,7 +113,18 @@ function CommentModal({ song }: { song: ISong }) {
                 <StyledName>{comment.createdBy?.firstName}</StyledName>
               </UserWrapper>
               <StyledComment>
-                <Typography variant="inherit">{comment?.content}</Typography>
+                {comment?.status ? (
+                  <StyledPositive>
+                    <Typography variant="inherit">{comment?.content}</Typography>
+                    <CheckCircle />
+                  </StyledPositive>
+                ) : (
+                  <StyledNegative>
+                    <Typography variant="inherit">{comment?.content}</Typography>
+                    <Warning />
+                  </StyledNegative>
+                )}
+
                 <IconButton onClick={() => handleDeleteComment(comment.id)}>
                   <Typography fontSize={12} variant="inherit" noWrap>
                     Xóa
@@ -95,7 +133,8 @@ function CommentModal({ song }: { song: ISong }) {
               </StyledComment>
             </CommentWrapper>
           ))}
-        </CommentContainer> */}
+          {page < totalPages && <StyledViewMoreComment onClick={handleViewMore}>Xem thêm</StyledViewMoreComment>}
+        </CommentContainer>
         <FormComment reset={reset} onSubmit={onSubmit} handleSubmit={handleSubmit} register={register} />
       </ModalContent>
     </Modal>

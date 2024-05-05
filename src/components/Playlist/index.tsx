@@ -42,7 +42,7 @@ function Playlist() {
   const fetchData = async () => {
     const res = await getMyAlbums(page);
     setMyAlbums(res.albums);
-    setTotalPages(res.totalPages);
+    setTotalPages(res.total_pages);
     setLoading(false);
   };
 

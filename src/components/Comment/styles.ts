@@ -34,6 +34,28 @@ const UserAvatar = styled(Box)`
   }
 `;
 
+const StyledPositive = styled(Box)`
+  display: flex;
+  align-items: center;
+
+  & svg {
+    font-size: 16px;
+    margin-left: 6px;
+    color: #43a047;
+  }
+`;
+
+const StyledNegative = styled(Box)`
+  display: flex;
+  align-items: center;
+
+  & svg {
+    font-size: 16px;
+    margin-left: 6px;
+    color: #e53935;
+  }
+`;
+
 const StyledComment = styled(Box)`
   font-size: 14px;
   font-weight: 400;
@@ -65,6 +87,19 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
+const StyledViewMoreComment = styled(Box)`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+
+  &:hover {
+    color: #1976d2;
+    text-decoration: underline;
+  }
+`;
+
 export {
   CommentWrapper,
   UserAvatar,
@@ -74,4 +109,7 @@ export {
   CommentContainer,
   FormCommentWrapper,
   StyledTextField,
+  StyledNegative,
+  StyledPositive,
+  StyledViewMoreComment,
 };

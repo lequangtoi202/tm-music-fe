@@ -1,10 +1,13 @@
 interface IComment {
-  id: string;
+  id: number;
   content: string;
-  songId: string;
-  parentId?: string;
-  replies: IComment[];
-  count_reply: number;
+  song_id: number;
+  user_id: number;
+  parent_comment_id?: string;
+  created_at: Date;
+  updated_at: Date;
+  created_by: object;
+  status: boolean;
 }
 
 export type { IComment };

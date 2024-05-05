@@ -1,20 +1,22 @@
-import { Comment, Lyrics, VolumeDown, VolumeOff, VolumeUp } from '@mui/icons-material';
-import PauseIcon from '@mui/icons-material/Pause';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import { Slider, Stack, Tooltip } from '@mui/material';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import {
+  Comment,
+  Lyrics,
+  Pause,
+  PlayArrow,
+  SkipNext,
+  SkipPrevious,
+  VolumeDown,
+  VolumeOff,
+  VolumeUp,
+} from '@mui/icons-material';
+import { Box, Card, IconButton, Slider, Stack, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
 import { formatTime } from '../../utils/time';
 import Image from '../Image';
-import { CustomCardContent, CustomDisplayControl } from './styles';
 import Snackbars from '../Snackbar';
+import { CustomCardContent, CustomDisplayControl } from './styles';
 
 export default function MediaControlCard() {
   const theme = useTheme();
@@ -28,25 +30,25 @@ export default function MediaControlCard() {
     useContext(KContext);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
     const newVolume = newValue as number;
     if (audio) {
-      audio.volume = newVolume/100;
+      audio.volume = newVolume / 100;
     }
     setVolume(newVolume);
     setIsMuted(newVolume === 0);
   };
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
     if (audio) {
-      audio.currentTime = currentTime; 
+      audio.currentTime = currentTime;
     }
     setCurrentTime(newValue as number);
   };
 
   const togglePlayPause = () => {
-    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
     if (isPlaying) {
       audio.pause();
     } else {
@@ -78,23 +80,27 @@ export default function MediaControlCard() {
 
   useEffect(() => {
     if (currentSong) {
+      const audio = new Audio(currentSong.audio);
+      audio.onloadedmetadata = () => {
+        const maxDuration = Math.floor(audio.duration);
+        console.log(maxDuration);
+      };
       const [minutes, seconds] = currentSong.duration.split(':').map(Number);
       const maxDuration = minutes * 60 + seconds;
 
       setCurrentTime(0);
       setDuration(maxDuration);
-      // setIsPlaying(true);
       setIsMuted(false);
     }
   }, [currentSong]);
 
   const handleIconClick = () => {
     const newIsMuted = !isMuted;
-    const audio = document.getElementById('audioPlayer') as HTMLAudioElement; 
+    const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
     if (audio && newIsMuted) {
       audio.volume = 0;
     } else {
-      audio.volume = prevVolume/100;
+      audio.volume = prevVolume / 100;
     }
     setIsMuted(newIsMuted);
     setVolume(newIsMuted ? 0 : prevVolume);
@@ -103,7 +109,7 @@ export default function MediaControlCard() {
   const playPreviousSong = () => {
     if (currentAlbum && currentSong) {
       const currentIndex = currentAlbum.songs.findIndex((song) => song.id === currentSong.id);
-      const prevIndex = (currentIndex - 1 + currentAlbum.songs.length) % currentAlbum.songs.length;
+      const prevIndex = (currentIndex - 1 + currentAlbum.songs?.length) % currentAlbum.songs?.length;
       const prevSong = currentAlbum.songs[prevIndex];
       setCurrentSong(prevSong);
     }
@@ -112,7 +118,7 @@ export default function MediaControlCard() {
   const playNextSong = () => {
     if (currentAlbum && currentSong) {
       const currentIndex = currentAlbum.songs.findIndex((song) => song.id === currentSong.id);
-      const nextIndex = (currentIndex + 1) % currentAlbum.songs.length;
+      const nextIndex = (currentIndex + 1) % currentAlbum.songs?.length;
       const nextSong = currentAlbum.songs[nextIndex];
       setCurrentSong(nextSong);
     }
@@ -154,27 +160,23 @@ export default function MediaControlCard() {
         <Box sx={{ flex: '1 1 65%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Tooltip placement="top" title="Trước đó">
             <IconButton aria-label="previous" onClick={playPreviousSong}>
-              {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+              {theme.direction === 'rtl' ? <SkipNext /> : <SkipPrevious />}
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Phát">
             <IconButton aria-label="play/pause" onClick={togglePlayPause}>
-              {isPlaying ? (
-                <PauseIcon sx={{ height: 38, width: 38 }} />
-              ) : (
-                <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-              )}
+              {isPlaying ? <Pause sx={{ height: 38, width: 38 }} /> : <PlayArrow sx={{ height: 38, width: 38 }} />}
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Tiếp theo">
             <IconButton aria-label="next" onClick={playNextSong}>
-              {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+              {theme.direction === 'rtl' ? <SkipPrevious /> : <SkipNext />}
             </IconButton>
           </Tooltip>
-          <audio  
+          <audio
             id="audioPlayer"
-            // controls={true}  
-            src={currentSong?.audio} 
+            // controls={true}
+            src={currentSong?.audio}
           />
         </Box>
         {!isMobile && (

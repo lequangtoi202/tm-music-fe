@@ -20,7 +20,7 @@ function Category() {
     const response = await getAllAlbums(page);
     const data = response?.data;
     setAlbums(data?.albums ?? []);
-    setTotalPages(data?.totalPages ?? 0);
+    setTotalPages(data?.total_pages ?? 0);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };

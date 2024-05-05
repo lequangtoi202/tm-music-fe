@@ -198,6 +198,7 @@ export const createComment = async (data: any) => {
   const formData = new FormData();
   formData.append('content', data.content);
   formData.append('song_id', data.songId);
+  formData.append('status', data.status);
   try {
     const response = await axios.post(`${apiTmMusicUrl}/me/comments`, formData, {
       headers: {
@@ -322,7 +323,7 @@ export const getAlbumsOfSinger = async (ids: string[]) => {
 export const getCommentsOfSong = async (id: string) => {
   try {
     const response = await apiInstance.get(`/songs/${id}/comments`);
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error get genres:', error);
   }

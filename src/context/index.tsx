@@ -25,26 +25,24 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false);
   const isMobile = useMediaQuery(`(max-width: ${breakpointLarge}px)`);
 
-
   const fetchData = async () => {
     try {
-      const data = await getSongDetail('18');
-      console.log('data:', data);
+      const data = await getSongDetail('7');
       setCurrentSong({
         title: data.title,
         id: data.id,
         lyric: data.lyric,
         release_date: data.release_date,
-        duration: "4:30",
+        duration: '4:30',
         views: data.views,
         track_number: data.track_number,
         image: data.image,
         singers: data.singers,
         genre: data.genre,
-        audio: data.audio,
+        audio: 'https://drive.google.com/file/d/1oonZqK-v_XR3Tpr-y7GgreOxttfsDxMP/view?usp=drive_link',
         liked: data.liked,
-        owner: data.owner
-      });    
+        owner: data.owner,
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -53,7 +51,6 @@ export const KContextProvider = ({ children }: KContextProps) => {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log('currentSong: ', currentSong)
 
   return (
     <KContext.Provider

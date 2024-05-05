@@ -6,6 +6,7 @@ import { KContext } from '../../context';
 import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
+import { setTempCurrentSong } from '../../utils/storage';
 import CardItem from '../Card';
 import Image from '../Image';
 import { MoreAction } from '../MoreAction';
@@ -29,7 +30,6 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
-import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 
 const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
@@ -45,6 +45,7 @@ const AlbumDetail = () => {
     songs: [],
     liked: false,
     created_at: new Date().toISOString(),
+    owner: false,
   };
   const handleOpenMoreAction = () => {
     setIsOpenMoreAction(true);
@@ -85,6 +86,7 @@ const AlbumDetail = () => {
     genre: mockGenre,
     singers: [],
     liked: false,
+    owner: true,
   };
   return (
     <ResponsiveContainer>

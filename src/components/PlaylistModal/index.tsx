@@ -9,7 +9,7 @@ import { createMyAlbum } from '../../services/user';
 import { StyledInput } from './styles';
 
 export const PlaylistModal = () => {
-  const { isOpenAddPlaylistModal, setIsOpenAddPlaylistModal, setSuccess } = useContext(KContext);
+  const { isOpenAddPlaylistModal, setIsOpenAddPlaylistModal, setSuccess, setError } = useContext(KContext);
   const [playlistName, setPlaylistName] = useState('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
@@ -18,10 +18,12 @@ export const PlaylistModal = () => {
     formData.append('title', playlistName);
 
     const res = await createMyAlbum(formData);
-    if (res) {
+    if (res?.status === 201) {
       setSuccess('Tạo playlist thành công!');
       setPlaylistName('');
       setIsOpenAddPlaylistModal(false);
+    } else if (res?.status === 422) {
+      setError('Tạo playlist không thành công.');
     }
   };
 

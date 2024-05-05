@@ -64,7 +64,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                     </IconButton>
                   </Tooltip>
                 </StyledLayerHover>
-                <Image src={item.image} />
+                <Image src={item.image ?? '../../assets/images/no-image.png'} alt="" />
               </StyledWrapper>
             )}
           </StyledChildAlbumItem>

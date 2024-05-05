@@ -8,6 +8,7 @@ const Category = lazy(() => import('../pages/Category'));
 const Album = lazy(() => import('../pages/Album'));
 const Account = lazy(() => import('../pages/Account'));
 const MyPlaylist = lazy(() => import('../pages/Playlist'));
+const MyAlbumDetail = lazy(() => import('../pages/Album'));
 
 const publicRoutes: any = [
   {
@@ -33,6 +34,11 @@ const publicRoutes: any = [
   {
     path: config.routes.myplaylist,
     component: MyPlaylist,
+    layout: DefaultLayout,
+  },
+  {
+    path: config.routes.myalbumDetail,
+    component: MyAlbumDetail,
     layout: DefaultLayout,
   },
 ];

@@ -1,18 +1,28 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { AddBox, CloudUpload, Comment, ControlPoint, Download, QueueMusic, Share } from '@mui/icons-material';
+import {
+  AddBox,
+  CloudUpload,
+  Comment,
+  ControlPoint,
+  Download,
+  QueueMusic,
+  Share,
+  ShoppingCart,
+} from '@mui/icons-material';
 import { DialogContent, Fade, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import axios from 'axios';
 import clsx from 'clsx';
 import fileDownload from 'js-file-download';
-import { forwardRef, useContext, useState } from 'react';
+import { forwardRef, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { KContext } from '../../context';
-import { addSongsToPlaylist, getMyAlbums } from '../../services/user';
+import { addSongsToPlaylist, createCheckout, getMyAlbums } from '../../services/user';
 import { IAlbum } from '../../types/Album';
 import Image from '../Image';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledListItemIcon, StyledPopover } from './styles';
 import { IMoreActionProps } from './types';
+import { ISong } from '../../types/Song';
 
 export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
   const {
@@ -26,12 +36,20 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
   } = useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
   const [playlists, setPlaylists] = useState<IAlbum[]>([]);
+  const [owner, setOwner] = useState<boolean>(false);
   const { pathname } = useLocation();
+  const pageDefault = 1;
 
   const handleClick = async () => {
     if (!isOpenPlaylistList) {
-      const res = await getMyAlbums();
+      const res = await getMyAlbums(pageDefault);
       setPlaylists(res);
+      if (res.totalPages > 1) {
+        for (let i = 2; i <= res.totalPages; i++) {
+          const additionalRes = await getMyAlbums(i);
+          setPlaylists((prevPlaylists) => [...prevPlaylists, ...additionalRes]);
+        }
+      }
     }
     setIsOpenPlaylistList(!isOpenPlaylistList);
   };
@@ -53,12 +71,21 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
 
   const handleAddSongsToPlaylist = async (playlistId: string) => {
     if (song && 'songs' in song) {
-      const songIds = song.songs?.map((song) => Number(song.id));
+      const songIds = song.songs?.map((song) => Number(song.id)) ?? [];
       await addSongsToPlaylist(playlistId, songIds);
     } else {
       await addSongsToPlaylist(playlistId, [Number(song?.id)]);
     }
   };
+
+  const handleCreateCheckout = async () => {
+    const data = await createCheckout('1');
+    window.location.href = data.url;
+  };
+
+  useEffect(() => {
+    setOwner(!!song?.owner);
+  }, [song]);
 
   return (
     <Modal
@@ -93,7 +120,11 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
             aria-labelledby="nested-list-subheader"
           >
             {isMobile && (
-              <ListItemButton onClick={() => setOpenCommentDialog(true)}>
+              <ListItemButton
+                onClick={() => {
+                  setOpenCommentDialog(true);
+                }}
+              >
                 <StyledListItemIcon>
                   <Comment />
                 </StyledListItemIcon>
@@ -113,7 +144,19 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
               </StyledListItemIcon>
               <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải xuống" />
             </ListItemButton>
-            {pathname.includes('/albums/') && (
+            {!pathname.includes('/mymusic/') && pathname.includes('/albums/') && (
+              <ListItemButton
+                onClick={() => {
+                  handleCreateCheckout();
+                }}
+              >
+                <StyledListItemIcon>
+                  <ShoppingCart />
+                </StyledListItemIcon>
+                <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Mua bài hát" />
+              </ListItemButton>
+            )}
+            {pathname.includes('/mymusic/albums') && (
               <ListItemButton
                 onClick={() => {
                   setIsOpenMoreAction(false);

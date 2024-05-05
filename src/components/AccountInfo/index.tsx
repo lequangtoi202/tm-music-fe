@@ -7,6 +7,7 @@ import { getCurrentUser } from '../../utils/storage';
 
 function AccountInfo() {
   const [user, setUser] = useState<IUser | null>(null);
+  const [tabValue, setTabValue] = useState(0);
   useEffect(() => {
     const currentUser = getCurrentUser();
     if (currentUser) {
@@ -14,7 +15,6 @@ function AccountInfo() {
     }
   }, []);
 
-  const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
@@ -37,11 +37,9 @@ function AccountInfo() {
         <Tabs value={tabValue} onChange={handleTabChange} aria-label="Account Tabs">
           <Tab label="Playlist" />
           <Tab label="Tải lên" />
-          <Tab label="Bạn bè" />
         </Tabs>
         {tabValue === 0 && <Playlist />}
         {tabValue === 1 && <ListItem />}
-        {tabValue === 2 && <ListItem />}
       </Paper>
     </Box>
   );

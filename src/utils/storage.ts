@@ -20,14 +20,18 @@ export const setCurrentUser = (user: IUser) => {
   localStorage.setItem(LOCAL_USER, JSON.stringify(user));
 };
 
-export const setTempCurrentSong = (song: ISong) => {
+export const setTempCurrentSong = (song: ISong | null) => {
   localStorage.setItem(LOCAL_STORAGE_CURRENT_SONG, JSON.stringify(song));
 };
 
-export const setTempCurrentAlbum = (album: IAlbum) => {
+export const setTempCurrentAlbum = (album: IAlbum | null) => {
   localStorage.setItem(LOCAL_STORAGE_CURRENT_ALBUM, JSON.stringify(album));
 };
 
 export const removeToken = () => {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
+};
+
+export const removeCurrentUser = () => {
+  localStorage.removeItem(LOCAL_USER);
 };

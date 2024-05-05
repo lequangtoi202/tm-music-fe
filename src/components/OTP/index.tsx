@@ -188,7 +188,7 @@ function OTP({
 }
 
 export default function OTPInput() {
-  const { isOpenOTP, setIsOpenOTP } = useContext(KContext);
+  const { isOpenOTP, setIsOpenOTP, setSuccess, setError } = useContext(KContext);
   const [otp, setOtp] = useState('');
   const [OTPValid, setOTPValid] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
@@ -197,10 +197,20 @@ export default function OTPInput() {
     if (otp.length === 6) {
       setOTPValid(true);
       setLoading(true);
-      await verifyInvitation(otp);
-      setLoading(false);
-      setIsOpenOTP(false);
-      // cần xử lý báo thành công ở đây
+      try {
+        const res = await verifyInvitation(otp);
+        if (res.status === 200) {
+          setSuccess('Xác nhận thành công');
+        } else if (res === 422) {
+          setError('Mã OTP không hợp lệ. Vui lòng thử lại');
+        }
+      } catch (error) {
+        setError('Đã xảy ra lỗi. Vui lòng thử lại sau');
+      } finally {
+        setLoading(false);
+        setOtp('');
+        setIsOpenOTP(false);
+      }
     } else {
       setOTPValid(false);
     }

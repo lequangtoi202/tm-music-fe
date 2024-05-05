@@ -14,6 +14,7 @@ interface ISong {
   genre: IGenre;
   audio?: string;
   liked: boolean;
+  owner: boolean;
 }
 
 export type { ISong };

@@ -3,11 +3,26 @@ import { Box, Button, Skeleton } from '@mui/material';
 import Image from '../Image';
 import { StyledArtistInfo, StyledArtistWrapper } from './styles';
 import { ArtistInfoProps } from './types';
+import { followArtist, unfollowArtist } from '../../services/user';
+import { useContext } from 'react';
+import { KContext } from '../../context';
 
 const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading }) => {
+  const { setError, setSuccess } = useContext(KContext);
+  const handleFollowArtist = async (id: string) => {
+    const res = await followArtist(id);
+    if (res?.status === 201) setSuccess('Theo dõi thành công!');
+    else setError('Theo dõi thất bại!');
+  };
+  const handleUnFollowArtist = async (id: string) => {
+    const res = await unfollowArtist(id);
+    if (res?.status === 201) setSuccess('Bỏ Theo dõi thành công!');
+    else setError('Bỏ Theo dõi thất bại!');
+  };
+
   return (
     <Box sx={{ flex: 1 }}>
-      {loading ? ( // Kiểm tra nếu đang loading thì hiển thị skeleton
+      {loading ? (
         <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
           <Skeleton variant="circular" width={200} height={200} animation="wave" />
           <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
@@ -28,9 +43,27 @@ const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading }) => {
             <Box textAlign={'center'} fontSize={12}>
               70K quan tâm
             </Box>
-            <Button sx={{ borderRadius: '18px' }} variant="contained" startIcon={<PersonAddAlt />}>
-              <Box>Theo dõi</Box>
-            </Button>
+            {!item.followed ? (
+              <Button
+                sx={{ borderRadius: '18px' }}
+                variant="contained"
+                onClick={() => handleFollowArtist(item.id)}
+                component="button"
+                startIcon={<PersonAddAlt />}
+              >
+                <Box>Theo dõi</Box>
+              </Button>
+            ) : (
+              <Button
+                sx={{ borderRadius: '18px' }}
+                variant="contained"
+                onClick={() => handleUnFollowArtist(item.id)}
+                component="button"
+                color="error"
+              >
+                <Box>Bỏ theo dõi</Box>
+              </Button>
+            )}
           </StyledArtistInfo>
         </Box>
       )}

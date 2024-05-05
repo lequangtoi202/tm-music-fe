@@ -73,18 +73,18 @@ export const logout = async () => {
   removeToken();
 };
 
-export const getMyAlbums = async () => {
+export const getMyAlbums = async (page: number) => {
   try {
-    const response = await apiInstance.get('/me/albums');
+    const response = await apiInstance.get(`/me/albums?page=${page}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching my albums:', error);
   }
 };
 
-export const getAllAlbums = async () => {
+export const getAllAlbums = async (page: number) => {
   try {
-    const response = await apiInstance.get('/albums');
+    const response = await apiInstance.get(`/albums?page=${page}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching albums:', error);
@@ -112,7 +112,7 @@ export const getMyAlbumDetail = async (id: string) => {
 export const createMyAlbum = async (data: any) => {
   try {
     const response = await apiInstance.post(`/me/albums`, data);
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Create album error:', error);
   }
@@ -163,16 +163,23 @@ export const retrieveLike = async (data: any) => {
       url: '/me/likes/destroys',
       data: data,
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error retrieving like:', error);
   }
 };
 
-export const followArtist = async (data: any) => {
+export const followArtist = async (artistId: string) => {
+  const formData = new FormData();
+  formData.append('artist_id', artistId);
   try {
-    const response = await apiInstance.post(`/me/follows`, data);
-    return response.data;
+    const response = await apiInstance.post(`/me/follows`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response;
   } catch (error) {
     console.error('Error follow artist:', error);
   }
@@ -216,7 +223,7 @@ export const deleteComment = async (id: string) => {
 export const deleteMyAlbum = async (id: string) => {
   try {
     const response = await apiInstance.delete(`/me/albums/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error delete comment:', error);
   }
@@ -366,15 +373,32 @@ export const createInvitation = async (data: any) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error create invitation:', error);
   }
 };
 
 export const verifyInvitation = async (code: string) => {
   try {
     const response = await apiInstance.get(`/me/invitations/${code}`);
+    return response;
+  } catch (error) {
+    console.error('Error verify otp:', error);
+    return (error as any).response.status;
+  }
+};
+
+export const createCheckout = async (songId: string) => {
+  const formData = new FormData();
+  formData.append('song_id', songId);
+  try {
+    const response = await apiInstance.post(`/create-checkout-session`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error create checkout:', error);
   }
 };

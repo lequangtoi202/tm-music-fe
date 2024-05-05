@@ -14,6 +14,7 @@ import { KContext } from '../../context';
 import { formatTime } from '../../utils/time';
 import Image from '../Image';
 import { CustomCardContent, CustomDisplayControl } from './styles';
+import Snackbars from '../Snackbar';
 
 export default function MediaControlCard() {
   const theme = useTheme();
@@ -23,7 +24,8 @@ export default function MediaControlCard() {
   const [volume, setVolume] = useState<number>(50);
   const [prevVolume] = useState<number>(50);
   const [isMuted, setIsMuted] = useState(false);
-  const { isMobile, currentSong, currentAlbum, setCurrentSong, setOpenCommentDialog } = useContext(KContext);
+  const { isMobile, currentSong, currentAlbum, setCurrentSong, setOpenCommentDialog, error, success, setError } =
+    useContext(KContext);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     const newVolume = newValue as number;
@@ -169,7 +171,16 @@ export default function MediaControlCard() {
       {!isMobile && (
         <Box sx={{ flex: '1 1 30%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Tooltip placement="top" title="Bình luận">
-            <IconButton aria-label="Comment" onClick={() => setOpenCommentDialog(true)}>
+            <IconButton
+              aria-label="Comment"
+              onClick={() => {
+                if (!currentSong) {
+                  setError('Vui lòng chọn bài hát');
+                } else {
+                  setOpenCommentDialog(true);
+                }
+              }}
+            >
               <Comment />
             </IconButton>
           </Tooltip>
@@ -197,6 +208,9 @@ export default function MediaControlCard() {
           </Stack>
         </Box>
       )}
+
+      {error && <Snackbars status="error" open={true} message={error} />}
+      {success && <Snackbars status="success" open={true} message={success} />}
     </Card>
   );
 }

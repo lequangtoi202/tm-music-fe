@@ -8,6 +8,7 @@ interface ISinger {
   birthDate: string;
   songs?: ISong[];
   albums: [];
+  followed: boolean;
 }
 
 export type { ISinger };

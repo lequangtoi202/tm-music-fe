@@ -45,11 +45,11 @@ const UserBoxLabel = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const navigate = useNavigate();
   const [user, setUser] = useState<IUser | null>(null);
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
   const { isLoggedIn } = useContext(KContext);
+  const currentUser = getCurrentUser();
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -59,7 +59,7 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
-  const listActions: ActionItem[] = isLoggedIn
+  const listActions: ActionItem[] = currentUser
     ? [
         { title: 'Hồ sơ', to: '/ho-so', icon: <AccountCircleIcon /> },
         { title: 'Đăng xuất', to: '/dang-xuat', icon: <LockIcon /> },
@@ -70,7 +70,6 @@ function HeaderUserbox() {
       ];
 
   useEffect(() => {
-    const currentUser = getCurrentUser();
     if (currentUser) {
       setUser({ ...JSON.parse(currentUser) });
     }
@@ -80,7 +79,7 @@ function HeaderUserbox() {
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
         <Avatar variant="circular" alt={user?.firstName} src={user?.avatar ?? '../../../assets/images/no-image.png'} />
-        {isLoggedIn && (
+        {currentUser && (
           <>
             <Hidden mdDown>
               <UserBoxText>

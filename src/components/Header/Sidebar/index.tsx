@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 
-import { Box, Drawer, alpha, styled, Divider, useTheme, Button, lighten, darken, Tooltip } from '@mui/material';
+import { Box, Divider, Drawer, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
-import SidebarMenu from './SidebarMenu';
 import { SidebarContext } from '../../../context/SidebarContext';
-import Scrollbar from '../../Scrollbar';
 import Logo from '../../Logo';
+import Scrollbar from '../../Scrollbar';
+import SidebarMenu from './SidebarMenu';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `

@@ -14,7 +14,7 @@ const StyledTextHeader = styled.div`
 `;
 
 const Container = styled.div`
-  margin-top: 30px;
+  margin-top: 24px;
   margin-left: 32px;
   margin-right: 32px;
   display: flex;

@@ -56,10 +56,7 @@ function Sidebar() {
     { label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist', type: MenuType.LINK_ITEM },
     { label: 'Nhập mã chia sẽ', icon: <Send />, type: MenuType.BUTTON_ITEM },
   ];
-  const menuList2 = [
-    { label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de', type: MenuType.LINK_ITEM },
-    { label: 'Nâng cấp Premium', icon: <Upgrade />, type: MenuType.BUTTON_ITEM },
-  ];
+  const menuList2 = [{ label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de', type: MenuType.LINK_ITEM }];
   return (
     <>
       <SidebarWrapper
@@ -81,12 +78,7 @@ function Sidebar() {
         }}
       >
         <Box mt={3} display={'flex'} justifyContent={'center'}>
-          <Box
-            mx={2}
-            sx={{
-              width: 62,
-            }}
-          >
+          <Box>
             <Logo />
           </Box>
         </Box>
@@ -143,12 +135,7 @@ function Sidebar() {
           }}
         >
           <Box mt={3} display={'flex'} justifyContent={'center'}>
-            <Box
-              mx={2}
-              sx={{
-                width: 62,
-              }}
-            >
+            <Box>
               <Logo />
             </Box>
           </Box>

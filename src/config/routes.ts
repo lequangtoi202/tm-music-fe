@@ -4,6 +4,7 @@ const routes: { [key: string]: string } = {
   albums: '/albums/:albumId',
   account: '/ho-so',
   myplaylist: '/mymusic/playlist',
+  myalbumDetail: '/mymusic/albums/:albumId',
 };
 
 export default routes;

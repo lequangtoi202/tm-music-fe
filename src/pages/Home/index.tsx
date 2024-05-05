@@ -50,6 +50,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '2',
@@ -64,6 +65,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '1',
@@ -78,6 +80,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '4',
@@ -92,6 +95,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '5',
@@ -106,6 +110,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '6',
@@ -120,6 +125,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
   ];
 
@@ -137,6 +143,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '2',
@@ -151,6 +158,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '1',
@@ -165,6 +173,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '4',
@@ -179,6 +188,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '5',
@@ -193,6 +203,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
     {
       id: '6',
@@ -207,6 +218,7 @@ function Homepage() {
       genre: mockGenre[0],
       liked: false,
       singers: [],
+      owner: false,
     },
   ];
   const albumData: IAlbum[] = [
@@ -218,6 +230,7 @@ function Homepage() {
       songs: carousel,
       created_at: new Date().toISOString(),
       liked: false,
+      owner: false,
     },
     {
       image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
@@ -227,6 +240,7 @@ function Homepage() {
       songs: carousel,
       created_at: new Date().toISOString(),
       liked: false,
+      owner: false,
     },
     {
       image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
@@ -236,6 +250,7 @@ function Homepage() {
       songs: carousel,
       created_at: new Date().toISOString(),
       liked: false,
+      owner: false,
     },
   ];
 

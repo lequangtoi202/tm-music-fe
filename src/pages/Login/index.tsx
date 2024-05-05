@@ -16,7 +16,7 @@ import Text from '../../components/Text';
 import { KContext } from '../../context';
 import { login, loginWithFaceBook, loginWithGoogle } from '../../services/user';
 import { IUser } from '../../types/User';
-import { setToken, setCurrentUser } from '../../utils/storage';
+import { setToken, setCurrentUser, setTempCurrentSong } from '../../utils/storage';
 import { StyledLink } from './styles';
 import Cookies from 'js-cookie';
 import Snackbars from '../../components/Snackbar';
@@ -84,6 +84,15 @@ function Login() {
           Cookies.set('email', email, { expires: 365 });
           Cookies.set('password', password, { expires: 365 });
         }
+        const { client } = response.data;
+        setCurrentUser({
+          firstName: client.first_name,
+          lastName: client.last_name,
+          avatar: client.avatar_oauth2,
+          email: client.email,
+          id: client.id,
+        });
+        setTempCurrentSong(client.listened_song);
         setToken(response.data.token);
         setIsLoggedIn(true);
         setSuccess('Đăng nhập thành công');
@@ -122,9 +131,20 @@ function Login() {
   });
 
   const onLoginFacebookSuccess = async (response: SuccessResponse) => {
-    const res = await loginWithFaceBook({
+    const { token, client } = await loginWithFaceBook({
       token: response.accessToken,
     });
+    setToken(token);
+    setCurrentUser({
+      firstName: client.first_name,
+      lastName: client.last_name,
+      avatar: client.avatar_oauth2,
+      email: client.email,
+      id: client.id,
+    });
+    setSuccess('Đăng nhập thành công');
+    setIsLoggedIn(true);
+    navigate('/');
   };
   const onLoginFacebookFailed = (res: FailResponse) => {
     setError('Đăng nhập facebook không thành công!');

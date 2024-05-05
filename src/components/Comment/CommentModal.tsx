@@ -27,20 +27,23 @@ function CommentModal({ song }: { song: ISong }) {
       setComments([...comments, res]);
     } else {
       alert('Bình luận không hợp lệ');
+      //THAY ĐỔI LẠI THÀNH THÔNG BÁO LỖI
     }
   };
 
   const handleDeleteComment = async (id: string) => {
     await deleteComment(id);
-    setComments([...comments]);
+    await getComments(song.id);
+  };
+
+  const getComments = async (id: string) => {
+    const res = await getCommentsOfSong(song.id);
+    setComments(res);
+    setSingers(song.singers?.map((singer) => singer.name).join(', '));
   };
 
   useEffect(() => {
-    (async () => {
-      const res = await getCommentsOfSong(song.id);
-      setComments(res);
-      setSingers(song.singers?.map((singer) => singer.name).join(', '));
-    })();
+    getComments(song.id);
   }, [song]);
 
   return (

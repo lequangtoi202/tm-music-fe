@@ -405,3 +405,16 @@ export const createCheckout = async (songId: string) => {
     console.error('Error create checkout:', error);
   }
 };
+
+export const createCheckoutSubmission = async () => {
+  try {
+    const response = await apiInstance.post(`/create-checkout-submission`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error create checkout:', error);
+  }
+};

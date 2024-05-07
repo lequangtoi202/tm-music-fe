@@ -83,13 +83,12 @@ export default function MediaControlCard() {
       const audio = new Audio(currentSong.audio);
       audio.onloadedmetadata = () => {
         const maxDuration = Math.floor(audio.duration);
-        console.log(maxDuration);
+        setDuration(maxDuration);
       };
-      const [minutes, seconds] = currentSong.duration.split(':').map(Number);
-      const maxDuration = minutes * 60 + seconds;
+      // const [minutes, seconds] = currentSong.duration.split(':').map(Number);
+      // const maxDuration = minutes * 60 + seconds;
 
       setCurrentTime(0);
-      setDuration(maxDuration);
       setIsMuted(false);
     }
   }, [currentSong]);
@@ -175,7 +174,7 @@ export default function MediaControlCard() {
           </Tooltip>
           <audio
             id="audioPlayer"
-            // controls={true}
+            controls={true}
             src={currentSong?.audio}
           />
         </Box>

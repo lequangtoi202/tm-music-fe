@@ -6,7 +6,7 @@ interface ISong {
   id: number;
   lyric: string;
   release_date: string;
-  duration: string;
+  duration?: string;
   views: number;
   track_number?: number;
   image?: string;

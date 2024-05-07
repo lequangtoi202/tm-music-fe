@@ -10,6 +10,7 @@ import Sidebar from '../../components/Sidebar';
 import Snackbars from '../../components/Snackbar';
 import { KContext } from '../../context';
 import { FullScreenMediaControlCard } from '../../pages/Home/styles';
+import LyricModal from '../../components/MediaControlCard/Lyric';
 
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();
@@ -60,6 +61,7 @@ const DefaultLayout = ({ children }: any) => {
       <FullScreenMediaControlCard>
         <MediaControlCard />
         {currentSong && <CommentModal song={currentSong} />}
+        {currentSong && <LyricModal song={currentSong} />}
       </FullScreenMediaControlCard>
       {error && <Snackbars status="error" open={true} message={error} />}
       {success && <Snackbars status="success" open={true} message={success} />}

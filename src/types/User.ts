@@ -4,6 +4,7 @@ interface IUser {
   firstName: string;
   lastName: string;
   avatar: string;
+  premium: boolean;
 }
 
 export type { IUser };

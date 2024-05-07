@@ -7,6 +7,7 @@ import { IUser } from '../types/User';
 import { IGlobalContext, KContextProps } from '../types/context';
 import { IAlbum } from '../types/Album';
 import { getSongDetail } from '../services/user';
+import { getCurrentUser } from '../utils/storage';
 
 export const KContext = createContext<IGlobalContext>({} as IGlobalContext);
 
@@ -20,13 +21,21 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [currentSong, setCurrentSong] = useState<ISong | null>(null);
   const [isOpenMoreAction, setIsOpenMoreAction] = useState<boolean>(false);
   const [isOpenSendToEmail, setIsOpenSendToEmail] = useState<boolean>(false);
+  const [playlistChanged, setChangedPlaylist] = useState<boolean>(false);
+  const [isShowLyric, setIsShowLyric] = useState<boolean>(false);
   const [isOpenAddPlaylistModal, setIsOpenAddPlaylistModal] = useState<boolean>(false);
   const [isOpenOTP, setIsOpenOTP] = useState<boolean>(false);
   const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false);
+  const [isOpenUploadBackground, setIsOpenUploadBackground] = useState<boolean>(false);
   const isMobile = useMediaQuery(`(max-width: ${breakpointLarge}px)`);
 
   const fetchData = async () => {
     try {
+      const localUser = getCurrentUser();
+      if (localUser) {
+        setIsLoggedIn(true);
+        setCurrentUser(JSON.parse(localUser));
+      }
       const data = await getSongDetail('7');
       setCurrentSong({
         title: data.title,
@@ -38,7 +47,7 @@ export const KContextProvider = ({ children }: KContextProps) => {
         image: data.image,
         singers: data.singers,
         genre: data.genre,
-        audio: data.audio,
+        audio: 'https://res.cloudinary.com/dx9vr7on4/video/upload/v1713808834/xm5ojwdexjx5s3lfjmgc.mp3',
         liked: data.liked,
         owner: data.owner,
       });
@@ -54,6 +63,7 @@ export const KContextProvider = ({ children }: KContextProps) => {
   return (
     <KContext.Provider
       value={{
+        isShowLyric,
         isMobile,
         isLoggedIn,
         isOpenMoreAction,
@@ -67,6 +77,11 @@ export const KContextProvider = ({ children }: KContextProps) => {
         error,
         success,
         isOpenUpload,
+        playlistChanged,
+        isOpenUploadBackground,
+        setIsOpenUploadBackground,
+        setChangedPlaylist,
+        setIsShowLyric,
         setSuccess,
         setError,
         setIsOpenAddPlaylistModal,

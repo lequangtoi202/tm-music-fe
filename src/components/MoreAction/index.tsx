@@ -33,6 +33,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
     setOpenCommentDialog,
     setIsOpenSendToEmail,
     setIsOpenUpload,
+    setIsOpenUploadBackground,
   } = useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
   const [playlists, setPlaylists] = useState<IAlbum[]>([]);
@@ -170,12 +171,20 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
               </ListItemButton>
             )}
             {pathname.includes('/mymusic/playlist') && (
-              <ListItemButton onClick={() => setIsOpenUpload(true)}>
-                <StyledListItemIcon>
-                  <CloudUpload />
-                </StyledListItemIcon>
-                <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Upload" />
-              </ListItemButton>
+              <>
+                <ListItemButton onClick={() => setIsOpenUploadBackground(true)}>
+                  <StyledListItemIcon>
+                    <CloudUpload />
+                  </StyledListItemIcon>
+                  <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải ảnh" />
+                </ListItemButton>
+                <ListItemButton onClick={() => setIsOpenUpload(true)}>
+                  <StyledListItemIcon>
+                    <CloudUpload />
+                  </StyledListItemIcon>
+                  <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải nhạc" />
+                </ListItemButton>
+              </>
             )}
             <ListItemButton onClick={handleClick}>
               <StyledListItemIcon>

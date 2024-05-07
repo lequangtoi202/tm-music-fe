@@ -12,6 +12,7 @@ import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import Snackbars from '../Snackbar';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 import UploadModal from '../Upload';
+import UploadSongModal from '../Upload/UploadSong';
 import { PLaylistTitle } from './PlaylistTitle';
 import {
   Container,
@@ -37,6 +38,7 @@ function Playlist() {
     success,
     setSuccess,
     setError,
+    playlistChanged,
   } = useContext(KContext);
 
   const fetchData = async () => {
@@ -48,7 +50,7 @@ function Playlist() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [playlistChanged]);
 
   const handleDeletePlaylist = async (id: number) => {
     const res = await deleteMyAlbum(id);
@@ -135,6 +137,7 @@ function Playlist() {
         <PlaylistModal />
         <MoreAction song={currentAlbum} />
         <UploadModal />
+        <UploadSongModal />
         {error && <Snackbars status="error" open={true} message={error} />}
         {success && <Snackbars status="success" open={true} message={success} />}
       </Container>

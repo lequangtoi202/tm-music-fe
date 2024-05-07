@@ -2,12 +2,15 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, Divider, Drawer, Skeleton, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
-import { Album, Category, Queue, Send, TravelExplore, Upgrade } from '@mui/icons-material';
+import { Category, Queue, Send, TravelExplore, WorkspacePremium } from '@mui/icons-material';
 import { sidebarWidth } from '../../constants';
+import { KContext } from '../../context';
 import { SidebarContext } from '../../context/SidebarContext';
+import Image from '../Image';
 import Logo from '../Logo';
 import Scrollbar from '../Scrollbar';
 import SidebarMenu from './SidebarMenu';
+import { StyledPremiumLogo } from './styles';
 import { MenuType } from './types';
 
 const SidebarWrapper = styled(Box)(
@@ -24,6 +27,7 @@ const SidebarWrapper = styled(Box)(
 
 function Sidebar() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const { currentUser } = useContext(KContext);
   const [loading, setLoading] = useState(true);
 
   const closeSidebar = () => toggleSidebar();
@@ -53,10 +57,12 @@ function Sidebar() {
   };
   const menuList = [{ label: 'Khám Phá', icon: <TravelExplore />, to: '/', type: MenuType.LINK_ITEM }];
   const menuList1 = [
-    { label: 'Premium', icon: <Send />, type: MenuType.PREMIUM },
     { label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist', type: MenuType.LINK_ITEM },
     { label: 'Nhập mã chia sẽ', icon: <Send />, type: MenuType.BUTTON_ITEM },
   ];
+  if (!currentUser?.premium) {
+    menuList1.push({ label: 'Mua premium', icon: <WorkspacePremium />, type: MenuType.PREMIUM });
+  }
   const menuList2 = [{ label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de', type: MenuType.LINK_ITEM }];
   return (
     <>
@@ -116,6 +122,11 @@ function Sidebar() {
             {loading ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
           </Box>
         </Box>
+        {currentUser?.premium && (
+          <StyledPremiumLogo>
+            <Image src="../../assets/images/no-image.png" />
+          </StyledPremiumLogo>
+        )}
       </SidebarWrapper>
       <Drawer
         sx={{
@@ -172,6 +183,11 @@ function Sidebar() {
               {loading ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
             </Box>
           </Box>
+          {currentUser?.premium && (
+            <StyledPremiumLogo>
+              <Image src="../../assets/images/no-image.png" />
+            </StyledPremiumLogo>
+          )}
         </SidebarWrapper>
       </Drawer>
     </>

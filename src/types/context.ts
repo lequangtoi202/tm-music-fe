@@ -10,6 +10,7 @@ export interface IGlobalContext {
   isLoggedIn: boolean;
   isOpenMoreAction: boolean;
   isOpenUpload: boolean;
+  isOpenUploadBackground: boolean;
   isOpenOTP: boolean;
   isOpenSendToEmail: boolean;
   isOpenAddPlaylistModal: boolean;
@@ -17,6 +18,11 @@ export interface IGlobalContext {
   currentUser: IUser | null;
   currentAlbum: IAlbum | null;
   openCommentDialog: boolean;
+  isShowLyric: boolean;
+  playlistChanged: boolean;
+  setChangedPlaylist: Dispatch<SetStateAction<boolean>>;
+  setIsOpenUploadBackground: Dispatch<SetStateAction<boolean>>;
+  setIsShowLyric: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<string | null>>;
   setSuccess: Dispatch<SetStateAction<string | null>>;
   setCurrentUser: Dispatch<SetStateAction<IUser | null>>;

@@ -1,45 +1,60 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { Box, Fade, Typography } from '@mui/material';
+import { Box, Button, Fade, MenuItem, Select } from '@mui/material';
 import { css, styled } from '@mui/system';
 import clsx from 'clsx';
-import { forwardRef, useContext, useState } from 'react';
-import FileUpload from 'react-material-file-upload';
+import { forwardRef, useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
-import { StyledOTPButton } from '../OTP/styles';
-function UploadModal() {
-  const { isOpenUploadBackground, setIsOpenUploadBackground } = useContext(KContext);
-  const [files, setFiles] = useState<File[]>([]);
+import { getAllGenres, getAllSingers } from '../../services/user';
+import { IGenre } from '../../types/Genre';
 
+function UploadSongModal() {
+  const { isOpenUpload, setIsOpenUpload } = useContext(KContext);
+  const [files, setFiles] = useState<File[]>([]);
+  const [genres, setGenres] = useState<IGenre[]>([]);
+  const [artists, setArtists] = useState<IGenre[]>([]);
   const handleClose = () => {
-    setIsOpenUploadBackground(false);
+    setIsOpenUpload(false);
   };
-  const handleUploadImage = () => {
-    //CALL API to update me album
-    console.log(files);
+
+  const fetchData = async () => {
+    const resGenres = await getAllGenres(1, 1000);
+    setGenres(resGenres?.data);
+    const resArtists = await getAllSingers(1, 1000);
+    setArtists(resArtists?.data);
   };
+
+  const onSubmit = async () => {};
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Modal
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
-      open={isOpenUploadBackground}
+      open={isOpenUpload}
       onClose={handleClose}
       slots={{ backdrop: StyledBackdrop }}
     >
-      <Fade in={isOpenUploadBackground}>
-        <ModalContent sx={{ width: 480, height: 320 }}>
+      <Fade in={isOpenUpload}>
+        <ModalContent sx={{ width: 520, height: 520 }}>
           <Box width={'100%'} height={'100%'} display={'flex'}>
-            <FileUpload
-              sx={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
-              value={files}
-              title="Chọn hoặc kéo file ảnh vào đây để tải lên"
-              onChange={setFiles}
-              multiple={true}
-              buttonText="Chọn ảnh"
-            />
+            <form>
+              <Select>
+                <MenuItem value="option1">Option 1</MenuItem>
+                <MenuItem value="option2">Option 2</MenuItem>
+              </Select>
+              <Select>
+                <MenuItem value="option1">Option 1</MenuItem>
+                <MenuItem value="option2">Option 2</MenuItem>
+              </Select>
+              <Box>
+                <input type="file" />
+              </Box>
+              <Button type="submit">Submit</Button>
+            </form>
           </Box>
-          <StyledOTPButton onClick={handleUploadImage} disabled={files.length > 0 ? false : true} variant="contained">
-            Tải lên
-          </StyledOTPButton>
         </ModalContent>
       </Fade>
     </Modal>
@@ -114,4 +129,4 @@ export const ModalContent = styled('div')(
   `,
 );
 
-export default UploadModal;
+export default UploadSongModal;

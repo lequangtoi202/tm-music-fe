@@ -26,8 +26,17 @@ export default function MediaControlCard() {
   const [volume, setVolume] = useState<number>(50);
   const [prevVolume] = useState<number>(50);
   const [isMuted, setIsMuted] = useState(false);
-  const { isMobile, currentSong, currentAlbum, setCurrentSong, setOpenCommentDialog, error, success, setError } =
-    useContext(KContext);
+  const {
+    isMobile,
+    currentSong,
+    currentAlbum,
+    setCurrentSong,
+    setOpenCommentDialog,
+    error,
+    success,
+    setError,
+    setIsShowLyric,
+  } = useContext(KContext);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
@@ -211,7 +220,12 @@ export default function MediaControlCard() {
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Lời bài hát">
-            <IconButton aria-label="Lyric">
+            <IconButton
+              aria-label="Lyric"
+              onClick={() => {
+                setIsShowLyric(true);
+              }}
+            >
               <Lyrics />
             </IconButton>
           </Tooltip>

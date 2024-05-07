@@ -91,6 +91,7 @@ function Login() {
           avatar: client.avatar_oauth2,
           email: client.email,
           id: client.id,
+          premium: client.premium,
         });
         setTempCurrentSong(client.listened_song);
         setToken(response.data.token);
@@ -120,6 +121,7 @@ function Login() {
         avatar: client.avatar_oauth2,
         email: client.email,
         id: client.id,
+        premium: client.premium,
       });
       setSuccess('Đăng nhập thành công');
       setIsLoggedIn(true);
@@ -141,6 +143,7 @@ function Login() {
       avatar: client.avatar_oauth2,
       email: client.email,
       id: client.id,
+      premium: client.premium,
     });
     setSuccess('Đăng nhập thành công');
     setIsLoggedIn(true);

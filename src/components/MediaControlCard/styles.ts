@@ -51,4 +51,9 @@ const CustomDisplayControl = styled(Box)`
   }
 `;
 
-export { CustomCardContent, CustomDisplayControl };
+const LyricContainer = styled(Box)`
+  max-height: 480px;
+  overflow-y: auto;
+`;
+
+export { CustomCardContent, CustomDisplayControl, LyricContainer };

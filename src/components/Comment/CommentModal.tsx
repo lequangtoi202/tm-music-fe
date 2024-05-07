@@ -1,4 +1,4 @@
-import { Box, Button, Icon, IconButton, Typography } from '@mui/material';
+import { Box, Button, Fade, Icon, IconButton, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { KContext } from '../../context';
@@ -81,62 +81,64 @@ function CommentModal({ song }: { song: ISong }) {
       aria-labelledby="modal-modal-title"
       slots={{ backdrop: StyledBackdrop }}
     >
-      <ModalContent sx={{ width: 640 }}>
-        <PlaylistItem>
-          <SongTitle>
-            <Image src={song?.image || '../../assets/images/no-image.png'} alt={song.title} />
-            <StyledBox>
-              <StyledBoxTitle>
-                <Typography fontWeight={700} variant="inherit" noWrap>
-                  {song.title}
-                </Typography>
-              </StyledBoxTitle>
-              <StyledBoxTitle>
-                <Typography variant="inherit" noWrap>
-                  {singers}
-                </Typography>
-              </StyledBoxTitle>
-            </StyledBox>
-          </SongTitle>
-        </PlaylistItem>
-        <CommentContainer>
-          <Box sx={{ fontWeight: 700, fontSize: 14 }}>Bình luận</Box>
-          {comments?.map((comment, idx) => (
-            <CommentWrapper key={idx}>
-              <UserWrapper>
-                <UserAvatar>
-                  <Image
-                    src={comment.createdBy?.avatar ?? '../../assets/images/no-image.png'}
-                    alt={comment.createdBy?.firstName}
-                  />
-                </UserAvatar>
-                <StyledName>{comment.createdBy?.firstName}</StyledName>
-              </UserWrapper>
-              <StyledComment>
-                {comment?.status ? (
-                  <StyledPositive>
-                    <Typography variant="inherit">{comment?.content}</Typography>
-                    <CheckCircle />
-                  </StyledPositive>
-                ) : (
-                  <StyledNegative>
-                    <Typography variant="inherit">{comment?.content}</Typography>
-                    <Warning />
-                  </StyledNegative>
-                )}
-
-                <IconButton onClick={() => handleDeleteComment(comment.id)}>
-                  <Typography fontSize={12} variant="inherit" noWrap>
-                    Xóa
+      <Fade in={openCommentDialog}>
+        <ModalContent sx={{ width: 640 }}>
+          <PlaylistItem>
+            <SongTitle>
+              <Image src={song?.image || '../../assets/images/no-image.png'} alt={song.title} />
+              <StyledBox>
+                <StyledBoxTitle>
+                  <Typography fontWeight={700} variant="inherit" noWrap>
+                    {song.title}
                   </Typography>
-                </IconButton>
-              </StyledComment>
-            </CommentWrapper>
-          ))}
-          {page < totalPages && <StyledViewMoreComment onClick={handleViewMore}>Xem thêm</StyledViewMoreComment>}
-        </CommentContainer>
-        <FormComment reset={reset} onSubmit={onSubmit} handleSubmit={handleSubmit} register={register} />
-      </ModalContent>
+                </StyledBoxTitle>
+                <StyledBoxTitle>
+                  <Typography variant="inherit" noWrap>
+                    {singers}
+                  </Typography>
+                </StyledBoxTitle>
+              </StyledBox>
+            </SongTitle>
+          </PlaylistItem>
+          <CommentContainer>
+            <Box sx={{ fontWeight: 700, fontSize: 14 }}>Bình luận</Box>
+            {comments?.map((comment, idx) => (
+              <CommentWrapper key={idx}>
+                <UserWrapper>
+                  <UserAvatar>
+                    <Image
+                      src={comment.createdBy?.avatar ?? '../../assets/images/no-image.png'}
+                      alt={comment.createdBy?.firstName}
+                    />
+                  </UserAvatar>
+                  <StyledName>{comment.createdBy?.firstName}</StyledName>
+                </UserWrapper>
+                <StyledComment>
+                  {comment?.status ? (
+                    <StyledPositive>
+                      <Typography variant="inherit">{comment?.content}</Typography>
+                      <CheckCircle />
+                    </StyledPositive>
+                  ) : (
+                    <StyledNegative>
+                      <Typography variant="inherit">{comment?.content}</Typography>
+                      <Warning />
+                    </StyledNegative>
+                  )}
+
+                  <IconButton onClick={() => handleDeleteComment(comment.id)}>
+                    <Typography fontSize={12} variant="inherit" noWrap>
+                      Xóa
+                    </Typography>
+                  </IconButton>
+                </StyledComment>
+              </CommentWrapper>
+            ))}
+            {page < totalPages && <StyledViewMoreComment onClick={handleViewMore}>Xem thêm</StyledViewMoreComment>}
+          </CommentContainer>
+          <FormComment reset={reset} onSubmit={onSubmit} handleSubmit={handleSubmit} register={register} />
+        </ModalContent>
+      </Fade>
     </Modal>
   );
 }

@@ -259,9 +259,13 @@ export const getAuthorById = async (id: string) => {
   }
 };
 
-export const getAllSingers = async () => {
+export const getAllSingers = async (page: number, size?: number) => {
   try {
-    const response = await apiInstance.get(`/singers`);
+    let url = `/singers?page=${page}`;
+    if (size) {
+      url += `&page_size=${size}`;
+    }
+    const response = await apiInstance.get(url);
     return response.data;
   } catch (error) {
     console.error('Error get all singers:', error);
@@ -295,9 +299,13 @@ export const getSongDetail = async (id: string) => {
   }
 };
 
-export const getAllGenres = async (page: number) => {
+export const getAllGenres = async (page: number, size?: number) => {
   try {
-    const response = await apiInstance.get(`/genres?page=${page}`);
+    let url = `/genres?page=${page}`;
+    if (size) {
+      url += `&page_size=${size}`;
+    }
+    const response = await apiInstance.get(url);
     return response;
   } catch (error) {
     console.error('Error get all genres:', error);
@@ -416,5 +424,42 @@ export const createCheckoutSubmission = async () => {
     return response.data;
   } catch (error) {
     console.error('Error create checkout:', error);
+  }
+};
+
+export const uploadAlbumImage = async (file: any) => {
+  const formData = new FormData();
+  formData.append('image', file);
+  try {
+    const response = await apiInstance.post(`/create-checkout-session`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error upload image:', error);
+  }
+};
+
+export const upSongToAlbum = async (data: any) => {
+  const formData = new FormData();
+  formData.append('title', data.title);
+  formData.append('lyric', data.lyric);
+  formData.append('genre_id', data.genre_id);
+  formData.append('logo', data.logo);
+  formData.append('mp3_file', data.audio);
+  formData.append('artist_ids', data.artist_ids);
+  try {
+    const response = await apiInstance.post(`/create-checkout-session`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error upload song to album:', error);
   }
 };

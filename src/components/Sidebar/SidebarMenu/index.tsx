@@ -7,6 +7,7 @@ import { KContext } from '../../../context';
 import { SidebarContext } from '../../../context/SidebarContext';
 import { MenuType, SidebarMenuProps } from '../types';
 import { createCheckoutSubmission } from '../../../services/user';
+import { WorkspacePremium } from '@mui/icons-material';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -141,51 +142,45 @@ function SidebarMenu({ menus }: SidebarMenuProps) {
     } catch (error) {
       alert('Failed to process premium purchase. Please try again later.');
     }
-  }
+  };
 
   return (
-    <>
-      <MenuWrapper>
-        <SubMenuWrapper>
-          <List component="div">
-            {menus.map((item, index) => (
-              <ListItem key={index} component="div">
-                {item.type === MenuType.LINK_ITEM ? (
-                  <Button
-                    disableRipple
-                    component={RouterLink}
-                    onClick={closeSidebar}
-                    to={item?.to ?? '/'}
-                    startIcon={item.icon}
-                  >
-                    {item.label}
-                  </Button>
-                ) : item.type === MenuType.PREMIUM ? (
-                  <Button
-                    disableRipple
-                    onClick={buyPremium}
-                    startIcon={item.icon}
-                  >
-                    {item.label}
-                  </Button>
-                ) :(
-                  <Button
-                    disableRipple
-                    onClick={() => {
-                      setIsOpenOTP(true);
-                      closeSidebar();
-                    }}
-                    startIcon={item.icon}
-                  >
-                    {item.label}
-                  </Button>
-                )}
-              </ListItem>
-            ))}
-          </List>
-        </SubMenuWrapper>
-      </MenuWrapper>
-    </>
+    <MenuWrapper>
+      <SubMenuWrapper>
+        <List component="div">
+          {menus.map((item, index) => (
+            <ListItem key={index} component="div">
+              {item.type === MenuType.LINK_ITEM ? (
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to={item?.to ?? '/'}
+                  startIcon={item.icon}
+                >
+                  {item.label}
+                </Button>
+              ) : item.type === MenuType.PREMIUM ? (
+                <Button disableRipple onClick={buyPremium} startIcon={item.icon}>
+                  {item.label}
+                </Button>
+              ) : (
+                <Button
+                  disableRipple
+                  onClick={() => {
+                    setIsOpenOTP(true);
+                    closeSidebar();
+                  }}
+                  startIcon={item.icon}
+                >
+                  {item.label}
+                </Button>
+              )}
+            </ListItem>
+          ))}
+        </List>
+      </SubMenuWrapper>
+    </MenuWrapper>
   );
 }
 

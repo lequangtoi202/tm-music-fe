@@ -1,6 +1,6 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
 import { Close } from '@mui/icons-material';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, Fade, IconButton, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import clsx from 'clsx';
 import { forwardRef, useContext, useState } from 'react';
@@ -9,7 +9,14 @@ import { createMyAlbum } from '../../services/user';
 import { StyledInput } from './styles';
 
 export const PlaylistModal = () => {
-  const { isOpenAddPlaylistModal, setIsOpenAddPlaylistModal, setSuccess, setError } = useContext(KContext);
+  const {
+    isOpenAddPlaylistModal,
+    setIsOpenAddPlaylistModal,
+    setSuccess,
+    setError,
+    setChangedPlaylist,
+    playlistChanged,
+  } = useContext(KContext);
   const [playlistName, setPlaylistName] = useState('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
@@ -22,6 +29,7 @@ export const PlaylistModal = () => {
       setSuccess('Tạo playlist thành công!');
       setPlaylistName('');
       setIsOpenAddPlaylistModal(false);
+      setChangedPlaylist(!playlistChanged);
     } else if (res?.status === 422) {
       setError('Tạo playlist không thành công.');
     }
@@ -35,42 +43,44 @@ export const PlaylistModal = () => {
       onClose={() => setIsOpenAddPlaylistModal(false)}
       slots={{ backdrop: StyledBackdrop }}
     >
-      <ModalContent>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <IconButton
-            aria-label="close"
-            onClick={() => setIsOpenAddPlaylistModal(false)}
-            sx={{ position: 'absolute', top: 8, right: 8 }}
-          >
-            <Close />
-          </IconButton>
-        </Box>
-        <Typography fontWeight={700} textAlign={'center'} fontSize={20} color={'#1976d2'} variant="inherit" noWrap>
-          Tạo playlist mới
-        </Typography>
-        <Box width={'100%'}>
-          <StyledInput
-            autoFocus
-            disableUnderline={true}
-            value={playlistName}
-            onChange={(event) => {
-              setPlaylistName(event.target.value);
-              setDisabled(event.target.value.length === 0);
-            }}
-            placeholder="Nhập tên playlist"
-          />
-          <Box sx={{ mt: 2 }} display={'flex'} justifyContent={'center'}>
-            <Button
-              sx={{ borderRadius: '18px', flex: 1 }}
-              disabled={disabled}
-              onClick={handleCreateNewPlaylist}
-              variant="contained"
+      <Fade in={isOpenAddPlaylistModal}>
+        <ModalContent>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <IconButton
+              aria-label="close"
+              onClick={() => setIsOpenAddPlaylistModal(false)}
+              sx={{ position: 'absolute', top: 8, right: 8 }}
             >
-              TẠO MỚI
-            </Button>
+              <Close />
+            </IconButton>
           </Box>
-        </Box>
-      </ModalContent>
+          <Typography fontWeight={700} textAlign={'center'} fontSize={20} color={'#1976d2'} variant="inherit" noWrap>
+            Tạo playlist mới
+          </Typography>
+          <Box width={'100%'}>
+            <StyledInput
+              autoFocus
+              disableUnderline={true}
+              value={playlistName}
+              onChange={(event) => {
+                setPlaylistName(event.target.value);
+                setDisabled(event.target.value.length === 0);
+              }}
+              placeholder="Nhập tên playlist"
+            />
+            <Box sx={{ mt: 2 }} display={'flex'} justifyContent={'center'}>
+              <Button
+                sx={{ borderRadius: '18px', flex: 1 }}
+                disabled={disabled}
+                onClick={handleCreateNewPlaylist}
+                variant="contained"
+              >
+                TẠO MỚI
+              </Button>
+            </Box>
+          </Box>
+        </ModalContent>
+      </Fade>
     </Modal>
   );
 };

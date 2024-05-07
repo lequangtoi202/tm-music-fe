@@ -7,8 +7,8 @@ const StyledPremiumLogo = styled(Box)`
   margin-top: 30px;
 
   & > img {
-    width: 160px;
-    height: 160px;
+    width: 140px;
+    height: 140px;
     object-fit: cover;
   }
 `;

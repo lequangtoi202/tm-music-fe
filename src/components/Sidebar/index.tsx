@@ -124,7 +124,7 @@ function Sidebar() {
         </Box>
         {currentUser?.premium && (
           <StyledPremiumLogo>
-            <Image src="../../assets/images/no-image.png" />
+            <Image src="https://cdn-icons-png.flaticon.com/512/3649/3649801.png" />
           </StyledPremiumLogo>
         )}
       </SidebarWrapper>
@@ -185,7 +185,7 @@ function Sidebar() {
           </Box>
           {currentUser?.premium && (
             <StyledPremiumLogo>
-              <Image src="../../assets/images/no-image.png" />
+              <Image src="https://cdn-icons-png.flaticon.com/512/3649/3649801.png" />
             </StyledPremiumLogo>
           )}
         </SidebarWrapper>

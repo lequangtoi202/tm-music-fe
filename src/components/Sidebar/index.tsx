@@ -53,6 +53,7 @@ function Sidebar() {
   };
   const menuList = [{ label: 'Khám Phá', icon: <TravelExplore />, to: '/', type: MenuType.LINK_ITEM }];
   const menuList1 = [
+    { label: 'Premium', icon: <Send />, type: MenuType.PREMIUM },
     { label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist', type: MenuType.LINK_ITEM },
     { label: 'Nhập mã chia sẽ', icon: <Send />, type: MenuType.BUTTON_ITEM },
   ];

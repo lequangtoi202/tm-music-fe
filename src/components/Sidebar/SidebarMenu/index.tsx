@@ -6,6 +6,7 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import { KContext } from '../../../context';
 import { SidebarContext } from '../../../context/SidebarContext';
 import { MenuType, SidebarMenuProps } from '../types';
+import { createCheckoutSubmission } from '../../../services/user';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -133,6 +134,14 @@ const SubMenuWrapper = styled(Box)(
 function SidebarMenu({ menus }: SidebarMenuProps) {
   const { closeSidebar } = useContext(SidebarContext);
   const { setIsOpenOTP } = useContext(KContext);
+  const buyPremium = async () => {
+    try {
+      const res = await createCheckoutSubmission();
+      window.location.href = res.url;
+    } catch (error) {
+      alert('Failed to process premium purchase. Please try again later.');
+    }
+  }
 
   return (
     <>
@@ -151,7 +160,15 @@ function SidebarMenu({ menus }: SidebarMenuProps) {
                   >
                     {item.label}
                   </Button>
-                ) : (
+                ) : item.type === MenuType.PREMIUM ? (
+                  <Button
+                    disableRipple
+                    onClick={buyPremium}
+                    startIcon={item.icon}
+                  >
+                    {item.label}
+                  </Button>
+                ) :(
                   <Button
                     disableRipple
                     onClick={() => {

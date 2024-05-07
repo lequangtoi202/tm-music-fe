@@ -1,6 +1,7 @@
 export enum MenuType {
   LINK_ITEM = 'link_item',
   BUTTON_ITEM = 'button_item',
+  PREMIUM = 'premium'
 }
 interface MenuItem {
   label: string;

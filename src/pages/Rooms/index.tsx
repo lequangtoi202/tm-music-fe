@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCurrentUser } from '../../utils/storage';
 
-import { Link } from "react-router-dom";
-import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button, Grid } from "@material-ui/core";
 import RoomList from "./RoomList";

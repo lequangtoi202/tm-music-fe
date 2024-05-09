@@ -10,6 +10,7 @@ const Account = lazy(() => import('../pages/Account'));
 const MyPlaylist = lazy(() => import('../pages/Playlist'));
 const MyAlbumDetail = lazy(() => import('../pages/Album'));
 const Rooms = lazy(() => import('../pages/Rooms'));
+const RoomDetail = lazy(() => import('../pages/RoomDetail'));
 
 const publicRoutes: any = [
   {
@@ -45,6 +46,11 @@ const publicRoutes: any = [
   {
     path: config.routes.rooms,
     component: Rooms,
+    layout: DefaultLayout,
+  },
+  {
+    path: config.routes.room,
+    component: RoomDetail,
     layout: DefaultLayout,
   },
 ];

@@ -463,3 +463,13 @@ export const upSongToAlbum = async (data: any) => {
     console.error('Error upload song to album:', error);
   }
 };
+
+export const getRooms = async () => {
+  try {
+    const response = await apiInstance.get(`/me/rooms`);
+    return response;
+  } catch (error) {
+    console.error('Error verify otp:', error);
+    return (error as any).response.status;
+  }
+};

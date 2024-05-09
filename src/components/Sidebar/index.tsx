@@ -6,11 +6,9 @@ import { Category, Queue, Send, TravelExplore, WorkspacePremium } from '@mui/ico
 import { sidebarWidth } from '../../constants';
 import { KContext } from '../../context';
 import { SidebarContext } from '../../context/SidebarContext';
-import Image from '../Image';
 import Logo from '../Logo';
 import Scrollbar from '../Scrollbar';
 import SidebarMenu from './SidebarMenu';
-import { StyledPremiumLogo } from './styles';
 import { MenuType } from './types';
 
 const SidebarWrapper = styled(Box)(
@@ -122,11 +120,6 @@ function Sidebar() {
             {loading ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
           </Box>
         </Box>
-        {currentUser?.premium && (
-          <StyledPremiumLogo>
-            <Image src="https://cdn-icons-png.flaticon.com/512/3649/3649801.png" />
-          </StyledPremiumLogo>
-        )}
       </SidebarWrapper>
       <Drawer
         sx={{
@@ -183,11 +176,6 @@ function Sidebar() {
               {loading ? renderSkeletonContent(menuList1.length) : <SidebarMenu menus={menuList1} />}
             </Box>
           </Box>
-          {currentUser?.premium && (
-            <StyledPremiumLogo>
-              <Image src="https://cdn-icons-png.flaticon.com/512/3649/3649801.png" />
-            </StyledPremiumLogo>
-          )}
         </SidebarWrapper>
       </Drawer>
     </>

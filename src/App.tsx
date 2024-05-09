@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { CssBaseline } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
 import React, { Fragment, ReactNode, Suspense } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
@@ -21,39 +20,37 @@ function App() {
     <GoogleOAuthProvider clientId={clientId}>
       <Router>
         <ThemeProvider>
-          <LocalizationProvider>
-            <CssBaseline />
-            <Suspense fallback={<Loading />}>
-              <Routes>
-                {publicRoutes.map((route: any, index: number) => {
-                  let Layout: LayoutComponent = DefaultLayout;
-                  const Page = route.component;
-                  if (route.layout) {
-                    Layout = route.layout;
-                  } else if (route.layout === null) {
-                    Layout = Fragment;
-                  }
+          <CssBaseline />
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              {publicRoutes.map((route: any, index: number) => {
+                let Layout: LayoutComponent = DefaultLayout;
+                const Page = route.component;
+                if (route.layout) {
+                  Layout = route.layout;
+                } else if (route.layout === null) {
+                  Layout = Fragment;
+                }
 
-                  return (
-                    <Route
-                      key={index}
-                      path={route.path}
-                      element={
-                        <Suspense fallback={<Loading />}>
-                          <Layout>
-                            <Page />
-                          </Layout>
-                        </Suspense>
-                      }
-                    />
-                  );
-                })}
-                <Route path={'/dang-nhap'} element={<Login />} />
-                <Route path={'/dang-ky'} element={<SignUp />} />
-                <Route path={'/dang-xuat'} element={<Logout />} />
-              </Routes>
-            </Suspense>
-          </LocalizationProvider>
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                      <Suspense fallback={<Loading />}>
+                        <Layout>
+                          <Page />
+                        </Layout>
+                      </Suspense>
+                    }
+                  />
+                );
+              })}
+              <Route path={'/dang-nhap'} element={<Login />} />
+              <Route path={'/dang-ky'} element={<SignUp />} />
+              <Route path={'/dang-xuat'} element={<Logout />} />
+            </Routes>
+          </Suspense>
         </ThemeProvider>
       </Router>
     </GoogleOAuthProvider>

@@ -1,26 +1,12 @@
-import { Box, styled } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { WorkspacePremium } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { useContext } from 'react';
+import { KContext } from '../../context';
 import Image from '../Image';
-
-const LogoWrapper = styled(Link)(
-  ({ theme }) => `
-        
-`,
-);
-
-const LogoSignWrapper = styled(Box)(
-  () => `
-        width: 120px;
-        height: 72px;
-        display: flex;
-        justify-content: center;
-        & > img {
-            height: 100%;
-        }
-`,
-);
+import { LogoSignWrapper, LogoWrapper, StyledPremiumLogo, StyledPremiumText } from './styles';
 
 function Logo() {
+  const { currentUser } = useContext(KContext);
   return (
     <LogoWrapper to="/">
       <LogoSignWrapper>
@@ -29,6 +15,14 @@ function Logo() {
           alt=""
         />
       </LogoSignWrapper>
+      {currentUser?.premium && (
+        <StyledPremiumLogo>
+          <IconButton>
+            <WorkspacePremium />
+            <StyledPremiumText>Premium</StyledPremiumText>
+          </IconButton>
+        </StyledPremiumLogo>
+      )}
     </LogoWrapper>
   );
 }

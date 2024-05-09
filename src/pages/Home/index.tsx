@@ -9,7 +9,7 @@ import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
 import { PlaylistModal } from '../../components/PlaylistModal';
-import { getAllAlbums, getAllGenres, getHistories } from '../../services/user';
+import { getAlbumsByGenre, getAllAlbums, getAllGenres, getHistories } from '../../services/user';
 const theme = createTheme();
 
 function Homepage() {
@@ -18,7 +18,7 @@ function Homepage() {
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-
+  const genresMap = new Map<number, IAlbum[]>();
   const mockGenre: IGenre[] = [
     {
       title: 'Pop',
@@ -182,7 +182,12 @@ function Homepage() {
       const resAlbums = await getAllAlbums(page);
       setAlbums(resAlbums?.data?.albums ?? []);
       const resGenres = await getAllGenres(page);
-      setGenres(resGenres?.data?.genres ?? []);
+      const genresData = resGenres?.data?.genres ?? [];
+      setGenres(genresData);
+      genresData.forEach(async (genre: IGenre) => {
+        const res = await getAlbumsByGenre(genre.id, 1, 1000);
+        genresMap.set(genre.id, res?.data?.albums ?? []);
+      });
     })();
   }, []);
 
@@ -200,7 +205,10 @@ function Homepage() {
           </Box>
           {genres.length > 0 &&
             genres.map((genre, idx) => {
-              const albumItems = albumData.slice(0, 4);
+              const albumItems = genresMap.get(genre.id) ?? [];
+              if (!albumItems || albumItems.length === 0) {
+                return null;
+              }
               return (
                 <Box key={genre.id}>
                   <TextHeader text={genre.title} />

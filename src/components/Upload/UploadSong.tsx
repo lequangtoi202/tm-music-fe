@@ -1,29 +1,90 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { Box, Button, Fade, MenuItem, Select } from '@mui/material';
+import { Autocomplete, Box, Button, Fade, FormControl, FormLabel, Input, Stack, TextField } from '@mui/material';
 import { css, styled } from '@mui/system';
 import clsx from 'clsx';
 import { forwardRef, useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
-import { getAllGenres, getAllSingers } from '../../services/user';
+import { getAllGenres, getAllSingers, upSongToAlbum } from '../../services/user';
 import { IGenre } from '../../types/Genre';
+import { ISinger } from '../../types/Singer';
+import { TextareaAutosize } from './styles';
 
-function UploadSongModal() {
-  const { isOpenUpload, setIsOpenUpload } = useContext(KContext);
-  const [files, setFiles] = useState<File[]>([]);
-  const [genres, setGenres] = useState<IGenre[]>([]);
-  const [artists, setArtists] = useState<IGenre[]>([]);
+function UploadSongModal({ albumId }: { albumId: number | undefined }) {
+  const {
+    isOpenUpload,
+    setIsOpenUpload,
+    setSuccess,
+    setError,
+    setChangedPlaylist,
+    playlistChanged,
+    setIsOpenMoreAction,
+  } = useContext(KContext);
+  const [genresOptions, setGenresOptions] = useState<any>([]);
+  const [artistsOptions, setArtistsOptions] = useState<any>([]);
+  const [form, setForm] = useState({
+    title: '',
+    lyrics: '',
+    genre: {},
+    artists: [],
+    mp3_file: null,
+    logo: null,
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({
+      ...form,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   const handleClose = () => {
     setIsOpenUpload(false);
   };
 
   const fetchData = async () => {
     const resGenres = await getAllGenres(1, 1000);
-    setGenres(resGenres?.data);
+    setGenresOptions(
+      resGenres?.data?.genres.map((genre: IGenre) => {
+        return {
+          label: genre.title,
+          value: genre.id,
+        };
+      }),
+    );
     const resArtists = await getAllSingers(1, 1000);
-    setArtists(resArtists?.data);
+    setArtistsOptions(
+      resArtists?.data?.singers.map((artist: ISinger) => {
+        return {
+          label: artist.name,
+          value: artist.id,
+        };
+      }),
+    );
   };
 
-  const onSubmit = async () => {};
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setForm({
+        ...form,
+        [event.target.name]: event.target.files[0],
+      });
+    }
+  };
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!albumId) return;
+    const res = await upSongToAlbum(form, albumId);
+    if (res.success) {
+      setSuccess('Thêm bài hát thành công');
+      setIsOpenMoreAction(false);
+      setIsOpenUpload(false);
+      setChangedPlaylist(!playlistChanged);
+    } else {
+      setError('Thêm bài hát không thành công');
+      setIsOpenMoreAction(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -39,20 +100,84 @@ function UploadSongModal() {
     >
       <Fade in={isOpenUpload}>
         <ModalContent sx={{ width: 520, height: 520 }}>
-          <Box width={'100%'} height={'100%'} display={'flex'}>
-            <form>
-              <Select>
-                <MenuItem value="option1">Option 1</MenuItem>
-                <MenuItem value="option2">Option 2</MenuItem>
-              </Select>
-              <Select>
-                <MenuItem value="option1">Option 1</MenuItem>
-                <MenuItem value="option2">Option 2</MenuItem>
-              </Select>
-              <Box>
-                <input type="file" />
-              </Box>
-              <Button type="submit">Submit</Button>
+          <Box width={'100%'} height={'100%'} overflow={'scroll'} display={'flex'}>
+            <form onSubmit={onSubmit} style={{ width: '100%' }}>
+              <Stack spacing={2} sx={{ flexGrow: 1 }}>
+                <Stack spacing={1}>
+                  <FormControl sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}>
+                    <TextField
+                      required
+                      name="title"
+                      onChange={handleChange}
+                      id="outlined-basic"
+                      label="Tên bài hát"
+                      variant="outlined"
+                      value={form.title}
+                    />
+                  </FormControl>
+                </Stack>
+                <Stack spacing={1}>
+                  <FormControl sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}>
+                    <TextareaAutosize
+                      value={form.lyrics}
+                      name="lyrics"
+                      onChange={handleChange}
+                      required
+                      minRows={3}
+                      placeholder="Lời bài hát"
+                    />
+                  </FormControl>
+                </Stack>
+                <Stack spacing={1}>
+                  <FormControl>
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={genresOptions}
+                      fullWidth
+                      onChange={(event, newValue) => {
+                        setForm({ ...form, genre: newValue as {} });
+                      }}
+                      renderInput={(params) => (
+                        <TextField name="genre" value={form.genre} required {...params} label="Thể loại" />
+                      )}
+                    />
+                  </FormControl>
+                </Stack>
+                <Stack spacing={1}>
+                  <FormControl>
+                    <Autocomplete
+                      multiple
+                      disablePortal
+                      id="combo-box-demo2"
+                      options={artistsOptions}
+                      fullWidth
+                      onChange={(event, newValue: string[]) => {
+                        setForm({ ...form, artists: newValue as any });
+                      }}
+                      renderInput={(params) => (
+                        <TextField name="artists" value={form.artists} {...params} label="Nghệ sĩ" />
+                      )}
+                    />
+                  </FormControl>
+                </Stack>
+                <Stack spacing={1}>
+                  <FormLabel>
+                    Ảnh
+                    <input type="file" name="logo" onChange={handleFileChange} required accept="image/*" />
+                  </FormLabel>
+                </Stack>
+                <Stack spacing={1}>
+                  <FormLabel>
+                    File nhạc
+                    <input type="file" name="mp3_file" onChange={handleFileChange} required accept="audio/*" />
+                  </FormLabel>
+                </Stack>
+
+                <Button sx={{ borderRadius: '18px' }} type="submit" variant="contained">
+                  Tải lên
+                </Button>
+              </Stack>
             </form>
           </Box>
         </ModalContent>

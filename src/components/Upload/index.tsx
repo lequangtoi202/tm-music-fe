@@ -6,16 +6,33 @@ import { forwardRef, useContext, useState } from 'react';
 import FileUpload from 'react-material-file-upload';
 import { KContext } from '../../context';
 import { StyledOTPButton } from '../OTP/styles';
-function UploadModal() {
-  const { isOpenUploadBackground, setIsOpenUploadBackground } = useContext(KContext);
+import { uploadAlbumImage } from '../../services/user';
+function UploadModal({ albumId }: { albumId: number | undefined }) {
+  const {
+    isOpenUploadBackground,
+    setIsOpenUploadBackground,
+    setSuccess,
+    setError,
+    setChangedPlaylist,
+    playlistChanged,
+    setIsOpenMoreAction,
+  } = useContext(KContext);
   const [files, setFiles] = useState<File[]>([]);
 
   const handleClose = () => {
     setIsOpenUploadBackground(false);
   };
-  const handleUploadImage = () => {
-    //CALL API to update me album
-    console.log(files);
+  const handleUploadImage = async () => {
+    if (!albumId) return;
+    const res = await uploadAlbumImage(files[0], albumId);
+    if (res.success) {
+      setSuccess('Upload ảnh thành công');
+      setIsOpenUploadBackground(false);
+      setIsOpenMoreAction(false);
+      setChangedPlaylist(!playlistChanged);
+    } else {
+      setError('Upload ảnh không thành công');
+    }
   };
   return (
     <Modal

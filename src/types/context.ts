@@ -20,6 +20,8 @@ export interface IGlobalContext {
   openCommentDialog: boolean;
   isShowLyric: boolean;
   playlistChanged: boolean;
+  albumIdUpload: number | undefined;
+  setAlbumIdUpload: Dispatch<SetStateAction<number | undefined>>;
   setChangedPlaylist: Dispatch<SetStateAction<boolean>>;
   setIsOpenUploadBackground: Dispatch<SetStateAction<boolean>>;
   setIsShowLyric: Dispatch<SetStateAction<boolean>>;

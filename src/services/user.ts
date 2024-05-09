@@ -266,7 +266,7 @@ export const getAllSingers = async (page: number, size?: number) => {
       url += `&page_size=${size}`;
     }
     const response = await apiInstance.get(url);
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error get all singers:', error);
   }
@@ -427,11 +427,11 @@ export const createCheckoutSubmission = async () => {
   }
 };
 
-export const uploadAlbumImage = async (file: any) => {
+export const uploadAlbumImage = async (file: any, albumId: number) => {
   const formData = new FormData();
-  formData.append('image', file);
+  formData.append('logo', file);
   try {
-    const response = await apiInstance.post(`/create-checkout-session`, formData, {
+    const response = await apiInstance.post(`/me/albums/${albumId}/songs`, formData, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
         'Content-Type': 'multipart/form-data',
@@ -443,16 +443,16 @@ export const uploadAlbumImage = async (file: any) => {
   }
 };
 
-export const upSongToAlbum = async (data: any) => {
+export const upSongToAlbum = async (data: any, albumId: number) => {
   const formData = new FormData();
   formData.append('title', data.title);
-  formData.append('lyric', data.lyric);
-  formData.append('genre_id', data.genre_id);
+  formData.append('lyric', data.lyrics);
+  formData.append('genre_id', data.genre.value);
   formData.append('logo', data.logo);
-  formData.append('mp3_file', data.audio);
-  formData.append('artist_ids', data.artist_ids);
+  formData.append('mp3_file', data.mp3_file);
+  formData.append('artist_ids', data.artists.map((item: any) => item.value).join(','));
   try {
-    const response = await apiInstance.post(`/create-checkout-session`, formData, {
+    const response = await apiInstance.post(`/me/albums/${albumId}/songs`, formData, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
         'Content-Type': 'multipart/form-data',
@@ -461,5 +461,18 @@ export const upSongToAlbum = async (data: any) => {
     return response.data;
   } catch (error) {
     console.error('Error upload song to album:', error);
+  }
+};
+
+export const getAlbumsByGenre = async (genreId: number, page: number, size?: number) => {
+  try {
+    let url = `/genres/${genreId}/albums?page=${page}`;
+    if (size) {
+      url += `&page_size=${size}`;
+    }
+    const response = await apiInstance.get(url);
+    return response;
+  } catch (error) {
+    console.error('Error get albums by genre:', error);
   }
 };

@@ -3,7 +3,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import * as React from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { Copyright } from '../Login';
 import Text from '../../components/Text';

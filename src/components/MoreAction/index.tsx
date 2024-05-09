@@ -34,6 +34,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
     setIsOpenSendToEmail,
     setIsOpenUpload,
     setIsOpenUploadBackground,
+    setAlbumIdUpload,
   } = useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
   const [playlists, setPlaylists] = useState<IAlbum[]>([]);
@@ -100,7 +101,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
         <ModalContent sx={{ width: 320 }}>
           <PlaylistItem>
             <SongTitle>
-              <Image src={'song?.logo'} alt={song?.title} />
+              <Image src={song?.image} alt={song?.title} />
               <StyledBox>
                 <StyledBoxTitle>
                   <Typography fontWeight={700} variant="inherit" noWrap>
@@ -172,13 +173,23 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
             )}
             {pathname.includes('/mymusic/playlist') && (
               <>
-                <ListItemButton onClick={() => setIsOpenUploadBackground(true)}>
+                <ListItemButton
+                  onClick={() => {
+                    setIsOpenUploadBackground(true);
+                    setAlbumIdUpload(song?.id);
+                  }}
+                >
                   <StyledListItemIcon>
                     <CloudUpload />
                   </StyledListItemIcon>
                   <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải ảnh" />
                 </ListItemButton>
-                <ListItemButton onClick={() => setIsOpenUpload(true)}>
+                <ListItemButton
+                  onClick={() => {
+                    setIsOpenUpload(true);
+                    setAlbumIdUpload(song?.id);
+                  }}
+                >
                   <StyledListItemIcon>
                     <CloudUpload />
                   </StyledListItemIcon>

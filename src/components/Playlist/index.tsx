@@ -39,6 +39,7 @@ function Playlist() {
     setSuccess,
     setError,
     playlistChanged,
+    albumIdUpload,
   } = useContext(KContext);
 
   const fetchData = async () => {
@@ -136,8 +137,8 @@ function Playlist() {
 
         <PlaylistModal />
         <MoreAction song={currentAlbum} />
-        <UploadModal />
-        <UploadSongModal />
+        <UploadModal albumId={albumIdUpload} />
+        <UploadSongModal albumId={albumIdUpload} />
         {error && <Snackbars status="error" open={true} message={error} />}
         {success && <Snackbars status="success" open={true} message={success} />}
       </Container>

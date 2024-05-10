@@ -9,9 +9,13 @@ import { TextHeaderOnly } from '../../components/TextHeaderOnly';
 import { IAlbum } from '../../types/Album';
 import { ISinger } from '../../types/Singer';
 import { StyledArtistList } from './styles';
+import { getAlbumDetail } from '../../services/user';
+import { useParams } from 'react-router-dom';
 const theme = createTheme();
 
 function Album() {
+  const { albumId } = useParams<{ albumId?: string }>()
+  const [album, setAlbum] = useState<IAlbum | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +25,15 @@ function Album() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async (id: any) => {
+      const data = await getAlbumDetail(id)
+      setAlbum(data)
+    };
+
+    fetchData(albumId);  
+  }, [albumId]);
 
   const singer: ISinger = {
     image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
@@ -64,6 +77,7 @@ function Album() {
       owner: false,
     },
   ];
+  console.log('albums: ',album)
 
   return (
     <Box>
@@ -73,11 +87,9 @@ function Album() {
         <Box style={{ marginTop: '52px' }}>
           <TextHeaderOnly text={'Nghệ Sĩ Tham Gia'} />
           <StyledArtistList>
-            <ArtistInfo item={singer} loading={loading} />
-            <ArtistInfo item={singer} loading={loading} />
-            <ArtistInfo item={singer} loading={loading} />
-            <ArtistInfo item={singer} loading={loading} />
-            <ArtistInfo item={singer} loading={loading} />
+            {album?.singers.map((singer: any, index: number) => (
+              <ArtistInfo item={singer} loading={loading} />
+            ))}
           </StyledArtistList>
         </Box>
 

@@ -11,12 +11,14 @@ const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading }) => {
   const { setError, setSuccess } = useContext(KContext);
   const handleFollowArtist = async (id: string) => {
     const res = await followArtist(id);
+    console.log(res)
     if (res?.status === 201) setSuccess('Theo dõi thành công!');
     else setError('Theo dõi thất bại!');
   };
   const handleUnFollowArtist = async (id: string) => {
     const res = await unfollowArtist(id);
-    if (res?.status === 201) setSuccess('Bỏ Theo dõi thành công!');
+    console.log(res)
+    if (res?.status === 200) setSuccess('Bỏ Theo dõi thành công!');
     else setError('Bỏ Theo dõi thất bại!');
   };
 

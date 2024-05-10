@@ -7,6 +7,7 @@ interface IAlbum {
   liked: boolean;
   image: string;
   songs: ISong[];
+  singers?: any;
   owner: boolean;
   created_at: string;
 }

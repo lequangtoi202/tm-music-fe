@@ -1,7 +1,7 @@
 import { ISinger } from '../../types/Singer';
 
 interface ArtistInfoProps {
-  item: ISinger;
+  item: any;
   loading?: boolean;
 }
 

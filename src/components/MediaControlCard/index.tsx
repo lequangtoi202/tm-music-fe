@@ -183,6 +183,7 @@ export default function MediaControlCard() {
           </Tooltip>
           <audio
             id="audioPlayer"
+            {...(isPlaying ? { autoPlay: true } : {})}
             // controls={true}
             src={currentSong?.audio}
           />

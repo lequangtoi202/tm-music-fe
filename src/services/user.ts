@@ -190,7 +190,7 @@ export const followArtist = async (artistId: string) => {
 export const unfollowArtist = async (id: string) => {
   try {
     const response = await apiInstance.delete(`/me/follows/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error unfollow artist:', error);
   }

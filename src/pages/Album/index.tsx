@@ -9,13 +9,14 @@ import { TextHeaderOnly } from '../../components/TextHeaderOnly';
 import { IAlbum } from '../../types/Album';
 import { ISinger } from '../../types/Singer';
 import { StyledArtistList } from './styles';
-import { getAlbumDetail } from '../../services/user';
+import { getAlbumDetail, getAlbumsRelated } from '../../services/user';
 import { useParams } from 'react-router-dom';
 const theme = createTheme();
 
 function Album() {
   const { albumId } = useParams<{ albumId?: string }>()
   const [album, setAlbum] = useState<IAlbum | null>(null);
+  const [albumRelated, setAlbumRelated] = useState<IAlbum[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +33,13 @@ function Album() {
       setAlbum(data)
     };
 
-    fetchData(albumId);  
+    const fetchDataRelated = async (id: any) => {
+      const data = await getAlbumsRelated(id)
+      setAlbumRelated(data)
+    };
+
+    fetchData(albumId);
+    fetchDataRelated(albumId)  
   }, [albumId]);
 
   const singer: ISinger = {
@@ -77,7 +84,6 @@ function Album() {
       owner: false,
     },
   ];
-  console.log('albums: ',album)
 
   return (
     <Box>
@@ -95,7 +101,7 @@ function Album() {
 
         <Box marginBottom={8}>
           <TextHeader text={'Có Thể Bạn Quan Tâm'} />
-          <AlbumContainer items={albumData} />
+          <AlbumContainer items={albumRelated} />
         </Box>
 
         <PlaylistModal />

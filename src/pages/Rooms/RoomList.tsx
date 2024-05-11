@@ -37,7 +37,7 @@ const RoomList: React.FC<RoomListProps> = ({ rooms }) => {
 
   return (
     <>
-      {rooms.map((room) => (
+      {rooms && rooms.map((room) => (
         <Paper key={room.id} className={classes.roomCard}>
           <Typography variant="h6">{room.name}</Typography>
           <Typography variant="body1">{room.description}</Typography>

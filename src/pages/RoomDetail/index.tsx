@@ -1,34 +1,14 @@
+// @ts-nocheck
+
 import { useEffect, useRef, useState } from 'react';
 import { getCurrentUser } from '../../utils/storage';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import YouTubeIcon from '@material-ui/icons/YouTube';
 import { Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText, TextField, IconButton, Grid, AppBar, Toolbar, Button } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SendIcon from '@material-ui/icons/Send';
 import { useParams } from 'react-router-dom';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-
-const commentsData = [
-  {
-    id: 1,
-    name: 'John Doe',
-    image: 'https://via.placeholder.com/150',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    image: 'https://via.placeholder.com/150',
-    content: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  },
-  {
-    id: 3,
-    name: 'Alice Johnson',
-    image: 'https://via.placeholder.com/150',
-    content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginTop: theme.spacing(2),
+    width: '100%',
   },
   appBar: {
     marginBottom: theme.spacing(2),
@@ -79,41 +60,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+let socket = null;
+
 const RoomDetail: React.FC = () => {
   const classes = useStyles();
   const { uuid } = useParams();
 
-  const [comments, setComments] = useState(commentsData);
-  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
   const chatListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (chatListRef.current) {
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
     }
-  }, [comments]);
-
-  const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value);
-  };
-
-  const handleSendMessage = () => {
-    const newComment = {
-      id: comments.length + 1,
-      name: 'Your Name',
-      image: 'https://via.placeholder.com/150',
-      content: message,
-    };
-
-    setComments([...comments, newComment]);
-    setMessage('');
-  };
+  }, [messages]);
 
   const [views, setViews] = useState<number>(1);
   const [currentTime, setCurrentTime] = useState<number>(-1);
 
-  const [tempIds, setTempIds] = useState<number[]>([]);
-  const [ids, setIds] = useState<number[]>([]);
   const user_id = (() => {
     const localUser = getCurrentUser();
     if (localUser) {
@@ -158,18 +123,27 @@ const RoomDetail: React.FC = () => {
     return socket;
   };
   useEffect(() => {
-    const socket = createSocket();
+    socket = createSocket();
     socket.onmessage = function(event) {
       const data = JSON.parse(event.data);
       if (data.type !== 'ping') {
         if (data.message && data.message.total_user) {
-          setTempIds(prevIds => [...prevIds, data.message.user_id]);
           setViews(data.message.total_user)
         }
         if (currentTime === -1 &&  data.message && data.message.room && data.message.room.current_time) {
           setCurrentTime(data.message.room.current_time)
         }
         console.log(`data:`, data);
+      }
+      if (data?.message?.type === 'chat_message') {
+        const user_data = data?.message?.user_data
+        const message = {
+          id: user_data.id,
+          name: user_data.first_name + ' ' + user_data.last_name, // Thêm một dấu cách giữa first_name và last_name
+          image: user_data.image,
+          content: user_data.message
+        };
+        setMessages(prevMessages => [...prevMessages, message]);
       }
     };
   
@@ -192,10 +166,31 @@ const RoomDetail: React.FC = () => {
       window.removeEventListener('beforeunload', beforeUnloadHandler);
     };
   }, []);
-  
-  console.log('views: ', views)
-  console.log('currentTime: ', currentTime)
 
+  const sendMessage = () => {
+    if (socket.readyState === WebSocket.OPEN) {
+      const msg = {
+        command: 'message',
+        identifier: JSON.stringify({
+          channel: 'RoomChannel',
+          user_id: user_id,
+          uuid: uuid
+        }),
+        data: JSON.stringify({action: "chat_message", text: newMessage })
+      };
+      socket.send(JSON.stringify(msg));
+      setNewMessage('');
+      console.log('đã send');
+    } else {
+      console.log('Kết nối chưa được mở. Đang thử lại sau.');
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -204,7 +199,7 @@ const RoomDetail: React.FC = () => {
           <div className={classes.videoContainer}>
             <iframe
               className={classes.videoIframe}
-              src={`https://www.youtube.com/embed/ljyzAQZjGvQ?autoplay=1&start=${currentTime}`}
+              src={`https://www.youtube.com/embed/I-SvyYpZi5I?autoplay=1&start=${currentTime}`}
               frameBorder="0"
               allow="autoplay; encrypted-media"
               allowFullScreen
@@ -228,7 +223,7 @@ const RoomDetail: React.FC = () => {
           </div>
           <div style={{ flex: 1 }}>
             <List ref={chatListRef}>
-              {comments.map((comment, index) => (
+              {messages.map((comment, index) => (
                 <ListItem key={index} className={classes.padding0}>
                   <ListItemAvatar>
                     <Avatar alt={comment.name} src={comment.image} />
@@ -241,11 +236,12 @@ const RoomDetail: React.FC = () => {
               <TextField
                 label="Type your message"
                 variant="outlined"
-                value={message}
-                onChange={handleMessageChange}
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
                 multiline
               />
-              <IconButton color="primary" onClick={handleSendMessage}>
+              <IconButton color="primary" onClick={sendMessage}>
                 <SendIcon />
               </IconButton>
             </div>
@@ -254,7 +250,7 @@ const RoomDetail: React.FC = () => {
 
         </Grid>
       </Grid>
-      <Link to={`/rooms/`} className="link">
+      <Link to={`/rooms/`} className={classes.button}>
         <Button
           variant="contained"
           color="primary"

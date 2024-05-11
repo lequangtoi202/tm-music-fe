@@ -321,6 +321,15 @@ export const getGenre = async (id: string) => {
   }
 };
 
+export const getGenresRelated = async (id: string) => {
+  try {
+    const response = await apiInstance.get(`/genres/${id}/related`);
+    return response.data;
+  } catch (error) {
+    console.error('Error get genres:', error);
+  }
+};
+
 export const getAlbumsRelated = async (id: string) => {
   try {
     const response = await apiInstance.get(`/albums/${id}/related`);

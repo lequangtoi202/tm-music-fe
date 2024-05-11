@@ -72,7 +72,7 @@ const ThemeItem: React.FC<ThemeItemProps> = ({ item, loading }) => {
               </IconButton>
             </Tooltip>
           </StyledLayerHover>
-          <Image src={item.image ?? '../../../assets/images/no-image.png'} />
+          <Image src={item.image} />
           {loading ? <TitleSkeleton /> : <PLaylistTitle id={item.id} title={item.title} />}
         </StyledWrapper>
       )}

@@ -1,17 +1,18 @@
 import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
+import { useContext, useState } from 'react';
+import { KContext } from '../../../context';
+import { createLike, unlike } from '../../../services/user';
+import { setTempCurrentSong } from '../../../utils/storage';
 import Image from '../../Image';
 import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
 import { RoundedSkeleton } from '../../Skeleton';
 import { StyledLayerHoverHistories, StyledWrapper } from '../../Theme/styles';
 import { StyledHistoryItem } from '../styles';
 import { HistoryItemProps } from '../types';
-import { useContext, useState } from 'react';
-import { KContext } from '../../../context';
-import { createLike, unlike } from '../../../services/user';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
-  const { setIsOpenMoreAction } = useContext(KContext);
+  const { setIsOpenMoreAction, setCurrentSong } = useContext(KContext);
   const [liked, setLiked] = useState(item.liked);
 
   const handleToggleLike = async () => {
@@ -49,7 +50,12 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
                 </Tooltip>
               )}
               <Tooltip placement="top" title="Phát">
-                <IconButton>
+                <IconButton
+                  onClick={() => {
+                    setCurrentSong(item);
+                    setTempCurrentSong(item);
+                  }}
+                >
                   <PlayCircleOutline />
                 </IconButton>
               </Tooltip>
@@ -59,7 +65,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
                 </IconButton>
               </Tooltip>
             </StyledLayerHoverHistories>
-            <Image src={item.image ?? '../../../assets/images/no-image.png'}></Image>
+            <Image src={item.image} />
           </StyledWrapper>
           <PLaylistTitle id={item.id} title={item.title} isSong={true} />
         </Box>

@@ -42,6 +42,7 @@ import {
 import { createLike, getAllAlbums, unlike, getAlbumDetail } from '../../services/user';
 
 const AlbumDetail = () => {
+  const { setError, setSuccess } = useContext(KContext);
   const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [singers, setSingers] = useState<{}[]>([]);
@@ -66,20 +67,25 @@ const AlbumDetail = () => {
 
   const handleToggleLike = async (id: number, liked: any) => {
     if (!liked) {
-      await createLike([id], 'song_ids');
+      const res = await createLike([id], 'song_ids');
       setLikedSongs({ ...likedSongs, [id]: true });
+      if (res?.status === 201) setSuccess('Yêu thích thành công!');
+      else setError('Yêu thích thất bại!');
     } else {
-      await unlike([id], 'song_ids');
+      const res = await unlike([id], 'song_ids');
+      if (res?.status === 200) setSuccess('Bỏ yêu thích thành công!');
+      else setError('Bỏ yêu thích thất bại!');
       setLikedSongs({ ...likedSongs, [id]: false });
     }
+    fetchData(albumId); 
+  };
+
+  const fetchData = async (id: any) => {
+    const data = await getAlbumDetail(id)
+    setAlbum(data)
   };
 
   useEffect(() => {
-    const fetchData = async (id: any) => {
-      const data = await getAlbumDetail(id)
-      setAlbum(data)
-    };
-
     fetchData(albumId);  
   }, [albumId]);
 

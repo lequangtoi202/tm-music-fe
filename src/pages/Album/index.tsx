@@ -12,6 +12,7 @@ import { StyledArtistList } from './styles';
 import { getAlbumDetail, getAlbumsRelated } from '../../services/user';
 import { useParams } from 'react-router-dom';
 const theme = createTheme();
+type ReCallApiFunction = () => void;
 
 function Album() {
   const { albumId } = useParams<{ albumId?: string }>()
@@ -27,20 +28,25 @@ function Album() {
     fetchData();
   }, []);
 
+  const fetchData = async (id: any) => {
+    const data = await getAlbumDetail(id)
+    setAlbum(data)
+  };
+
+  const fetchDataRelated = async (id: any) => {
+    const data = await getAlbumsRelated(id)
+    setAlbumRelated(data)
+  };
+
   useEffect(() => {
-    const fetchData = async (id: any) => {
-      const data = await getAlbumDetail(id)
-      setAlbum(data)
-    };
-
-    const fetchDataRelated = async (id: any) => {
-      const data = await getAlbumsRelated(id)
-      setAlbumRelated(data)
-    };
-
     fetchData(albumId);
     fetchDataRelated(albumId)  
   }, [albumId]);
+
+
+  const reCallApi: ReCallApiFunction = () => {
+    fetchData(albumId);
+  }
 
   const singer: ISinger = {
     image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
@@ -94,7 +100,7 @@ function Album() {
           <TextHeaderOnly text={'Nghệ Sĩ Tham Gia'} />
           <StyledArtistList>
             {album?.singers.map((singer: any, index: number) => (
-              <ArtistInfo item={singer} loading={loading} />
+              <ArtistInfo item={singer} loading={loading} reCallApi={reCallApi} />
             ))}
           </StyledArtistList>
         </Box>

@@ -7,19 +7,21 @@ import { followArtist, unfollowArtist } from '../../services/user';
 import { useContext } from 'react';
 import { KContext } from '../../context';
 
-const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading }) => {
+const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading, reCallApi }) => {
   const { setError, setSuccess } = useContext(KContext);
   const handleFollowArtist = async (id: string) => {
     const res = await followArtist(id);
     console.log(res)
     if (res?.status === 201) setSuccess('Theo dõi thành công!');
     else setError('Theo dõi thất bại!');
+    reCallApi && reCallApi();
   };
   const handleUnFollowArtist = async (id: string) => {
     const res = await unfollowArtist(id);
     console.log(res)
     if (res?.status === 200) setSuccess('Bỏ Theo dõi thành công!');
     else setError('Bỏ Theo dõi thất bại!');
+    reCallApi && reCallApi();
   };
 
   return (

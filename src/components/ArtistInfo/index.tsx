@@ -38,7 +38,7 @@ const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading, reCallApi }) => 
       ) : (
         <Box>
           <StyledArtistWrapper>
-            <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa1ImFbhrW5SftT6gG9xlgF6ttY70FPOXucQ&usqp=CAU"></Image>
+            <Image src={item?.image}></Image>
           </StyledArtistWrapper>
           <StyledArtistInfo>
             <Box textAlign={'center'} fontWeight={'500'}>

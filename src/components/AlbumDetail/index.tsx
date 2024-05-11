@@ -140,7 +140,7 @@ const AlbumDetail = () => {
         resolve(formattedDuration);
       };
       audio.onerror = () => {
-        resolve("0:00");
+        resolve("00:00");
       };
     });
   };

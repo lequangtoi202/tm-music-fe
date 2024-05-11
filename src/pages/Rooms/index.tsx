@@ -22,12 +22,14 @@ const useStyles = makeStyles((theme) =>
 
 function Rooms() {
   const [rooms, setRooms] = useState<any[]>([]);
+  const [roomsPrivate, setRoomsPrivate] = useState<any[]>([]);
 
   const classes = useStyles();
   useEffect(() => {
     (async () => {
       const resRooms = await getRooms();
-      setRooms(resRooms.data)
+      setRooms(resRooms.data.public_rooms)
+      setRoomsPrivate(resRooms.data.private_rooms)
     })();
   }, []);
 
@@ -58,7 +60,7 @@ function Rooms() {
           </Button>
         </Grid>
       </Grid>
-      <RoomList rooms={[]} />
+      <RoomList rooms={roomsPrivate} />
     </Container>
   );
 }

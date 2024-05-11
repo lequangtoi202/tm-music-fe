@@ -493,4 +493,14 @@ export const getAlbumsByGenre = async (genreId: number, page: number, size?: num
   } catch (error) {
     console.error('Error get albums by genre:', error);
   }
+}
+    
+export const getRooms = async () => {
+  try {
+    const response = await apiInstance.get(`/me/rooms`);
+    return response;
+  } catch (error) {
+    console.error('Error verify otp:', error);
+    return (error as any).response.status;
+  }
 };

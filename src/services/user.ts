@@ -494,3 +494,12 @@ export const getAlbumsByGenre = async (genreId: number, page: number, size?: num
     console.error('Error get albums by genre:', error);
   }
 };
+
+export const suggestSongs = async () => {
+  try {
+    const response = await apiInstance.get('/me/suggest');
+    return response.data;
+  } catch (error) {
+    console.error('Error get suggested songs:', error);
+  }
+};

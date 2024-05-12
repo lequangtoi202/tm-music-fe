@@ -77,7 +77,10 @@ const RoomDetail: React.FC = () => {
   }, [messages]);
 
   const [views, setViews] = useState<number>(1);
-  const [currentTime, setCurrentTime] = useState<number>(-1);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [url, setUrl] = useState<string>('');
+  const [newUrl, setNewUrl] = useState<string>('');
+  const [ownerRoomId, setOwnerRoomId] = useState<number>(-1);
 
   const user_id = (() => {
     const localUser = getCurrentUser();
@@ -127,23 +130,33 @@ const RoomDetail: React.FC = () => {
     socket.onmessage = function(event) {
       const data = JSON.parse(event.data);
       if (data.type !== 'ping') {
-        if (data.message && data.message.total_user) {
+        if (data.message?.total_user) {
           setViews(data.message.total_user)
+          setUrl(data.message?.room?.url)
+          setOwnerRoomId(data.message?.room?.owner_id)
         }
-        if (currentTime === -1 &&  data.message && data.message.room && data.message.room.current_time) {
+        if (currentTime === 0 && data.message?.room?.current_time) {
           setCurrentTime(data.message.room.current_time)
+        }
+
+        if ( data?.message?.room?.url && url !== data.message.room.url) {
+          setUrl(data.message.room.url)
         }
         console.log(`data:`, data);
       }
-      if (data?.message?.type === 'chat_message') {
+      if (data.message?.type === 'chat_message') {
         const user_data = data?.message?.user_data
         const message = {
           id: user_data.id,
-          name: user_data.first_name + ' ' + user_data.last_name, // Thêm một dấu cách giữa first_name và last_name
+          name: user_data.first_name + ' ' + user_data.last_name,
           image: user_data.image,
           content: user_data.message
         };
         setMessages(prevMessages => [...prevMessages, message]);
+      }
+      if (data.message?.type === 'change_url') {
+        setUrl(data.message?.room?.url)
+        setCurrentTime(data.message?.room?.current_time)
       }
     };
   
@@ -180,7 +193,6 @@ const RoomDetail: React.FC = () => {
       };
       socket.send(JSON.stringify(msg));
       setNewMessage('');
-      console.log('đã send');
     } else {
       console.log('Kết nối chưa được mở. Đang thử lại sau.');
     }
@@ -192,6 +204,27 @@ const RoomDetail: React.FC = () => {
     }
   };
 
+  const handleButtonClick = () => {
+    if (socket.readyState === WebSocket.OPEN) {
+      const msg = {
+        command: 'message',
+        identifier: JSON.stringify({
+          channel: 'RoomChannel',
+          user_id: user_id,
+          uuid: uuid
+        }),
+        data: JSON.stringify({action: "change_url", url: newUrl })
+      };
+      socket.send(JSON.stringify(msg));
+      setNewUrl('')
+    } else {
+      console.log('Kết nối chưa được mở. Đang thử lại sau.');
+    }
+  }
+  console.log('url: ',url)
+  console.log('currentTime: ',currentTime)
+
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
@@ -199,7 +232,7 @@ const RoomDetail: React.FC = () => {
           <div className={classes.videoContainer}>
             <iframe
               className={classes.videoIframe}
-              src={`https://www.youtube.com/embed/I-SvyYpZi5I?autoplay=1&start=${currentTime}`}
+              src={`https://www.youtube.com/embed/${url}?autoplay=1&start=${currentTime}`}
               frameBorder="0"
               allow="autoplay; encrypted-media"
               allowFullScreen
@@ -250,6 +283,25 @@ const RoomDetail: React.FC = () => {
 
         </Grid>
       </Grid>
+      { ownerRoomId == user_id ? 
+        <div className={classes.button}>
+          <TextField
+            label="New Input"
+            variant="outlined"
+            value={newUrl}
+            onChange={(e) => setNewUrl(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            // className={classes.button}
+            onClick={handleButtonClick}
+          >
+            Change
+          </Button>
+
+        </div> : <></>}
+      
       <Link to={`/rooms/`} className={classes.button}>
         <Button
           variant="contained"

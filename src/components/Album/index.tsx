@@ -38,7 +38,7 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
 
   return (
     <Container>
-      {items.map((item, idx) => (
+      { items && items.map((item, idx) => (
         <StyledAlbumItem key={idx}>
           <StyledChildAlbumItem>
             {loading ? (

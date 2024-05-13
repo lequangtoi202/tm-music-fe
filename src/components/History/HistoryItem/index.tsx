@@ -1,15 +1,15 @@
 import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
+import { useContext, useState } from 'react';
+import images from '../../../assets/images';
+import { KContext } from '../../../context';
+import { createLike, unlike } from '../../../services/user';
 import Image from '../../Image';
 import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
 import { RoundedSkeleton } from '../../Skeleton';
 import { StyledLayerHoverHistories, StyledWrapper } from '../../Theme/styles';
 import { StyledHistoryItem } from '../styles';
 import { HistoryItemProps } from '../types';
-import { useContext, useState } from 'react';
-import { KContext } from '../../../context';
-import { createLike, unlike } from '../../../services/user';
-import images from '../../../assets/images';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
   const { setIsOpenMoreAction, setTempSongOrAlbum, setCurrentSong } = useContext(KContext);

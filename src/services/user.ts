@@ -508,3 +508,12 @@ export const search = async (q: string): Promise<AxiosResponse<any>> => {
     }
   }
 };
+
+export const suggestSongs = async () => {
+  try {
+    const response = await apiInstance.get('/me/suggest');
+    return response.data;
+  } catch (error) {
+    console.error('Error get suggested songs:', error);
+  }
+};

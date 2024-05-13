@@ -17,7 +17,6 @@ const Container = styled.div`
 `;
 
 const StyledItemContainer = styled.div`
-  flex: 1;
   margin: 8px;
   cursor: pointer;
 

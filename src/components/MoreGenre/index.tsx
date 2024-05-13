@@ -63,7 +63,10 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                   <Tooltip placement="top" title="Phát">
                     <IconButton
                       onClick={() => {
-                        const randomSong = item.songs[Math.floor(Math.random() * item.songs.length)];
+                        if (!item.songs || item.songs.length === 0) setError('Album không có bài hát');
+                        const randomSong = item.songs
+                          ? item.songs[Math.floor(Math.random() * item.songs.length)]
+                          : null;
                         setCurrentSong(randomSong);
                         setTempCurrentSong(randomSong);
                         setTempCurrentAlbum(item);

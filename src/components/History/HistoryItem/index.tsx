@@ -9,9 +9,10 @@ import { HistoryItemProps } from '../types';
 import { useContext, useState } from 'react';
 import { KContext } from '../../../context';
 import { createLike, unlike } from '../../../services/user';
+import images from '../../../assets/images';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
-  const { setIsOpenMoreAction } = useContext(KContext);
+  const { setIsOpenMoreAction, setTempSongOrAlbum, setCurrentSong } = useContext(KContext);
   const [liked, setLiked] = useState(item.liked);
 
   const handleToggleLike = async () => {
@@ -49,17 +50,26 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
                 </Tooltip>
               )}
               <Tooltip placement="top" title="Phát">
-                <IconButton>
+                <IconButton
+                  onClick={() => {
+                    setCurrentSong(item);
+                  }}
+                >
                   <PlayCircleOutline />
                 </IconButton>
               </Tooltip>
               <Tooltip placement="top" title="Khác">
-                <IconButton onClick={() => setIsOpenMoreAction(true)}>
+                <IconButton
+                  onClick={() => {
+                    setIsOpenMoreAction(true);
+                    setTempSongOrAlbum(item);
+                  }}
+                >
                   <MoreHoriz />
                 </IconButton>
               </Tooltip>
             </StyledLayerHoverHistories>
-            <Image src={item.image ?? '../../../assets/images/no-image.png'}></Image>
+            <Image src={item.image ?? images.noImage} />
           </StyledWrapper>
           <PLaylistTitle id={item.id} title={item.title} isSong={true} />
         </Box>

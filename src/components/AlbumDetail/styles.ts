@@ -70,6 +70,7 @@ const PlaylistItem = styled.div`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  gap: 4px;
 
   &:hover {
     background-color: #e1e0e0;
@@ -86,6 +87,10 @@ const StyledGroupAction = styled(Box)`
   justify-content: flex-end;
   align-items: center;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    gap: 0;
+  }
 
   & > *:hover {
     color: #1976d2;
@@ -145,6 +150,12 @@ const SongTitle = styled.span`
 const AlbumTitle = styled.span`
   font-size: 14px;
   flex: 2;
+
+  @media (max-width: 768px) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   @media (max-width: 480px) {
     font-size: 12px;

@@ -14,13 +14,10 @@ import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { KContext } from '../../context';
 import { IAlbum } from '../../types/Album';
-import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
 import { setTempCurrentSong } from '../../utils/storage';
 import CardItem from '../Card';
 import Image from '../Image';
-import { MoreAction } from '../MoreAction';
-import { SendEmail } from '../OTP/SendEmailModal';
 import { PlaylistModal } from '../PlaylistModal';
 import { PlaylistItemSkeleton } from '../Skeleton';
 import { StyledTextHeader } from '../TextHeader/styles';
@@ -41,11 +38,11 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
-import { createLike, getAllAlbums, unlike, getAlbumDetail, getGenre } from '../../services/user';
+import { createLike, unlike, getGenre } from '../../services/user';
 
 interface GenreDetailProps {
-  songs?: ISong[],
-  genre?: any
+  songs?: ISong[];
+  genre?: any;
 }
 
 const GenreDetail: React.FC<GenreDetailProps> = (props) => {
@@ -54,9 +51,8 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [genre, setGenre] = useState<any>(null);
   const [likedSongs, setLikedSongs] = useState<Record<number, boolean>>({});
-  const { setCurrentSong, setCurrentAlbum, isMobile, setIsOpenMoreAction, setIsOpenSendToEmail } = useContext(KContext);
-  const { genreId } = useParams<{ genreId?: string }>()
-  
+  const { setCurrentSong, isMobile, setIsOpenMoreAction } = useContext(KContext);
+  const { genreId } = useParams<{ genreId?: string }>();
 
   const handleOpenMoreAction = () => {
     setIsOpenMoreAction(true);
@@ -76,18 +72,18 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
       else setError('Bỏ yêu thích thất bại!');
       setLikedSongs({ ...likedSongs, [id]: false });
     }
-    fetchData(genreId); 
+    fetchData(genreId);
   };
 
   const fetchData = async (id: any) => {
-    setLoading(true)
-    const data = await getGenre(id)
-    setGenre(data)
+    setLoading(true);
+    const data = await getGenre(id);
+    setGenre(data);
   };
 
   useEffect(() => {
-    fetchData(genreId);  
-    setLoading(false)
+    fetchData(genreId);
+    setLoading(false);
   }, [genreId]);
 
   const handleDuration = (link: any): Promise<any> => {
@@ -104,7 +100,7 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
         resolve(formattedDuration);
       };
       audio.onerror = () => {
-        resolve("00:00");
+        resolve('00:00');
       };
     });
   };
@@ -114,17 +110,17 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
   useEffect(() => {
     const fetchDurations = async () => {
       try {
-        const promises = genre?.songs?.map(song => handleDuration(song.audio)) || [];
+        const promises = genre?.songs?.map((song) => handleDuration(song.audio)) || [];
         const durations = await Promise.all(promises);
         setSongDurations(durations);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching song durations:", error);
+        console.error('Error fetching song durations:', error);
       }
     };
 
     fetchDurations();
-    genre?.songs.forEach(song => {
+    genre?.songs.forEach((song) => {
       totalViews += song?.views || 0;
     });
   }, [genre?.songs]);
@@ -141,7 +137,6 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
             </CardImage>
             <BoxCentered>
               <StyledTextHeader>{genre?.title}</StyledTextHeader>
-              {/* sau này thêm field createdDate */}
               <Box>Cập nhật: {moment(genre?.created_at).format('YYYY-MM-DD')}</Box>
               {/* lấy data singers từ useState ra và max 4 ca sĩ */}
               {/* sau này thêm field likes */}
@@ -149,7 +144,8 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
               <Button
                 sx={{ borderRadius: '18px' }}
                 onClick={() => {
-                  const randomSong = album?.songs[Math.floor(Math.random() * album?.songs?.length)];
+                  if (!album?.songs || album?.songs?.length === 0) setError('Album không có bài hát');
+                  const randomSong = album?.songs ? album.songs[Math.floor(Math.random() * album.songs?.length)] : null;
                   setCurrentSong(randomSong || null);
                 }}
                 variant="contained"
@@ -170,7 +166,7 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
               <Box>THỜI GIAN</Box>
             </HeaderTitle>
             {loading
-              ?  Array.from({ length: genre?.songs?.length || 0 }, (_, index) => <PlaylistItemSkeleton key={index} />)
+              ? Array.from({ length: genre?.songs?.length || 0 }, (_, index) => <PlaylistItemSkeleton key={index} />)
               : genre?.songs.map((song, index) => (
                   <PlaylistItem key={index}>
                     <SongTitle>
@@ -182,7 +178,6 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
                     </SongTitle>
                     <AlbumTitle>{genre?.title}</AlbumTitle>
                     <StyledGroupAction>
-                      {/* Nhớ sửa số 1 thành item.id */}
                       {!song?.liked ? (
                         <Tooltip placement="top" title="Yêu thích">
                           <IconButton onClick={() => handleToggleLike(song.id, song?.liked)}>
@@ -199,7 +194,10 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
                       <Tooltip placement="top" title="Phát">
                         <IconButton
                           onClick={() => {
-                            const randomSong = album?.songs[Math.floor(Math.random() * album.songs.length)];
+                            if (!album?.songs || album?.songs?.length === 0) setError('Album không có bài hát');
+                            const randomSong = album?.songs
+                              ? album?.songs[Math.floor(Math.random() * album?.songs.length)]
+                              : null;
                             setCurrentSong(song);
                             setTempCurrentSong(randomSong);
                           }}
@@ -214,25 +212,22 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
                       </Tooltip>
                       <Time>{songDurations[index]}</Time>
                     </StyledGroupAction>
-                  </PlaylistItem>             
+                  </PlaylistItem>
                 ))}
           </>
         ) : (
           <>
             {loading
-              ? Array.from({ length: album?.songs?.length || 0  }, (_, index) => <PlaylistItemSkeleton key={index} />)
+              ? Array.from({ length: album?.songs?.length || 0 }, (_, index) => <PlaylistItemSkeleton key={index} />)
               : album?.songs.map((song, index) => (
                   <PlaylistItem key={index}>
                     <SongTitle>
                       <Headphones style={{ marginRight: '8px' }} />
-                      <Image
-                        src={song?.image}
-                        alt="Live from space album cover"
-                      />
+                      <Image src={song?.image} alt="Live from space album cover" />
                       <StyledBox>
                         <StyledBoxTitle>
                           <Typography variant="inherit" noWrap>
-                          {song.title}
+                            {song.title}
                           </Typography>
                         </StyledBoxTitle>
                         <StyledBoxTitle>{song?.singers?.[0]?.name}</StyledBoxTitle>

@@ -21,6 +21,8 @@ export interface IGlobalContext {
   isShowLyric: boolean;
   playlistChanged: boolean;
   albumIdUpload: number | undefined;
+  tempSongOrAlbum: ISong | IAlbum | null;
+  setTempSongOrAlbum: Dispatch<SetStateAction<ISong | IAlbum | null>>;
   setAlbumIdUpload: Dispatch<SetStateAction<number | undefined>>;
   setChangedPlaylist: Dispatch<SetStateAction<boolean>>;
   setIsOpenUploadBackground: Dispatch<SetStateAction<boolean>>;

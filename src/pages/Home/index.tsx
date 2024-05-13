@@ -17,7 +17,6 @@ function Homepage() {
   const [albums, setAlbums] = useState<IAlbum[]>([]);
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
   const genresMap = new Map<number, IAlbum[]>();
   const mockGenre: IGenre[] = [
     {
@@ -130,48 +129,6 @@ function Homepage() {
       owner: false,
     },
   ];
-  const albumData: IAlbum[] = [
-    {
-      image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
-      title: 'Night view',
-      id: 3,
-      description: 'Description of Night view album',
-      songs: carousel,
-      created_at: new Date().toISOString(),
-      liked: false,
-      owner: false,
-    },
-    {
-      image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
-      title: 'Lake view',
-      id: 2,
-      description: 'Description of Lake view album',
-      songs: carousel,
-      created_at: new Date().toISOString(),
-      liked: false,
-      owner: false,
-    },
-    {
-      image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
-      title: 'Mountain view',
-      id: 1,
-      description: 'Description of Mountain view album',
-      songs: carousel,
-      created_at: new Date().toISOString(),
-      liked: false,
-      owner: false,
-    },
-    {
-      image: 'https://res.cloudinary.com/dx9vr7on4/image/upload/v1713424485/fnfu3tgps0fyp6udkw7w.jpg',
-      title: 'Mountain view',
-      id: 5,
-      description: 'Description of Mountain view album',
-      songs: carousel,
-      created_at: new Date().toISOString(),
-      liked: false,
-      owner: false,
-    },
-  ];
 
   useEffect(() => {
     (async () => {
@@ -204,7 +161,7 @@ function Homepage() {
             <HistoryContainer items={histories} />
           </Box>
           {genres.length > 0 &&
-            genres.map((genre, idx) => {
+            genres.map((genre) => {
               const albumItems = genresMap.get(genre.id) ?? [];
               if (!albumItems || albumItems.length === 0) {
                 return null;

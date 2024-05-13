@@ -8,6 +8,7 @@ import Text from '../../components/Text';
 import ThemeContainer from '../../components/Theme';
 import { getAllAlbums } from '../../services/user';
 import { IAlbum } from '../../types/Album';
+import { banner } from '../../constants';
 const theme = createTheme();
 
 function Category() {
@@ -19,30 +20,24 @@ function Category() {
   const fetchData = async () => {
     const response = await getAllAlbums(page);
     const data = response?.data;
-    setAlbums(data?.albums ?? []);
+    setAlbums((prevAlbums) => [...prevAlbums, ...(data?.albums ?? [])]);
     setTotalPages(data?.total_pages ?? 0);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const handleViewMore = () => {
     if (page < totalPages) {
       setPage(page + 1);
-      fetchData();
     }
   };
-  const banner = {
-    src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    title: 'Night view',
-    id: '3',
-  };
+
+  useEffect(() => {
+    fetchData();
+  }, [page]);
 
   return (
-    <Box>
+    <Box mb={10}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
@@ -54,14 +49,14 @@ function Category() {
           <ThemeContainer items={albums} loading={loading} />
         </Box>
         <PlaylistModal />
+        {page < totalPages && (
+          <Box display={'flex'} justifyContent={'center'} mt={3}>
+            <Button sx={{ borderRadius: '18px' }} variant="contained" onClick={handleViewMore} component="button">
+              Xem thêm
+            </Button>
+          </Box>
+        )}
       </ThemeProvider>
-      {page < totalPages && (
-        <Box display={'flex'} justifyContent={'center'} mt={3}>
-          <Button sx={{ borderRadius: '18px' }} variant="contained" onClick={handleViewMore} component="button">
-            Xem thêm
-          </Button>
-        </Box>
-      )}
     </Box>
   );
 }

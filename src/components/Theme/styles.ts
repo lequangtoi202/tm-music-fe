@@ -117,10 +117,8 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledThemeItem = styled.div`
-  flex: 1;
   border-radius: 6px;
   cursor: pointer;
-  height: 200px;
   width: 200px;
   @media (min-width: 1201px) {
     & > div:first-child {
@@ -137,14 +135,6 @@ const StyledThemeItem = styled.div`
   }
 
   @media (max-width: 768px) {
-    flex-basis: calc(50% - 16px);
-    & > div {
-      height: 100%;
-      width: 100%;
-    }
-  }
-
-  @media (max-width: 480px) {
     flex-basis: calc(50% - 16px);
     & > div {
       height: 100%;

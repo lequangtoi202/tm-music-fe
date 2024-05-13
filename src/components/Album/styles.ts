@@ -5,7 +5,6 @@ const Container = styled.div`
   overflow: hidden;
   padding-left: 24px;
   padding-right: 24px;
-  justify-content: space-between;
 
   @media (max-width: 1200px) {
     flex-wrap: wrap;
@@ -14,8 +13,8 @@ const Container = styled.div`
 `;
 
 const StyledAlbumItem = styled.div`
-  flex: 1;
   margin: 8px;
+  width: 200px;
   cursor: pointer;
   display: flex;
   flex-direction: column;

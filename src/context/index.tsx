@@ -19,6 +19,7 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [currentAlbum, setCurrentAlbum] = useState<IAlbum | null>(null);
   const [currentSong, setCurrentSong] = useState<ISong | null>(null);
+  const [tempSongOrAlbum, setTempSongOrAlbum] = useState<ISong | IAlbum | null>(null);
   const [isOpenMoreAction, setIsOpenMoreAction] = useState<boolean>(false);
   const [isOpenSendToEmail, setIsOpenSendToEmail] = useState<boolean>(false);
   const [playlistChanged, setChangedPlaylist] = useState<boolean>(false);
@@ -81,6 +82,8 @@ export const KContextProvider = ({ children }: KContextProps) => {
         playlistChanged,
         isOpenUploadBackground,
         albumIdUpload,
+        tempSongOrAlbum,
+        setTempSongOrAlbum,
         setIsOpenUploadBackground,
         setChangedPlaylist,
         setIsShowLyric,

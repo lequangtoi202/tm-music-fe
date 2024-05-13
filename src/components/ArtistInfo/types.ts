@@ -1,10 +1,9 @@
 import { ISinger } from '../../types/Singer';
 
-
 type ReCallApiFunction = () => void;
 
 interface ArtistInfoProps {
-  item: any;
+  item: ISinger;
   loading?: boolean;
   reCallApi?: ReCallApiFunction;
 }

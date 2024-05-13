@@ -64,7 +64,7 @@ export const SendEmail: React.FC<IShareProps> = ({ song }) => {
                 </StyledBoxTitle>
                 <StyledBoxTitle>
                   <Typography variant="inherit" noWrap>
-                    Harri Won
+                    {song?.title}
                   </Typography>
                 </StyledBoxTitle>
               </StyledBox>

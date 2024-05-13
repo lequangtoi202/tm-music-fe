@@ -2,20 +2,21 @@ import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/ico
 import { IconButton, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
+import { createLike, unlike } from '../../services/user';
 import Image from '../Image';
+import { MoreAction } from '../MoreAction';
 import { PLaylistTitle } from '../Playlist/PlaylistTitle';
 import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
 import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
-import { MoreAction } from '../MoreAction';
-import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
-import { createLike, unlike } from '../../services/user';
+import images from '../../assets/images';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
   const [likedAlbums, setLikedAlbums] = useState<Record<number, boolean>>({});
-  const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, currentAlbum } = useContext(KContext);
+  const { setCurrentSong, setCurrentAlbum, setIsOpenMoreAction, tempSongOrAlbum, setTempSongOrAlbum, setError } =
+    useContext(KContext);
 
   const handleToggleLike = async (id: number) => {
     const liked = likedAlbums[id];
@@ -61,10 +62,11 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                   <Tooltip placement="top" title="Phát">
                     <IconButton
                       onClick={() => {
-                        const randomSong = item.songs[Math.floor(Math.random() * item.songs.length)];
+                        if (!item.songs || item.songs.length === 0) setError('Playlist không có bài hát');
+                        const randomSong = item.songs
+                          ? item.songs[Math.floor(Math.random() * item.songs.length)]
+                          : null;
                         setCurrentSong(randomSong);
-                        setTempCurrentSong(randomSong);
-                        setTempCurrentAlbum(item);
                         setCurrentAlbum(item);
                       }}
                     >
@@ -75,21 +77,21 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                     <IconButton
                       onClick={() => {
                         setIsOpenMoreAction(true);
-                        setCurrentAlbum(item);
+                        setTempSongOrAlbum(item);
                       }}
                     >
                       <MoreHoriz />
                     </IconButton>
                   </Tooltip>
                 </StyledLayerHover>
-                <Image src={item.image ?? '../../assets/images/no-image.png'} alt="" />
+                <Image src={item.image ?? images.noImage} alt="" />
               </StyledWrapper>
             )}
           </StyledChildAlbumItem>
           {loading ? <TitleSkeleton /> : <PLaylistTitle id={item.id} title={item.title} />}
         </StyledAlbumItem>
       ))}
-      <MoreAction song={currentAlbum} />
+      <MoreAction song={tempSongOrAlbum} />
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import { getToken, removeToken } from '../utils/storage';
 import apiInstance from './api';
 import apiNoAuthInstance from './apiNoAuth';
@@ -367,7 +367,7 @@ export const addSongsToPlaylist = async (playlistId: number, ids: number[]) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error get genres:', error);
   }
@@ -492,5 +492,19 @@ export const getAlbumsByGenre = async (genreId: number, page: number, size?: num
     return response;
   } catch (error) {
     console.error('Error get albums by genre:', error);
+  }
+};
+
+export const search = async (q: string): Promise<AxiosResponse<any>> => {
+  try {
+    const res: AxiosResponse<any> = await apiInstance.get(`/me/search?q=${q}`);
+    return res;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw error;
+    } else {
+      console.error('An unknown error occurred:', error);
+      throw error;
+    }
   }
 };

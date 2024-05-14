@@ -6,7 +6,6 @@ const Container = styled.div`
   overflow: hidden;
   padding-left: 24px;
   padding-right: 24px;
-  justify-content: space-between;
   flex-wrap: wrap;
   @media (max-width: 480px) {
     padding: 0;
@@ -59,9 +58,17 @@ const StyledPlaylistItem = styled.div`
 
 const StyledAddPlaylistWrapper = styled.div`
   height: 100%;
+  min-height: 216px;
   color: #1976d2;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
+  @media (max-width: 768px) {
+    min-height: 150px;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 120px;
+  }
 `;
 
 const StyledAddPlaylist = styled(Box)`

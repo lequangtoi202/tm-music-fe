@@ -142,8 +142,8 @@ function Homepage() {
         const res = await getAlbumsByGenre(genre.id, 1, 1000);
         genresMap.set(genre.id, res?.data?.albums ?? []);
       });
-      const data = await suggestSongs();
-      setSuggests(data);
+      const data = (await suggestSongs()) ?? [];
+      setSuggests(data.slice(0, 6));
     })();
   }, []);
 
@@ -166,6 +166,7 @@ function Homepage() {
           {genres.length > 0 &&
             genres.map((genre) => {
               const albumItems = genresMap.get(genre.id) ?? [];
+              console.log(albumItems);
               if (!albumItems || albumItems.length === 0) {
                 return null;
               }

@@ -2,7 +2,7 @@ import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/ico
 import { IconButton, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
-import { createLike, unlike } from '../../services/user';
+import { createLike, pushToHistories, unlike } from '../../services/user';
 import Image from '../Image';
 import { MoreAction } from '../MoreAction';
 import { PLaylistTitle } from '../Playlist/PlaylistTitle';
@@ -27,6 +27,10 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
       await unlike([id], 'album_ids');
       setLikedAlbums({ ...likedAlbums, [id]: false });
     }
+  };
+
+  const handleSaveToHistory = async (id: number) => {
+    await pushToHistories(id);
   };
 
   useEffect(() => {
@@ -61,13 +65,16 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                   )}
                   <Tooltip placement="top" title="Phát">
                     <IconButton
-                      onClick={() => {
+                      onClick={async () => {
                         if (!item.songs || item.songs.length === 0) setError('Playlist không có bài hát');
                         const randomSong = item.songs
                           ? item.songs[Math.floor(Math.random() * item.songs.length)]
                           : null;
                         setCurrentSong(randomSong);
                         setCurrentAlbum(item);
+                        if (randomSong?.id) {
+                          await handleSaveToHistory(randomSong.id);
+                        }
                       }}
                     >
                       <PlayCircleOutline />

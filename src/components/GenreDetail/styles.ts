@@ -132,6 +132,7 @@ const SongTitle = styled.span`
         &:nth-child(1) {
           font-weight: 'bold';
           font-size: 12px;
+          max-width: 200px;
         }
       }
     }

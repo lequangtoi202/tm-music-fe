@@ -68,10 +68,14 @@ function HeaderSearch() {
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);
   const [isOpenSearchResult, setIsOpenSearchResult] = useState(false);
-  const { setError } = useContext(KContext);
+  const { setError, setCurrentSong } = useContext(KContext);
   const debouncedValue = useDebounce<string>(searchValue, 500);
   const [searchResult, setSearchResult] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSaveToHistory = async (id: number) => {
+    await searchServices.pushToHistories(id);
+  };
 
   useEffect(() => {
     if (!debouncedValue.trim()) {
@@ -146,7 +150,20 @@ function HeaderSearch() {
             </Box>
           </StyledBox>
           <Tooltip placement="top" title="Phát">
-            <IconButton onClick={() => {}}>
+            <IconButton
+              onClick={async () => {
+                if (label === 'Album') {
+                  if (!data?.songs || data?.songs?.length === 0) setError('Album không có bài hát');
+                  const randomSong = data?.songs ? data?.songs[Math.floor(Math.random() * data?.songs?.length)] : null;
+                  setCurrentSong(randomSong || null);
+                  if (randomSong?.id) {
+                    await handleSaveToHistory(randomSong.id);
+                  }
+                } else {
+                  setCurrentSong(data.id);
+                }
+              }}
+            >
               <PlayCircleOutline />
             </IconButton>
           </Tooltip>
@@ -267,55 +284,7 @@ function HeaderSearch() {
               {searchResult.length > 0 &&
                 searchResult.map((result: any, index: number) => {
                   const { type, data } = result;
-                  if (type === 'album') {
-                    return (
-                      <PlaylistItem key={index}>
-                        <SongTitle>
-                          <Headphones sx={{ marginRight: '8px' }} />
-                          <StyledBox>
-                            <StyledBoxTitle>
-                              <Typography variant="inherit" noWrap>
-                                {data.title}
-                              </Typography>
-                            </StyledBoxTitle>
-                            <Box display={'flex'} alignItems={'center'} gap={1}>
-                              <StyledBoxTitle>{data?.singers?.[0]?.name}</StyledBoxTitle>
-                              <Chip label="Album" />
-                            </Box>
-                          </StyledBox>
-                          <Tooltip placement="top" title="Phát">
-                            <IconButton onClick={() => {}}>
-                              <PlayCircleOutline />
-                            </IconButton>
-                          </Tooltip>
-                        </SongTitle>
-                      </PlaylistItem>
-                    );
-                  } else if (type === 'song') {
-                    return (
-                      <PlaylistItem key={index}>
-                        <SongTitle>
-                          <Headphones sx={{ marginRight: '8px' }} />
-                          <StyledBox>
-                            <StyledBoxTitle>
-                              <Typography variant="inherit" noWrap>
-                                {data.title}
-                              </Typography>
-                            </StyledBoxTitle>
-                            <Box display={'flex'} alignItems={'center'} gap={1}>
-                              <StyledBoxTitle>{data?.singers?.[0]?.name}</StyledBoxTitle>
-                              <Chip label="Bài hát" />
-                            </Box>
-                          </StyledBox>
-                          <Tooltip placement="top" title="Phát">
-                            <IconButton onClick={() => {}}>
-                              <PlayCircleOutline />
-                            </IconButton>
-                          </Tooltip>
-                        </SongTitle>
-                      </PlaylistItem>
-                    );
-                  }
+                  return renderPlaylistItem(type, data, index);
                 })}
             </Box>
           </DialogContent>

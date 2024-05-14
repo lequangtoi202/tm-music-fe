@@ -58,6 +58,10 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
     setIsOpenMoreAction(true);
   };
 
+  const handleSaveToHistory = async (id: number) => {
+    await pushToHistories(id);
+  };
+
   let totalViews: number = 0;
 
   const handleToggleLike = async (id: number, liked: any) => {
@@ -143,10 +147,15 @@ const GenreDetail: React.FC<GenreDetailProps> = (props) => {
               <Box>{totalViews} Views</Box>
               <Button
                 sx={{ borderRadius: '18px' }}
-                onClick={() => {
+                onClick={async () => {
                   if (!album?.songs || album?.songs?.length === 0) setError('Album không có bài hát');
                   const randomSong = album?.songs ? album.songs[Math.floor(Math.random() * album.songs?.length)] : null;
                   setCurrentSong(randomSong || null);
+                  setTempCurrentSong(randomSong);
+                  setTempCurrentAlbum(album);
+                  if (randomSong?.id) {
+                    await handleSaveToHistory(randomSong.id);
+                  }
                 }}
                 variant="contained"
                 startIcon={<PlayArrow />}

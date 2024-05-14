@@ -127,9 +127,16 @@ export const getHistories = async (page: number) => {
   }
 };
 
-export const pushToHistories = async (data: any) => {
+export const pushToHistories = async (songId: number) => {
   try {
-    const response = await apiInstance.post(`/me/histories`, data);
+    const formData = new FormData();
+    formData.set('song_id', songId.toString());
+    const response = await apiInstance.post(`/me/histories`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching histories:', error);

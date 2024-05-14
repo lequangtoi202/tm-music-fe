@@ -4,7 +4,6 @@ const Container = styled.div`
   display: flex;
   padding-left: 24px;
   padding-right: 24px;
-  justify-content: space-between;
 
   @media (max-width: 1200px) {
     flex-wrap: nowrap;

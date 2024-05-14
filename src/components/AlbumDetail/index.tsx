@@ -39,7 +39,7 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
-import { createLike, unlike, getAlbumDetail } from '../../services/user';
+import { createLike, unlike, getAlbumDetail, pushToHistories } from '../../services/user';
 import images from '../../assets/images';
 
 const AlbumDetail = () => {
@@ -48,8 +48,7 @@ const AlbumDetail = () => {
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [singers, setSingers] = useState<{}[]>([]);
   const [likedSongs, setLikedSongs] = useState<Record<number, boolean>>({});
-  const { setCurrentSong, isMobile, setIsOpenMoreAction, setIsOpenSendToEmail, setTempSongOrAlbum, tempSongOrAlbum } =
-    useContext(KContext);
+  const { setCurrentSong, isMobile, setIsOpenMoreAction, setTempSongOrAlbum, tempSongOrAlbum } = useContext(KContext);
   const { albumId } = useParams<{ albumId?: string }>();
   const handleOpenMoreAction = (song: ISong) => {
     setTempSongOrAlbum(song);
@@ -57,6 +56,10 @@ const AlbumDetail = () => {
   };
 
   let totalViews: number = 0;
+
+  const handleSaveToHistory = async (id: number) => {
+    await pushToHistories(id);
+  };
 
   const handleToggleLike = async (id: number, liked: any) => {
     if (!liked) {
@@ -151,12 +154,15 @@ const AlbumDetail = () => {
               <Box>{totalViews} Views</Box>
               <Button
                 sx={{ borderRadius: '18px' }}
-                onClick={() => {
+                onClick={async () => {
                   if (!album?.songs || album?.songs?.length === 0) setError('Album không có bài hát');
                   const randomSong = album?.songs
                     ? album?.songs[Math.floor(Math.random() * album?.songs?.length)]
                     : null;
                   setCurrentSong(randomSong || null);
+                  if (randomSong?.id) {
+                    await handleSaveToHistory(randomSong.id);
+                  }
                 }}
                 variant="contained"
                 startIcon={<PlayArrow />}
@@ -203,13 +209,16 @@ const AlbumDetail = () => {
                       )}
                       <Tooltip placement="top" title="Phát">
                         <IconButton
-                          onClick={() => {
+                          onClick={async () => {
                             if (!album.songs || album.songs?.length === 0) setError('Album không có bài hát');
                             const randomSong = album.songs
                               ? album.songs[Math.floor(Math.random() * album.songs?.length)]
                               : null;
                             setCurrentSong(song);
                             setTempCurrentSong(randomSong);
+                            if (randomSong?.id) {
+                              await handleSaveToHistory(randomSong.id);
+                            }
                           }}
                         >
                           <PlayCircleOutline />

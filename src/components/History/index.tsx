@@ -19,9 +19,7 @@ const HistoryContainer: React.FC<HistoryItemsProps> = ({ items }) => {
 
   return (
     <Container>
-      {items.map((item, index) => (
-        <HistoryItem key={index} item={item} loading={loading} />
-      ))}
+      {items?.map((item, index) => <HistoryItem key={index} item={item} loading={loading} />)}
       <MoreAction song={tempSongOrAlbum} />
     </Container>
   );

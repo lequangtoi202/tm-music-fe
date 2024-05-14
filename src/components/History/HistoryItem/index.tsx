@@ -3,7 +3,7 @@ import { Box, IconButton, Tooltip } from '@mui/material';
 import { useContext, useState } from 'react';
 import images from '../../../assets/images';
 import { KContext } from '../../../context';
-import { createLike, unlike } from '../../../services/user';
+import { createLike, pushToHistories, unlike } from '../../../services/user';
 import Image from '../../Image';
 import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
 import { RoundedSkeleton } from '../../Skeleton';
@@ -24,6 +24,10 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
       await unlike([songIds], 'song_ids');
       setLiked(false);
     }
+  };
+
+  const handleSaveToHistory = async (id: number) => {
+    await pushToHistories(id);
   };
 
   return (
@@ -51,8 +55,9 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
               )}
               <Tooltip placement="top" title="Phát">
                 <IconButton
-                  onClick={() => {
+                  onClick={async () => {
                     setCurrentSong(item);
+                    await handleSaveToHistory(item.id);
                   }}
                 >
                   <PlayCircleOutline />

@@ -1,14 +1,7 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Typography, Button } from "@material-ui/core";
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-
-const useStyles = makeStyles((theme) => ({
-  roomCard: {
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-}));
+import { Delete } from '@mui/icons-material';
+import { Button, IconButton, Paper, Typography } from '@mui/material';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Room {
   id: number;
@@ -23,31 +16,37 @@ interface Room {
   updated_at: string;
 }
 
-
 interface RoomListProps {
   rooms: Room[];
+  isPrivate?: boolean;
 }
 
-const RoomList: React.FC<RoomListProps> = ({ rooms }) => {
-  const classes = useStyles();
-
+const RoomList: React.FC<RoomListProps> = ({ rooms, isPrivate }) => {
   const handleJoinRoomClick = (roomId: number) => {
     console.log(`Joining room with id ${roomId}`);
   };
 
   return (
     <>
-      {rooms && rooms.map((room) => (
-        <Paper key={room.id} className={classes.roomCard}>
-          <Typography variant="h6">{room.name}</Typography>
-          <Typography variant="body1">{room.description}</Typography>
-          <Link to={`/rooms/${room.uuid}`} className="link">
-            <Button variant="contained" color="primary">
-              Join Room
-            </Button>
-          </Link>
-        </Paper>
-      ))}
+      {rooms &&
+        rooms.map((room) => (
+          <Paper key={room.id} sx={{ p: 2, mb: 2 }}>
+            <Typography fontSize={16} fontWeight={600}>
+              {room.name}
+            </Typography>
+            <Typography fontSize={14}>{room.description}</Typography>
+            <Link to={`/rooms/${room.uuid}`} className="link">
+              <Button variant="contained" size="small" color="primary">
+                Tham gia
+              </Button>
+            </Link>
+            {isPrivate && (
+              <IconButton onClick={() => {}}>
+                <Delete color="error" />
+              </IconButton>
+            )}
+          </Paper>
+        ))}
     </>
   );
 };

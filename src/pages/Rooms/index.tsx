@@ -1,37 +1,22 @@
 import { useContext, useEffect, useState } from 'react';
-
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { Container, Typography, Button, Grid } from "@material-ui/core";
-import RoomList from "./RoomList";
+import { Box, Button, Container, CssBaseline, Grid, ThemeProvider, Typography, createTheme } from '@mui/material';
 import { KContext } from '../../context';
 import { createCheckoutSubmission, getRooms } from '../../services/user';
-
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      marginTop: theme.spacing(4),
-    },
-    title: {
-      marginBottom: theme.spacing(2),
-    },
-    newRoomButton: {
-      marginTop: theme.spacing(2),
-    },
-  })
-);
+import RoomList from './RoomList';
+import Text from '../../components/Text';
+import { RoomModal } from './CreateRoomModal';
+const theme = createTheme();
 
 function Rooms() {
-  const { currentUser } = useContext(KContext);
+  const { currentUser, setIsOpenAddRoomModal } = useContext(KContext);
   const [rooms, setRooms] = useState<any[]>([]);
   const [roomsPrivate, setRoomsPrivate] = useState<any[]>([]);
 
-  const classes = useStyles();
   useEffect(() => {
     (async () => {
       const resRooms = await getRooms();
-      setRooms(resRooms.data.public_rooms)
-      setRoomsPrivate(resRooms.data.private_rooms)
+      setRooms(resRooms.data.public_rooms);
+      setRoomsPrivate(resRooms.data.private_rooms);
     })();
   }, []);
 
@@ -42,48 +27,49 @@ function Rooms() {
     } catch (error) {
       alert('Failed to process premium purchase. Please try again later.');
     }
-  }
-  
-  return (
-    <Container maxWidth="md" className={classes.root}>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={6}>
-          <Typography variant="h4" className={classes.title}>
-            System Rooms
-          </Typography>
-        </Grid>
-      </Grid>
-      <RoomList rooms={rooms} />
+  };
 
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={6}>
-          <Typography variant="h4" className={classes.title}>
-            My Rooms
-          </Typography>
-        </Grid>
-        <Grid item xs={6} container justifyContent="flex-end">
-          {currentUser?.premium ?
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.newRoomButton}
-            >
-              New Room
-            </Button>
-          : 
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.newRoomButton}
-              onClick={handleBuyPremium}
-            >
-              Buy Premium
-            </Button>
-          }
-        </Grid>
-      </Grid>
-      <RoomList rooms={roomsPrivate} />
-    </Container>
+  return (
+    <Box>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container maxWidth="md">
+          <Grid container spacing={2} mt={2} alignItems="center">
+            <Grid item xs={6}>
+              <Text color="black" style={{ fontWeight: 'bold', fontSize: '22px' }}>
+                {'Danh sách phòng'}
+              </Text>
+            </Grid>
+          </Grid>
+          <RoomList rooms={rooms} />
+          <Grid container mt={2} spacing={2} alignItems="center">
+            <Grid item xs={6}>
+              <Text color="black" style={{ fontWeight: 'bold', fontSize: '22px' }}>
+                {'Phòng của tôi'}
+              </Text>
+            </Grid>
+            <Grid item xs={6} container justifyContent="flex-end">
+              {currentUser?.premium ? (
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setIsOpenAddRoomModal(true);
+                  }}
+                >
+                  Tạo phòng
+                </Button>
+              ) : (
+                <Button variant="contained" onClick={handleBuyPremium}>
+                  Mua Premium
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+          <RoomList rooms={roomsPrivate} isPrivate={true} />
+        </Container>
+        <RoomModal />
+      </ThemeProvider>
+    </Box>
   );
 }
 

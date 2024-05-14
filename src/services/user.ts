@@ -2,7 +2,6 @@ import axios, { AxiosResponse, isAxiosError } from 'axios';
 import { getToken, removeToken } from '../utils/storage';
 import apiInstance from './api';
 import apiNoAuthInstance from './apiNoAuth';
-import { apiTmMusicUrl } from '../constants';
 
 export enum TYPE_THIRD_PARTY {
   GOOGLE = 'google',
@@ -31,7 +30,9 @@ export const loginWithGoogle = async ({ token }: { token?: string }) => {
 
 export const validateComment = async (comment: string) => {
   try {
-    const { data } = await axios.get(`http://localhost:8000/answers/vietnamese_classification?text=${comment}`);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER_VIETNAMESE_CLASSIFICATION_HOST}/answers/vietnamese_classification?text=${comment}`,
+    );
     return data;
   } catch (error) {
     console.error('Can not validate this comment', error);
@@ -209,7 +210,7 @@ export const createComment = async (data: any) => {
   formData.append('song_id', data.songId);
   formData.append('status', data.status);
   try {
-    const response = await axios.post(`${apiTmMusicUrl}/me/comments`, formData, {
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_HOST}/me/comments`, formData, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
         'Content-Type': 'multipart/form-data',
@@ -500,8 +501,8 @@ export const getAlbumsByGenre = async (genreId: number, page: number, size?: num
   } catch (error) {
     console.error('Error get albums by genre:', error);
   }
-}
-    
+};
+
 export const getRooms = async () => {
   try {
     const response = await apiInstance.get(`/me/rooms`);

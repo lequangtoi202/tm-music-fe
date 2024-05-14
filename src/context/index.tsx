@@ -23,8 +23,10 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [isOpenMoreAction, setIsOpenMoreAction] = useState<boolean>(false);
   const [isOpenSendToEmail, setIsOpenSendToEmail] = useState<boolean>(false);
   const [playlistChanged, setChangedPlaylist] = useState<boolean>(false);
+  const [roomChanged, setChangedRoom] = useState<boolean>(false);
   const [isShowLyric, setIsShowLyric] = useState<boolean>(false);
   const [isOpenAddPlaylistModal, setIsOpenAddPlaylistModal] = useState<boolean>(false);
+  const [isOpenAddRoomModal, setIsOpenAddRoomModal] = useState<boolean>(false);
   const [isOpenOTP, setIsOpenOTP] = useState<boolean>(false);
   const [isOpenUpload, setIsOpenUpload] = useState<boolean>(false);
   const [albumIdUpload, setAlbumIdUpload] = useState<number | undefined>(undefined);
@@ -83,6 +85,10 @@ export const KContextProvider = ({ children }: KContextProps) => {
         isOpenUploadBackground,
         albumIdUpload,
         tempSongOrAlbum,
+        roomChanged,
+        isOpenAddRoomModal,
+        setChangedRoom,
+        setIsOpenAddRoomModal,
         setTempSongOrAlbum,
         setIsOpenUploadBackground,
         setChangedPlaylist,

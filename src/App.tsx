@@ -18,7 +18,6 @@ type LayoutComponent = React.ComponentType<{ children?: ReactNode }>;
 
 function App() {
   const localUser = getCurrentUser();
-  console.log(localUser);
 
   const ProtectedRoute = ({ children }: { children?: ReactNode }) => {
     if (!localUser) {

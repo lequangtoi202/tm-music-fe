@@ -166,7 +166,6 @@ function Homepage() {
           {genres.length > 0 &&
             genres.map((genre) => {
               const albumItems = genresMap.get(genre.id) ?? [];
-              console.log(albumItems);
               if (!albumItems || albumItems.length === 0) {
                 return null;
               }

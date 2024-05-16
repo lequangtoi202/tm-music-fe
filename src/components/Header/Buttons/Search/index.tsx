@@ -160,7 +160,7 @@ function HeaderSearch() {
                     await handleSaveToHistory(randomSong.id);
                   }
                 } else {
-                  setCurrentSong(data.id);
+                  setCurrentSong(data);
                 }
               }}
             >

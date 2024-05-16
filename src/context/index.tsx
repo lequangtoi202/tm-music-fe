@@ -2,11 +2,10 @@ import { createContext, useEffect, useState } from 'react';
 
 import { useMediaQuery } from '@react-hook/media-query';
 import { breakpointLarge } from '../constants';
+import { IAlbum } from '../types/Album';
 import { ISong } from '../types/Song';
 import { IUser } from '../types/User';
 import { IGlobalContext, KContextProps } from '../types/context';
-import { IAlbum } from '../types/Album';
-import { getSongDetail } from '../services/user';
 import { getCurrentUser } from '../utils/storage';
 
 export const KContext = createContext<IGlobalContext>({} as IGlobalContext);
@@ -40,22 +39,6 @@ export const KContextProvider = ({ children }: KContextProps) => {
         setIsLoggedIn(true);
         setCurrentUser(JSON.parse(localUser));
       }
-      const data = await getSongDetail('7');
-      setCurrentSong({
-        title: data.title,
-        id: data.id,
-        lyric: data.lyric,
-        release_date: data.release_date,
-        views: data.views,
-        track_number: data.track_number,
-        image: data.image,
-        singers: data.singers,
-        genre: data.genre,
-        audio:
-          'https://vnso-zn-24-tf-a128-z3.zmdcdn.me/ed296514b07543c8f29162802af28948?authen=exp=1715875585~acl=/ed296514b07543c8f29162802af28948/*~hmac=8af4e8a0b7339831c9cffab628287beb',
-        liked: data.liked,
-        owner: data.owner,
-      });
     } catch (error) {
       console.error('Error fetching data:', error);
     }

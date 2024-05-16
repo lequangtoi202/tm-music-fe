@@ -23,7 +23,7 @@ const GenreContainer: React.FC<GenreItemsProps> = ({ genres, loading }) => {
               </StyledWrapper>
             )}
           </StyledChildGenreItem>
-          {loading ? <TitleSkeleton /> : <PLaylistTitle id={item.id} title={item.title} />}
+          {loading ? <TitleSkeleton /> : <PLaylistTitle id={item.id} title={item.title} isGenre={true} />}
         </StyledGenreItem>
       ))}
     </Container>

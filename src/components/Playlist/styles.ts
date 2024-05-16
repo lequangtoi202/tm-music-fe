@@ -30,7 +30,7 @@ const StyledItemContainer = styled.div`
   @media (max-width: 1200px) {
     flex-basis: calc(33.33% - 16px);
     & > div > div {
-      height: 180px;
+      height: 200px;
       width: 100%;
     }
   }
@@ -38,14 +38,14 @@ const StyledItemContainer = styled.div`
   @media (max-width: 768px) {
     flex-basis: calc(33.33% - 16px);
     & > div > div {
-      height: 150px;
+      height: 200px;
       width: 100%;
     }
   }
 
   @media (max-width: 480px) {
     & > div > div {
-      height: 120px;
+      height: 200px;
       width: 100%;
     }
   }

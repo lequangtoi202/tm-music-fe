@@ -72,6 +72,7 @@ const PlaylistItem = styled.div`
   justify-content: space-between;
   cursor: pointer;
   gap: 4px;
+  padding: 4px 0;
 
   &:hover {
     background-color: #e1e0e0;
@@ -178,12 +179,19 @@ const StyledBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   flex: 1;
+  padding: 4px 0;
 `;
 
 const StyledBoxTitle = styled.div`
   font-size: 14px;
   font-weight: normal;
-  max-width: 240px;
+  max-width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media (max-width: 768px) {
+    max-width: 160px;
+  }
 
   @media (max-width: 480px) {
     font-size: 12px;

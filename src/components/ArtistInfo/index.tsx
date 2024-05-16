@@ -1,7 +1,7 @@
 import { PersonAddAlt } from '@mui/icons-material';
 import { Box, Button, Skeleton } from '@mui/material';
 import Image from '../Image';
-import { StyledArtistInfo, StyledArtistWrapper } from './styles';
+import { StyleSkeleton, StyledArtistInfo, StyledArtistWrapper } from './styles';
 import { ArtistInfoProps } from './types';
 import { followArtist, unfollowArtist } from '../../services/user';
 import { useContext } from 'react';
@@ -27,21 +27,27 @@ const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading, reCallApi }) => 
   return (
     <Box sx={{ display: 'flex' }}>
       {loading ? (
-        <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-          <Skeleton variant="circular" width={200} height={200} animation="wave" />
+        <StyleSkeleton>
           <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-            <Skeleton variant="text" width={100} animation="wave" />
-            <Skeleton variant="text" width={80} animation="wave" />
-            <Skeleton variant="rectangular" width={120} height={40} animation="wave" />
+            <Skeleton variant="circular" width={200} height={200} animation="wave" />
+            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+              <Skeleton variant="text" width={100} animation="wave" />
+              <Skeleton variant="text" width={80} animation="wave" />
+              <Skeleton variant="rectangular" width={120} height={40} animation="wave" />
+            </Box>
           </Box>
-        </Box>
+        </StyleSkeleton>
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
           <StyledArtistWrapper>
             <Image src={item?.image ?? images.noImage} />
           </StyledArtistWrapper>
           <StyledArtistInfo>
-            <Box textAlign={'center'} fontWeight={'500'}>
+            <Box
+              sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+              textAlign={'center'}
+              fontWeight={'500'}
+            >
               {item.name}
             </Box>
             {!item.followed ? (

@@ -8,7 +8,6 @@ const Container = styled.div`
 
   @media (max-width: 1200px) {
     flex-wrap: wrap;
-    justify-content: center;
   }
 `;
 
@@ -20,28 +19,28 @@ const StyledAlbumItem = styled.div`
   flex-direction: column;
   @media (min-width: 1201px) {
     & > div:first-child {
-      height: 216px;
+      height: 246px;
       width: 100%;
     }
   }
   @media (max-width: 1200px) {
     flex-basis: calc(33.33% - 16px);
     & > div:first-child {
-      height: 180px;
+      height: 240px;
       width: 100%;
     }
   }
   @media (max-width: 768px) {
     flex-basis: calc(50% - 16px);
     & > div:first-child {
-      height: 172px;
+      height: 240px;
       width: 100%;
     }
   }
   @media (max-width: 480px) {
     flex-basis: 100%;
     & > div:first-child {
-      height: 146px;
+      height: 200px;
       width: 100%;
     }
   }

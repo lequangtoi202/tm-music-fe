@@ -56,7 +56,7 @@ function Album() {
           <TextHeaderOnly text={'Nghệ Sĩ Tham Gia'} />
           <StyledArtistList>
             {album?.singers.map((singer: ISinger) => (
-              <ArtistInfo item={singer} loading={loading} reCallApi={reCallApi} />
+              <ArtistInfo key={singer.id} item={singer} loading={loading} reCallApi={reCallApi} />
             ))}
           </StyledArtistList>
         </Box>

@@ -28,7 +28,7 @@ function GenreDetail() {
     setGenre(data);
     const res = await getAlbumsByGenre(Number(genreId), 1, 10);
     if (res?.data) {
-      setAlbums((prevAlbums) => [...prevAlbums, ...(res.data?.albums ?? [])]);
+      setAlbums((prevAlbums) => [...prevAlbums, ...(res.data ?? [])]);
       setTotalPages(res.data?.total_pages ?? 0);
     }
     setLoading(false);

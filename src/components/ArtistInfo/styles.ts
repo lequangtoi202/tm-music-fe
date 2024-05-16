@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 
 const StyledArtistWrapper = styled.div`
@@ -96,4 +97,22 @@ const FollowButton = styled.div`
   }
 `;
 
-export { StyledArtistWrapper, StyledArtistInfo, FollowButton };
+const StyleSkeleton = styled(Box)`
+  @media (max-width: 480px) {
+    & > div {
+      & > span {
+        width: 90px !important;
+        height: 90px !important;
+      }
+
+      & > div {
+        & span {
+          width: 90px !important;
+          height: 28px !important;
+        }
+      }
+    }
+  }
+`;
+
+export { StyledArtistWrapper, StyledArtistInfo, FollowButton, StyleSkeleton };

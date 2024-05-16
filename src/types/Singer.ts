@@ -1,7 +1,7 @@
 import { ISong } from './Song';
 
 interface ISinger {
-  id: string;
+  id: number;
   name: string;
   image: string;
   description: string;

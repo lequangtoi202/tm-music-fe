@@ -40,7 +40,7 @@ function CommentModal({ song }: { song: ISong }) {
     setComments([...comments, res]);
   };
 
-  const handleDeleteComment = async (id: string) => {
+  const handleDeleteComment = async (id: number) => {
     await deleteComment(id);
     getComments(song.id);
   };

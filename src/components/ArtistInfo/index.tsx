@@ -10,13 +10,13 @@ import images from '../../assets/images';
 
 const ArtistInfo: React.FC<ArtistInfoProps> = ({ item, loading, reCallApi }) => {
   const { setError, setSuccess } = useContext(KContext);
-  const handleFollowArtist = async (id: string) => {
+  const handleFollowArtist = async (id: number) => {
     const res = await followArtist(id);
     if (res?.status === 201) setSuccess('Theo dõi thành công!');
     else setError('Theo dõi thất bại!');
     reCallApi && reCallApi();
   };
-  const handleUnFollowArtist = async (id: string) => {
+  const handleUnFollowArtist = async (id: number) => {
     const res = await unfollowArtist(id);
     console.log(res);
     if (res?.status === 200) setSuccess('Bỏ Theo dõi thành công!');

@@ -1,13 +1,13 @@
 const routes: { [key: string]: string } = {
   home: '/',
-  categories: '/chu-de',
+  genre: '/genres',
+  genreDetail: '/genres/:genreId',
   albums: '/albums/:albumId',
-  account: '/ho-so',
+  profile: '/profile',
   myplaylist: '/mymusic/playlist',
   myalbumDetail: '/mymusic/albums/:albumId',
-  genreDetail: '/genres/:genreId',
   rooms: '/rooms',
-  room: '/rooms/:uuid'
+  room: '/rooms/:uuid',
 };
 
 export default routes;

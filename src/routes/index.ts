@@ -4,12 +4,12 @@ import config from '../config';
 import { DefaultLayout } from '../layout/DefaultLayout';
 //Public routes
 const HomePage = lazy(() => import('../pages/Home'));
-const Category = lazy(() => import('../pages/Category'));
+const Genre = lazy(() => import('../pages/Genre'));
+const GenreDetail = lazy(() => import('../pages/GenreDetail'));
 const Album = lazy(() => import('../pages/Album'));
 const Account = lazy(() => import('../pages/Account'));
 const MyPlaylist = lazy(() => import('../pages/Playlist'));
 const MyAlbumDetail = lazy(() => import('../pages/Album'));
-const GenreDetail = lazy(() => import('../pages/GenreDetail'));
 const Rooms = lazy(() => import('../pages/Rooms'));
 const RoomDetail = lazy(() => import('../pages/RoomDetail'));
 
@@ -20,8 +20,13 @@ const publicRoutes: any = [
     layout: DefaultLayout,
   },
   {
-    path: config.routes.categories,
-    component: Category,
+    path: config.routes.genre,
+    component: Genre,
+    layout: DefaultLayout,
+  },
+  {
+    path: config.routes.genreDetail,
+    component: GenreDetail,
     layout: DefaultLayout,
   },
   {
@@ -30,7 +35,7 @@ const publicRoutes: any = [
     layout: DefaultLayout,
   },
   {
-    path: config.routes.account,
+    path: config.routes.profile,
     component: Account,
     layout: DefaultLayout,
   },
@@ -42,11 +47,6 @@ const publicRoutes: any = [
   {
     path: config.routes.myalbumDetail,
     component: MyAlbumDetail,
-    layout: DefaultLayout,
-  },
-  {
-    path: config.routes.genreDetail,
-    component: GenreDetail,
     layout: DefaultLayout,
   },
   {

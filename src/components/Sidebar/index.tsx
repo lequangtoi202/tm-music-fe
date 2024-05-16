@@ -62,7 +62,7 @@ function Sidebar() {
   if (!currentUser?.premium) {
     menuList1.push({ label: 'Mua premium', icon: <WorkspacePremium />, type: MenuType.PREMIUM });
   }
-  const menuList2 = [{ label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/chu-de', type: MenuType.LINK_ITEM }];
+  const menuList2 = [{ label: 'Chủ Đề & Thể Loại', icon: <Category />, to: '/genres', type: MenuType.LINK_ITEM }];
   return (
     <>
       <SidebarWrapper

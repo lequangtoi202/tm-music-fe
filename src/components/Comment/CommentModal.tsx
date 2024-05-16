@@ -1,6 +1,8 @@
-import { Box, Button, Fade, Icon, IconButton, Typography } from '@mui/material';
+import { CheckCircle, Warning } from '@mui/icons-material';
+import { Box, Fade, IconButton, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import images from '../../assets/images';
 import { KContext } from '../../context';
 import { createComment, deleteComment, getCommentsOfSong, validateComment } from '../../services/user';
 import { ISong } from '../../types/Song';
@@ -19,7 +21,6 @@ import {
   UserAvatar,
   UserWrapper,
 } from './styles';
-import { CheckCircle, Warning } from '@mui/icons-material';
 
 function CommentModal({ song }: { song: ISong }) {
   const { openCommentDialog, setOpenCommentDialog, currentSong, setError } = useContext(KContext);
@@ -60,7 +61,7 @@ function CommentModal({ song }: { song: ISong }) {
     if (openCommentDialog) {
       getComments(song.id);
     }
-    setSingers(song.singers?.map((singer) => singer.name).join(', ') || ''); // Provide a default value of an empty string
+    setSingers(song.singers?.map((singer) => singer.name).join(', ') || '');
   }, [song, openCommentDialog]);
 
   const handleViewMore = () => {
@@ -106,10 +107,7 @@ function CommentModal({ song }: { song: ISong }) {
               <CommentWrapper key={idx}>
                 <UserWrapper>
                   <UserAvatar>
-                    <Image
-                      src={comment.createdBy?.avatar ?? '../../assets/images/no-image.png'}
-                      alt={comment.createdBy?.firstName}
-                    />
+                    <Image src={comment.createdBy?.avatar ?? images.noImage} alt={comment.createdBy?.firstName} />
                   </UserAvatar>
                   <StyledName>{comment.createdBy?.firstName}</StyledName>
                 </UserWrapper>

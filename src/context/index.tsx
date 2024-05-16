@@ -51,7 +51,8 @@ export const KContextProvider = ({ children }: KContextProps) => {
         image: data.image,
         singers: data.singers,
         genre: data.genre,
-        audio: 'https://res.cloudinary.com/dx9vr7on4/video/upload/v1713808834/xm5ojwdexjx5s3lfjmgc.mp3',
+        audio:
+          'https://vnso-zn-24-tf-a128-z3.zmdcdn.me/ed296514b07543c8f29162802af28948?authen=exp=1715875585~acl=/ed296514b07543c8f29162802af28948/*~hmac=8af4e8a0b7339831c9cffab628287beb',
         liked: data.liked,
         owner: data.owner,
       });

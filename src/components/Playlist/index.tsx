@@ -10,7 +10,7 @@ import { MoreAction } from '../MoreAction';
 import { PlaylistModal } from '../PlaylistModal';
 import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import Snackbars from '../Snackbar';
-import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
+import { StyledLayerHover } from '../Theme/styles';
 import UploadModal from '../Upload';
 import UploadSongModal from '../Upload/UploadSong';
 import { PLaylistTitle } from './PlaylistTitle';
@@ -21,7 +21,9 @@ import {
   StyledChildPlaylistItem,
   StyledItemContainer,
   StyledPlaylistItem,
+  StyledWrapper,
 } from './styles';
+import images from '../../assets/images';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
@@ -133,7 +135,7 @@ function Playlist() {
                         </IconButton>
                       </Tooltip>
                     </StyledLayerHover>
-                    <Image src={item.image ?? '../../assets/images/no-image.png'} alt={item.title} />
+                    <Image src={item.image ?? images.noImage} alt={item.title} />
                   </StyledWrapper>
                 )}
               </StyledChildPlaylistItem>

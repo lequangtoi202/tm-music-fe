@@ -134,7 +134,9 @@ function Homepage() {
       const resHistories = await getHistories(page);
       const histories = resHistories?.data?.histories ?? [];
       const uniqueHistories = Array.from(new Set(histories.map((history: ISong) => history.id)));
-      setHistories(uniqueHistories.map((id) => histories.find((history: ISong) => history.id === id)) ?? []);
+      setHistories(
+        uniqueHistories.map((id) => histories.find((history: ISong) => history.id === id)).slice(0, 6) ?? [],
+      );
       const resGenres = await getAllGenres(page);
       const genresData = resGenres?.data?.genres ?? [];
       setGenres(genresData);

@@ -91,18 +91,19 @@ const StyledWrapper = styled.div`
   border-radius: 6px;
   position: relative;
   height: 100%;
+  width: 100%;
 
   &:hover {
-    & > div {
+    & > a > div {
       opacity: 1;
     }
 
-    & > img {
+    & > a > img {
       transform: scale(1.1);
     }
   }
 
-  & > img {
+  & > a > img {
     cursor: pointer;
     object-fit: cover;
     width: 100%;
@@ -110,7 +111,7 @@ const StyledWrapper = styled.div`
     transition: transform 0.5s ease;
   }
 
-  & div {
+  & > a > div {
     text-align: center;
     height: 100%;
   }

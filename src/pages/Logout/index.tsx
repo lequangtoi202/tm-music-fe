@@ -18,7 +18,7 @@ function Logout() {
   };
   useEffect(() => {
     handleLogout();
-    navigate('/dang-nhap');
+    navigate('/login');
   }, []);
 
   return <></>;

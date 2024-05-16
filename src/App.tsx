@@ -10,7 +10,6 @@ import { clientId } from './constants';
 import { DefaultLayout } from './layout/DefaultLayout';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
-import SignUp from './pages/SignUp';
 import { publicRoutes } from './routes';
 import ThemeProvider from './theme/ThemeProvider';
 import { getCurrentUser } from './utils/storage';
@@ -21,7 +20,7 @@ function App() {
 
   const ProtectedRoute = ({ children }: { children?: ReactNode }) => {
     if (!localUser) {
-      return <Navigate to={`/dang-nhap`} />;
+      return <Navigate to={`/login`} />;
     }
     return children;
   };
@@ -57,9 +56,8 @@ function App() {
                   />
                 );
               })}
-              <Route path={'/dang-nhap'} element={<Login />} />
-              <Route path={'/dang-ky'} element={<SignUp />} />
-              <Route path={'/dang-xuat'} element={<Logout />} />
+              <Route path={'/login'} element={<Login />} />
+              <Route path={'/logout'} element={<Logout />} />
             </Routes>
           </Suspense>
         </ThemeProvider>

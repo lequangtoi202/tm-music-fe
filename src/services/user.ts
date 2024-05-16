@@ -179,9 +179,9 @@ export const unlike = async (data: number[], params: string) => {
   }
 };
 
-export const followArtist = async (artistId: string) => {
+export const followArtist = async (artistId: number) => {
   const formData = new FormData();
-  formData.append('artist_id', artistId);
+  formData.append('artist_id', artistId.toString());
   try {
     const response = await apiInstance.post(`/me/follows`, formData, {
       headers: {
@@ -195,7 +195,7 @@ export const followArtist = async (artistId: string) => {
   }
 };
 
-export const unfollowArtist = async (id: string) => {
+export const unfollowArtist = async (id: number) => {
   try {
     const response = await apiInstance.delete(`/me/follows/${id}`);
     return response;
@@ -222,7 +222,7 @@ export const createComment = async (data: any) => {
   }
 };
 
-export const deleteComment = async (id: string) => {
+export const deleteComment = async (id: number) => {
   try {
     const response = await apiInstance.delete(`/me/comments/${id}`);
     return response.data;
@@ -240,7 +240,7 @@ export const deleteMyAlbum = async (id: number) => {
   }
 };
 
-export const getCommentDetail = async (id: string) => {
+export const getCommentDetail = async (id: number) => {
   try {
     const response = await apiInstance.get(`/me/comments/${id}`);
     return response.data;
@@ -320,7 +320,7 @@ export const getAllGenres = async (page: number, size?: number) => {
   }
 };
 
-export const getGenre = async (id: string) => {
+export const getGenre = async (id: number) => {
   try {
     const response = await apiInstance.get(`/genres/${id}`);
     return response.data;
@@ -329,7 +329,7 @@ export const getGenre = async (id: string) => {
   }
 };
 
-export const getGenresRelated = async (id: string) => {
+export const getGenresRelated = async (id: number) => {
   try {
     const response = await apiInstance.get(`/genres/${id}/related`);
     return response.data;
@@ -338,7 +338,7 @@ export const getGenresRelated = async (id: string) => {
   }
 };
 
-export const getAlbumsRelated = async (id: string) => {
+export const getAlbumsRelated = async (id: number) => {
   try {
     const response = await apiInstance.get(`/albums/${id}/related`);
     return response.data;
@@ -347,7 +347,7 @@ export const getAlbumsRelated = async (id: string) => {
   }
 };
 
-export const getAlbumsOfSinger = async (ids: string[]) => {
+export const getAlbumsOfSinger = async (ids: number[]) => {
   try {
     const response = await apiInstance.get(`/singers/albums?ids=${ids.join(',')}`);
     return response.data;
@@ -381,7 +381,7 @@ export const addSongsToPlaylist = async (playlistId: number, ids: number[]) => {
   }
 };
 
-export const deleteSongsFromPlaylist = async (playlistId: string, ids: number[]) => {
+export const deleteSongsFromPlaylist = async (playlistId: number, ids: number[]) => {
   const formData = new FormData();
   formData.append('song_ids', JSON.stringify(ids));
   try {

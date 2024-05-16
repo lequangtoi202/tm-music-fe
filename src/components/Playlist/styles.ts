@@ -125,6 +125,38 @@ const StyledPlaylistTitle = styled(Box)`
   }
 `;
 
+const StyledWrapper = styled.div`
+  flex: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  &:hover {
+    & > div {
+      opacity: 1;
+    }
+
+    & > img {
+      transform: scale(1.1);
+    }
+  }
+
+  & > img {
+    cursor: pointer;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+  }
+
+  & > div {
+    text-align: center;
+    height: 100%;
+  }
+`;
+
 export {
   Container,
   StyledPlaylistItem,
@@ -133,4 +165,5 @@ export {
   StyledAddPlaylist,
   StyledItemContainer,
   StyledPlaylistTitle,
+  StyledWrapper,
 };

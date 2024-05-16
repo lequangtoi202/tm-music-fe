@@ -7,9 +7,10 @@ import { createLike, pushToHistories, unlike } from '../../../services/user';
 import Image from '../../Image';
 import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
 import { RoundedSkeleton } from '../../Skeleton';
-import { StyledLayerHoverHistories, StyledWrapper } from '../../Theme/styles';
+import { StyledLayerHoverHistories } from '../../Theme/styles';
 import { StyledHistoryItem } from '../styles';
 import { HistoryItemProps } from '../types';
+import { StyledWrapper } from '../../Playlist/styles';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
   const { setIsOpenMoreAction, setTempSongOrAlbum, setCurrentSong } = useContext(KContext);

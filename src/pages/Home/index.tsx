@@ -17,7 +17,7 @@ function Homepage() {
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [page, setPage] = useState<number>(1);
   const [suggests, setSuggests] = useState<ISong[]>([]);
-  const genresMap = new Map<number, IAlbum[]>();
+  const [genresMap, setGenresMap] = useState<Map<number, IAlbum[]>>(new Map());
   const mockGenre: IGenre[] = [
     {
       title: 'Pop',
@@ -140,14 +140,21 @@ function Homepage() {
       const resGenres = await getAllGenres(page);
       const genresData = resGenres?.data?.genres ?? [];
       setGenres(genresData);
-      genresData.forEach(async (genre: IGenre) => {
-        const res = await getAlbumsByGenre(genre.id, 1, 1000);
-        genresMap.set(genre.id, res?.data?.albums ?? []);
-      });
       const data = (await suggestSongs()) ?? [];
       setSuggests(data.slice(0, 6));
     })();
-  }, []);
+  }, [page]);
+
+  useEffect(() => {
+    (async () => {
+      const newGenresMap = new Map(genresMap);
+      for (const genre of genres) {
+        const res = await getAlbumsByGenre(genre.id, 1, 1000);
+        newGenresMap.set(genre.id, res?.data ?? []);
+      }
+      setGenresMap(newGenresMap);
+    })();
+  }, [genres]);
 
   return (
     <Box>
@@ -165,19 +172,18 @@ function Homepage() {
             <TextHeaderOnly text={'Đề xuất'} />
             <HistoryContainer items={suggests} />
           </Box>
-          {genres.length > 0 &&
-            genres.map((genre) => {
-              const albumItems = genresMap.get(genre.id) ?? [];
-              if (!albumItems || albumItems.length === 0) {
-                return null;
-              }
-              return (
-                <Box key={genre.id}>
-                  <TextHeader text={genre.title} />
-                  <AlbumContainer items={albumItems} />
-                </Box>
-              );
-            })}
+          {genres.map((genre) => {
+            const albumItems = genresMap.get(genre.id) ?? [];
+            if (!albumItems || albumItems.length === 0) {
+              return null;
+            }
+            return (
+              <Box key={genre.id}>
+                <TextHeader text={genre.title} />
+                <AlbumContainer items={albumItems} />
+              </Box>
+            );
+          })}
         </Box>
         <PlaylistModal />
       </ThemeProvider>

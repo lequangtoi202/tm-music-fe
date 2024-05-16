@@ -72,6 +72,9 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       })
       .then((res) => {
         fileDownload(res.data, filename);
+      })
+      .catch((err) => {
+        console.error('Lỗi không thể tải xuống', err);
       });
   };
 
@@ -92,8 +95,8 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
     }
   };
 
-  const handleCreateCheckout = async () => {
-    const data = await createCheckout('1');
+  const handleCreateCheckout = async (songId: number) => {
+    const data = await createCheckout(songId);
     window.location.href = data.url;
   };
 
@@ -163,7 +166,9 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
             {!owner && !pathname.includes('/mymusic/') && pathname.includes('/albums/') && (
               <ListItemButton
                 onClick={() => {
-                  handleCreateCheckout();
+                  if (song?.id) {
+                    handleCreateCheckout(song.id);
+                  }
                 }}
               >
                 <StyledListItemIcon>

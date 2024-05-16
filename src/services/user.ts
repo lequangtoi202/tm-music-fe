@@ -334,7 +334,7 @@ export const getGenresRelated = async (id: number) => {
     const response = await apiInstance.get(`/genres/${id}/related`);
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get genres related:', error);
   }
 };
 
@@ -343,7 +343,7 @@ export const getAlbumsRelated = async (id: number) => {
     const response = await apiInstance.get(`/albums/${id}/related`);
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get albums related:', error);
   }
 };
 
@@ -352,7 +352,7 @@ export const getAlbumsOfSinger = async (ids: number[]) => {
     const response = await apiInstance.get(`/singers/albums?ids=${ids.join(',')}`);
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get albums of singers:', error);
   }
 };
 
@@ -361,7 +361,7 @@ export const getCommentsOfSong = async (id: number) => {
     const response = await apiInstance.get(`/songs/${id}/comments`);
     return response;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get comments of Song:', error);
   }
 };
 
@@ -377,7 +377,7 @@ export const addSongsToPlaylist = async (playlistId: number, ids: number[]) => {
     });
     return response;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error add song to playlist:', error);
   }
 };
 
@@ -393,7 +393,7 @@ export const deleteSongsFromPlaylist = async (playlistId: number, ids: number[])
     });
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error delete song to playlist:', error);
   }
 };
 
@@ -424,9 +424,9 @@ export const verifyInvitation = async (code: string) => {
   }
 };
 
-export const createCheckout = async (songId: string) => {
+export const createCheckout = async (songId: number) => {
   const formData = new FormData();
-  formData.append('song_id', songId);
+  formData.append('song_id', songId.toString());
   try {
     const response = await apiInstance.post(`/create-checkout-session`, formData, {
       headers: {

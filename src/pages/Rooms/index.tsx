@@ -13,12 +13,14 @@ function Rooms() {
   const [roomsPrivate, setRoomsPrivate] = useState<any[]>([]);
 
   useEffect(() => {
-    (async () => {
-      const resRooms = await getRooms();
-      setRooms(resRooms.data.public_rooms);
-      setRoomsPrivate(resRooms.data.private_rooms);
-    })();
+    getAllRooms()
   }, []);
+
+  const getAllRooms = async () => {
+    const resRooms = await getRooms();
+    setRooms(resRooms.data.public_rooms);
+    setRoomsPrivate(resRooms.data.private_rooms);
+  }
 
   const handleBuyPremium = async () => {
     try {
@@ -65,9 +67,9 @@ function Rooms() {
               )}
             </Grid>
           </Grid>
-          <RoomList rooms={roomsPrivate} isPrivate={true} />
+          <RoomList rooms={roomsPrivate} isPrivate={true} getAllRooms={getAllRooms} />
         </Container>
-        <RoomModal />
+        <RoomModal getAllRooms={getAllRooms} />
       </ThemeProvider>
     </Box>
   );

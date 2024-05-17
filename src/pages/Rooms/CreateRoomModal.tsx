@@ -5,27 +5,33 @@ import { css, styled } from '@mui/system';
 import clsx from 'clsx';
 import { forwardRef, useContext, useState } from 'react';
 import { KContext } from '../../context';
-import { createMyAlbum } from '../../services/user';
+import { createMyAlbum, createMyRoom } from '../../services/user';
 import { StyledInput } from './styles';
 
-export const RoomModal = () => {
+interface RoomModalProps {
+  getAllRooms: () => void;
+}
+
+export const RoomModal: React.FC<RoomModalProps>  = ({ getAllRooms }) => {
   const { isOpenAddRoomModal, setIsOpenAddRoomModal, setSuccess, setError, setChangedRoom, roomChanged } =
     useContext(KContext);
   const [roomName, setRoomName] = useState('');
-  const [disabled, setDisabled] = useState<boolean>(true);
+  const [description, setDescription] = useState('');
+  // const [disabled, setDisabled] = useState<boolean>(true);
+
+  const isDisabled = roomName.length === 0 || description.length === 0;
 
   const handleCreateNewRoom = async () => {
-    const formData = new FormData();
-    formData.append('title', roomName);
-
-    const res = await createMyAlbum(formData);
-    if (res?.status === 201) {
-      setSuccess('Tạo phòng thành công!');
-      setRoomName('');
+    try {
+      const data = await createMyRoom(roomName, description);
+      setSuccess("Tạo phòng phòng thành công");
+      if (getAllRooms) {
+        getAllRooms(); 
+      }
       setIsOpenAddRoomModal(false);
-      setChangedRoom(!roomChanged);
-    } else if (res?.status === 422) {
-      setError('Tạo phòng không thành công.');
+    } catch (error) {
+      setError("Có lỗi xảy ra khi xóa phòng");
+      console.error('Error creating room:', error);
     }
   };
 
@@ -58,14 +64,21 @@ export const RoomModal = () => {
               value={roomName}
               onChange={(event) => {
                 setRoomName(event.target.value);
-                setDisabled(event.target.value.length === 0);
               }}
               placeholder="Nhập tên Room"
+            />
+            <StyledInput
+              disableUnderline={true}
+              value={description}
+              onChange={(event) => {
+                setDescription(event.target.value);
+              }}
+              placeholder="Description"
             />
             <Box sx={{ mt: 2 }} display={'flex'} justifyContent={'center'}>
               <Button
                 sx={{ borderRadius: '18px', flex: 1 }}
-                disabled={disabled}
+                disabled={isDisabled}
                 onClick={handleCreateNewRoom}
                 variant="contained"
               >

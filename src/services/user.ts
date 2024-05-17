@@ -347,6 +347,41 @@ export const getAlbumsRelated = async (id: number) => {
   }
 };
 
+export const getSongsInRoom = async (id: string) => {
+  try {
+    const response = await apiInstance.get(`/me/rooms/${id}/songs`);
+    return response.data;
+  } catch (error) {
+    console.error('Error get albums related:', error);
+  }
+};
+
+export const deleteMyRoom = async (id: string) => {
+  try {
+    const response = await apiInstance.delete(`/me/rooms/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error get albums related:', error);
+  }
+};
+
+export const createMyRoom = async (name: string, des: string) => {
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('description', des);
+  try {
+    const response = await apiInstance.post(`/me/rooms`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error create invitation:', error);
+  }
+};
+
 export const getAlbumsOfSinger = async (ids: number[]) => {
   try {
     const response = await apiInstance.get(`/singers/albums?ids=${ids.join(',')}`);

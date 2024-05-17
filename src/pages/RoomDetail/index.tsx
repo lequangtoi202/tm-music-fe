@@ -22,10 +22,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCurrentUser } from '../../utils/storage';
 import { ExitToApp, Send } from '@mui/icons-material';
+import { getSongsInRoom } from '../../services/user';
 const theme = createTheme();
 let socket = null;
 
 const RoomDetail: React.FC = () => {
+  const audioRef = useRef(null);
   const { uuid } = useParams();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -40,8 +42,8 @@ const RoomDetail: React.FC = () => {
   const [views, setViews] = useState<number>(1);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [url, setUrl] = useState<string>('');
-  const [newUrl, setNewUrl] = useState<string>('');
   const [ownerRoomId, setOwnerRoomId] = useState<number>(-1);
+  const [songsInRoom, setSongsInRoom] = useState<any[]>([]);
 
   const user_id = (() => {
     const localUser = getCurrentUser();
@@ -51,6 +53,21 @@ const RoomDetail: React.FC = () => {
     }
     return 0;
   })();
+
+  useEffect(() => {
+    const setCurrentTimeAndPlay = (time) => {
+      if (audioRef.current) {
+        audioRef.current.currentTime = time;
+        audioRef.current.play();
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      setCurrentTimeAndPlay(currentTime + 3);
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  }, [currentTime]);
 
   const createSocket = () => {
     const socket_url = 'ws://localhost:3000/cable';
@@ -121,6 +138,8 @@ const RoomDetail: React.FC = () => {
       }
     };
 
+    getDataSongsInRoom(uuid)
+
     const beforeUnloadHandler = (event: any) => {
       const msg = {
         command: 'unsubscribed',
@@ -140,6 +159,12 @@ const RoomDetail: React.FC = () => {
       window.removeEventListener('beforeunload', beforeUnloadHandler);
     };
   }, []);
+
+  const getDataSongsInRoom = async (id: any) => {
+    const data = await getSongsInRoom(id);
+    setSongsInRoom(data);
+  }
+  console.log('songInRoom: ', songsInRoom)
 
   const sendMessage = () => {
     if (socket.readyState === WebSocket.OPEN) {
@@ -165,7 +190,9 @@ const RoomDetail: React.FC = () => {
     }
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClickSongs = async (url: string) => {
+    const videoDuration = await getVideoDuration(url);
+    console.log('videoDuration: ', videoDuration)
     if (socket.readyState === WebSocket.OPEN) {
       const msg = {
         command: 'message',
@@ -174,7 +201,7 @@ const RoomDetail: React.FC = () => {
           user_id: user_id,
           uuid: uuid,
         }),
-        data: JSON.stringify({ action: 'change_url', url: newUrl }),
+        data: JSON.stringify({ action: 'change_url', url: url, total_time: videoDuration }),
       };
       socket.send(JSON.stringify(msg));
       setNewUrl('');
@@ -182,98 +209,78 @@ const RoomDetail: React.FC = () => {
       console.log('Kết nối chưa được mở. Đang thử lại sau.');
     }
   };
-  console.log('url: ', url);
-  console.log('currentTime: ', currentTime);
+
+  const getVideoDuration = (url) => {
+    return new Promise((resolve) => {
+      const video = document.createElement('video');
+      video.src = 'https://vnso-pt-15-tf-a128-z3.zmdcdn.me/756ba39ea07eb46c326b54c999668a94?authen=exp=1716058741~acl=/756ba39ea07eb46c326b54c999668a94/*~hmac=8322462b2f81ebbaef181e2dcc9dbad2';
+      video.addEventListener('loadedmetadata', () => {
+        resolve(Math.floor(video.duration));
+      });
+      video.addEventListener('error', () => {
+        resolve(0);
+      });
+    });
+  };
 
   return (
     <Box>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={9}>
-              <Box position={'relative'} height={0} overflow={'hidden'} pb={'56.25%'} maxWidth={'100%'}>
-                <iframe
-                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                  src={`https://www.youtube.com/embed/${url}?autoplay=1&start=${currentTime}`}
-                  frameBorder="0"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  title="video"
-                  // style={{ pointerEvents: 'none' }}
-                />
-              </Box>
-              <AppBar position="static" sx={{ mb: 2 }}>
-                <Toolbar>
-                  <Typography variant="h6" flexGrow={1}>
-                    Room Detail
-                  </Typography>
-                  <Typography variant="body2">Views {views}</Typography>
-                </Toolbar>
-              </AppBar>
-            </Grid>
-            <Grid item xs={3} container>
-              <Box mb={2} display={'flex'} flexDirection={'column'} maxHeight={'calc(100vh - 64px)'} overFlowY={'auto'}>
-                <div>
-                  <Typography variant="h6">Trò chuyện</Typography>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <List ref={chatListRef}>
-                    {messages.map((comment, index) => (
-                      <ListItem key={index} sx={{ pl: 0, pr: 0 }}>
-                        <ListItemAvatar>
-                          <Avatar alt={comment.name} src={comment.image} />
-                        </ListItemAvatar>
-                        <ListItemText primary={comment.name} secondary={comment.content} />
-                      </ListItem>
-                    ))}
-                  </List>
-                  <Box mt={2} display={'flex'} alignItems={'center'}>
-                    <TextField
-                      label="Type your message"
-                      variant="outlined"
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      onKeyUp={handleKeyPress}
-                      multiline
-                    />
-                    <IconButton color="primary" onClick={sendMessage}>
-                      <Send />
-                    </IconButton>
-                  </Box>
-                </div>
-              </Box>
-            </Grid>
-          </Grid>
-          {ownerRoomId === user_id ? (
-            <Box width={'100%'} mt={2}>
-              <TextField
-                label="New Input"
-                variant="outlined"
-                value={newUrl}
-                onChange={(e) => setNewUrl(e.target.value)}
-              />
-              <Button
-                variant="contained"
-                color="secondary"
-                // className={classes.button}
-                onClick={handleButtonClick}
-              >
-                Thay đổi
-              </Button>
-            </Box>
-          ) : (
-            <></>
-          )}
-
-          <Link to={`/rooms/`} width={'100%'} mt={2}>
-            <Button variant="contained" color="primary" width={'100%'} mt={2} startIcon={<ExitToApp />}>
-              Thoát
+      {songsInRoom.length > 0 &&
+        songsInRoom.map((result, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <span style={{ marginRight: '10px' }}>{result.title}</span>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleButtonClickSongs(result.audio)}
+            >
+              Click Me
             </Button>
-          </Link>
+          </div>
+        ))}
+
+        <div>
+        <audio
+          id="audioPlayer"
+          autoPlay
+          controls={true}
+          src={url}
+          ref={audioRef}
+        />
+        </div>
+
+        <Box mb={2} display={'flex'} flexDirection={'column'} maxHeight={'calc(100vh - 64px)'} overFlowY={'auto'}>
+          <div>
+            <Typography variant="h6">Trò chuyện</Typography>
+          </div>
+          <div style={{ flex: 1 }}>
+            <List ref={chatListRef}>
+              {messages.map((comment, index) => (
+                <ListItem key={index} sx={{ pl: 0, pr: 0 }}>
+                  <ListItemAvatar>
+                    <Avatar alt={comment.name} src={comment.image} />
+                  </ListItemAvatar>
+                  <ListItemText primary={comment.name} secondary={comment.content} />
+                </ListItem>
+              ))}
+            </List>
+            <Box mt={2} display={'flex'} alignItems={'center'}>
+              <TextField
+                label="Type your message"
+                variant="outlined"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyUp={handleKeyPress}
+                multiline
+              />
+              <IconButton color="primary" onClick={sendMessage}>
+                <Send />
+              </IconButton>
+            </Box>
+          </div>
         </Box>
-      </ThemeProvider>
     </Box>
+
   );
 };
 

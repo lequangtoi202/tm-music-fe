@@ -204,7 +204,6 @@ const RoomDetail: React.FC = () => {
         data: JSON.stringify({ action: 'change_url', url: url, total_time: videoDuration }),
       };
       socket.send(JSON.stringify(msg));
-      setNewUrl('');
     } else {
       console.log('Kết nối chưa được mở. Đang thử lại sau.');
     }

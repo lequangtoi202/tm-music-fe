@@ -146,8 +146,8 @@ function Login() {
       premium: client.premium,
     });
     setSuccess('Đăng nhập thành công');
-    setIsLoggedIn(true);
     navigate('/');
+    setIsLoggedIn(true);
   };
   const onLoginFacebookFailed = (res: FailResponse) => {
     setError('Đăng nhập facebook không thành công!');

@@ -13,12 +13,14 @@ function Rooms() {
   const [roomsPrivate, setRoomsPrivate] = useState<any[]>([]);
 
   useEffect(() => {
-    (async () => {
-      const resRooms = await getRooms();
-      setRooms(resRooms.data.public_rooms);
-      setRoomsPrivate(resRooms.data.private_rooms);
-    })();
+    getAllRooms()
   }, []);
+
+  const getAllRooms = async () => {
+    const resRooms = await getRooms();
+    setRooms(resRooms.data.public_rooms);
+    setRoomsPrivate(resRooms.data.private_rooms);
+  }
 
   const handleBuyPremium = async () => {
     try {
@@ -34,14 +36,6 @@ function Rooms() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="md">
-          <Grid container spacing={2} mt={2} alignItems="center">
-            <Grid item xs={6}>
-              <Text color="black" style={{ fontWeight: 'bold', fontSize: '22px' }}>
-                {'Danh sách phòng'}
-              </Text>
-            </Grid>
-          </Grid>
-          <RoomList rooms={rooms} />
           <Grid container mt={2} spacing={2} alignItems="center">
             <Grid item xs={6}>
               <Text color="black" style={{ fontWeight: 'bold', fontSize: '22px' }}>
@@ -65,9 +59,17 @@ function Rooms() {
               )}
             </Grid>
           </Grid>
-          <RoomList rooms={roomsPrivate} isPrivate={true} />
+          <RoomList rooms={roomsPrivate} isPrivate={true} getAllRooms={getAllRooms} />
+          <Grid container spacing={2} mt={2} alignItems="center">
+            <Grid item xs={6}>
+              <Text color="black" style={{ fontWeight: 'bold', fontSize: '22px' }}>
+                {'Cộng đồng'}
+              </Text>
+            </Grid>
+          </Grid>
+          <RoomList rooms={rooms} />
         </Container>
-        <RoomModal />
+        <RoomModal getAllRooms={getAllRooms} />
       </ThemeProvider>
     </Box>
   );

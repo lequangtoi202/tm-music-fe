@@ -29,8 +29,10 @@ function CommentModal({ song }: { song: ISong }) {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const { handleSubmit, register, reset } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: any) => {
+    setLoading(true);
     const result = await validateComment(data.comment);
     const res = await createComment({
       content: data.comment,
@@ -38,6 +40,7 @@ function CommentModal({ song }: { song: ISong }) {
       status: result[0] === 'POSITIVE' ? true : false,
     });
     setComments([...comments, res]);
+    setLoading(false);
   };
 
   const handleDeleteComment = async (id: number) => {
@@ -86,7 +89,7 @@ function CommentModal({ song }: { song: ISong }) {
         <ModalContent sx={{ width: 640 }}>
           <PlaylistItem>
             <SongTitle>
-              <Image src={song?.image || '../../assets/images/no-image.png'} alt={song.title} />
+              <Image src={song?.image ?? images.noImage} alt={song.title} />
               <StyledBox>
                 <StyledBoxTitle>
                   <Typography fontWeight={700} variant="inherit" noWrap>
@@ -134,7 +137,13 @@ function CommentModal({ song }: { song: ISong }) {
             ))}
             {page < totalPages && <StyledViewMoreComment onClick={handleViewMore}>Xem thêm</StyledViewMoreComment>}
           </CommentContainer>
-          <FormComment reset={reset} onSubmit={onSubmit} handleSubmit={handleSubmit} register={register} />
+          <FormComment
+            reset={reset}
+            onSubmit={onSubmit}
+            handleSubmit={handleSubmit}
+            register={register}
+            isLoading={loading}
+          />
         </ModalContent>
       </Fade>
     </Modal>

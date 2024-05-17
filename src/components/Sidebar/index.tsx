@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, Divider, Drawer, Skeleton, alpha, darken, lighten, styled, useTheme } from '@mui/material';
 
-import { Category, Queue, Send, TravelExplore, WorkspacePremium } from '@mui/icons-material';
+import { Category, MeetingRoom, Queue, Send, TravelExplore, WorkspacePremium } from '@mui/icons-material';
 import { sidebarWidth } from '../../constants';
 import { KContext } from '../../context';
 import { SidebarContext } from '../../context/SidebarContext';
@@ -55,7 +55,7 @@ function Sidebar() {
   };
   const menuList = [{ label: 'Khám Phá', icon: <TravelExplore />, to: '/', type: MenuType.LINK_ITEM }];
   const menuList1 = [
-    { label: 'Rooms', icon: <Queue />, to: '/rooms', type: MenuType.LINK_ITEM },
+    { label: 'Rooms', icon: <MeetingRoom />, to: '/rooms', type: MenuType.LINK_ITEM },
     { label: 'Tạo playlist mới', icon: <Queue />, to: '/mymusic/playlist', type: MenuType.LINK_ITEM },
     { label: 'Nhập mã chia sẽ', icon: <Send />, type: MenuType.BUTTON_ITEM },
   ];

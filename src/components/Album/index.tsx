@@ -21,13 +21,12 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
 
   const handleToggleLike = async (id: number) => {
     const liked = likedAlbums[id];
-    if (!liked) {
-      await createLike([id], 'album_ids');
-      setLikedAlbums({ ...likedAlbums, [id]: true });
-    } else {
+    if (liked) {
       await unlike([id], 'album_ids');
-      setLikedAlbums({ ...likedAlbums, [id]: false });
+    } else {
+      await createLike([id], 'album_ids');
     }
+    setLikedAlbums({ ...likedAlbums, [id]: !liked });
   };
 
   const handleSaveToHistory = async (id: number) => {
@@ -35,11 +34,19 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   };
 
   useEffect(() => {
+    const initialLikedAlbums: Record<number, boolean> = items.reduce(
+      (acc, item) => {
+        acc[item.id] = item.liked;
+        return acc;
+      },
+      {} as Record<number, boolean>,
+    );
+    setLikedAlbums(initialLikedAlbums);
     (async () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setLoading(false);
     })();
-  }, []);
+  }, [items]);
 
   return (
     <Container>

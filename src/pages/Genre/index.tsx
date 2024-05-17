@@ -19,17 +19,20 @@ function Genre() {
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const genresMap = new Map<number, IAlbum[]>();
+  const [genresMap, setGenresMap] = useState(new Map<number, IAlbum[]>());
+
   const fetchData = async () => {
     const response = await getAllGenres(page);
     const data = response?.data ?? [];
     setGenres((prevGenre) => [...prevGenre, ...(data?.genres ?? [])]);
-    data?.genres?.forEach(async (genre: IGenre) => {
+    const newGenresMap = new Map(genresMap);
+    const genrePromises = data?.genres?.map(async (genre: IGenre) => {
       const res = await getAlbumsByGenre(genre.id, 1, 1000);
-      genresMap.set(genre.id, res?.data?.albums ?? []);
+      newGenresMap.set(genre.id, res?.data ?? []);
     });
+    await Promise.all(genrePromises);
+    setGenresMap(newGenresMap);
     setTotalPages(data?.total_pages ?? 0);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };
 
@@ -41,7 +44,7 @@ function Genre() {
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, []);
 
   return (
     <Box mb={10}>
@@ -70,7 +73,7 @@ function Genre() {
             }
             return (
               <Box key={genre.id}>
-                <TextHeader text={genre.title} />
+                <TextHeader text={genre.title} to={`/genres/${genre.id}`} />
                 <AlbumContainer items={albumItems} />
               </Box>
             );

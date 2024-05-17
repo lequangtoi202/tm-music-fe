@@ -62,7 +62,7 @@ function Album() {
         </Box>
 
         <Box marginBottom={8}>
-          <TextHeader text={'Có Thể Bạn Quan Tâm'} to={`/genres`} />
+          <TextHeader text={'Có Thể Bạn Quan Tâm'} to={`/genres/${album?.genre_id}`} />
           <AlbumContainer items={albumRelated} />
         </Box>
 

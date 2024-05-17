@@ -46,7 +46,7 @@ function Homepage() {
       duration: '3:30',
       views: 100,
       track_number: 1,
-      image: 'https://avatar-ex-swe.nixcdn.com/slideshow/2024/04/05/8/3/1/d/1712301205774_org.jpg',
+      image: 'https://photo-zmp3.zmdcdn.me/cover/8/f/9/3/8f932ff8c944a109b38826ff33c3fe70.jpg',
       audio: 'path/to/song/audio.mp3',
       genre: mockGenre[0],
       liked: false,
@@ -76,7 +76,7 @@ function Homepage() {
       duration: '3:30',
       views: 100,
       track_number: 1,
-      image: 'https://avatar-ex-swe.nixcdn.com/playlist/2024/03/08/c/8/0/0/1709863624708_300.jpg',
+      image: 'https://photo-zmp3.zmdcdn.me/cover/f/d/9/0/fd90bd3fabed951f29062bd0e5743078.jpg',
       audio: 'path/to/song/audio.mp3',
       genre: mockGenre[0],
       liked: false,
@@ -91,7 +91,7 @@ function Homepage() {
       duration: '3:30',
       views: 100,
       track_number: 1,
-      image: 'https://avatar-ex-swe.nixcdn.com/playlist/2024/01/05/6/8/3/8/1704444239098_300.jpg',
+      image: 'https://photo-zmp3.zmdcdn.me/cover/c/f/a/1/cfa177efa79f8a191a8e20c82e558df6.jpg',
       audio: 'path/to/song/audio.mp3',
       genre: mockGenre[0],
       liked: false,
@@ -179,7 +179,7 @@ function Homepage() {
             }
             return (
               <Box key={genre.id}>
-                <TextHeader text={genre.title} />
+                <TextHeader text={genre.title} to={`/genres/${genre.id}`} />
                 <AlbumContainer items={albumItems} />
               </Box>
             );

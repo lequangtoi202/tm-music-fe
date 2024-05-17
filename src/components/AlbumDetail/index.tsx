@@ -85,18 +85,6 @@ const AlbumDetail = () => {
     fetchData(albumId);
   }, [albumId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setLoading(false);
-      // const res = await getAlbumDetail(albumId || '');
-      // setAlbum(res.data);
-      // setSingers(res.data.singers);
-    };
-
-    fetchData();
-  }, [albumId]);
-
   const handleDuration = (link: any): Promise<any> => {
     return new Promise((resolve) => {
       const audio = new Audio();

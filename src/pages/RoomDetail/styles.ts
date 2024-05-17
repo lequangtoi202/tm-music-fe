@@ -124,21 +124,46 @@ const StyledBox = styled.div`
 const StyledBoxTitle = styled.div`
   font-size: 14px;
   font-weight: normal;
-  max-width: 210px;
+  max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   @media (max-width: 768px) {
-    max-width: 160px;
+    max-width: 220px;
   }
 
   @media (max-width: 480px) {
     font-size: 12px;
+    max-width: 140px;
+  }
+`;
+
+const StyledCommentInput = styled(Box)`
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  width: 30%;
+  font-size: 14px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const StyledAudio = styled(Box)`
+  padding: 16px;
+  text-align: center;
+  @media (max-width: 480px) {
+    & > audio {
+      width: 100%;
+    }
   }
 `;
 
 export {
   PlaylistContainer,
+  StyledAudio,
+  StyledCommentInput,
   HeaderTitle,
   Box,
   PlaylistItem,

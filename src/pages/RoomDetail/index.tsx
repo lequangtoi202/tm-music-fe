@@ -27,8 +27,10 @@ import {
   SongTitle,
   StyleCommentSection,
   StyleMoreButton,
+  StyledAudio,
   StyledBox,
   StyledBoxTitle,
+  StyledCommentInput,
 } from './styles';
 import { KContext } from '../../context';
 import Image from '../../components/Image';
@@ -714,7 +716,7 @@ const RoomDetail: React.FC = () => {
     <Box>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box>
+        <Box p={2}>
           <PlaylistContainer>
             {songsInRoom.map((song, index) => (
               <PlaylistItem key={index}>
@@ -740,9 +742,9 @@ const RoomDetail: React.FC = () => {
               </PlaylistItem>
             ))}
           </PlaylistContainer>
-          <Box sx={{ textAlign: 'center', pt: 2 }}>
+          <StyledAudio>
             <audio id="audioPlayer" autoPlay controls={true} src={url} ref={audioRef} />
-          </Box>
+          </StyledAudio>
 
           <Box mb={2} display={'flex'} flexDirection={'column'} maxHeight={'calc(100vh - 64px)'} overFlowY={'auto'}>
             <div>
@@ -765,7 +767,7 @@ const RoomDetail: React.FC = () => {
                   ))}
                 </List>
               </StyleCommentSection>
-              <Box width={400} mt={2} display={'flex'} alignItems={'center'}>
+              <StyledCommentInput>
                 <TextField
                   label="Bạn muốn nói gì?"
                   variant="outlined"
@@ -786,7 +788,7 @@ const RoomDetail: React.FC = () => {
                 <IconButton disabled={disabled} color="primary" onClick={sendMessage}>
                   <Send />
                 </IconButton>
-              </Box>
+              </StyledCommentInput>
             </div>
           </Box>
         </Box>

@@ -92,7 +92,7 @@ export const getAllAlbums = async (page: number) => {
   }
 };
 
-export const getAlbumDetail = async (id: string) => {
+export const getAlbumDetail = async (id: number) => {
   try {
     const response = await apiInstance.get(`/albums/${id}`);
     return response.data;

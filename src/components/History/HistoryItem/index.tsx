@@ -1,18 +1,19 @@
 import { Favorite, FavoriteBorder, MoreHoriz, PlayCircleOutline } from '@mui/icons-material';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { useContext, useState } from 'react';
+import images from '../../../assets/images';
 import { KContext } from '../../../context';
-import { createLike, unlike } from '../../../services/user';
-import { setTempCurrentSong } from '../../../utils/storage';
+import { createLike, pushToHistories, unlike } from '../../../services/user';
 import Image from '../../Image';
 import { PLaylistTitle } from '../../Playlist/PlaylistTitle';
 import { RoundedSkeleton } from '../../Skeleton';
-import { StyledLayerHoverHistories, StyledWrapper } from '../../Theme/styles';
+import { StyledLayerHoverHistories } from '../../Theme/styles';
 import { StyledHistoryItem } from '../styles';
 import { HistoryItemProps } from '../types';
+import { StyledWrapper } from '../../Playlist/styles';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
-  const { setIsOpenMoreAction, setCurrentSong } = useContext(KContext);
+  const { setIsOpenMoreAction, setTempSongOrAlbum, setCurrentSong } = useContext(KContext);
   const [liked, setLiked] = useState(item.liked);
 
   const handleToggleLike = async () => {
@@ -24,6 +25,10 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
       await unlike([songIds], 'song_ids');
       setLiked(false);
     }
+  };
+
+  const handleSaveToHistory = async (id: number) => {
+    await pushToHistories(id);
   };
 
   return (
@@ -51,21 +56,26 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
               )}
               <Tooltip placement="top" title="Phát">
                 <IconButton
-                  onClick={() => {
+                  onClick={async () => {
                     setCurrentSong(item);
-                    setTempCurrentSong(item);
+                    await handleSaveToHistory(item.id);
                   }}
                 >
                   <PlayCircleOutline />
                 </IconButton>
               </Tooltip>
               <Tooltip placement="top" title="Khác">
-                <IconButton onClick={() => setIsOpenMoreAction(true)}>
+                <IconButton
+                  onClick={() => {
+                    setIsOpenMoreAction(true);
+                    setTempSongOrAlbum(item);
+                  }}
+                >
                   <MoreHoriz />
                 </IconButton>
               </Tooltip>
             </StyledLayerHoverHistories>
-            <Image src={item.image} />
+            <Image src={item.image ?? images.noImage} />
           </StyledWrapper>
           <PLaylistTitle id={item.id} title={item.title} isSong={true} />
         </Box>

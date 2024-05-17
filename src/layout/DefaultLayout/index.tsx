@@ -1,6 +1,6 @@
 import { Box, alpha, lighten, useTheme } from '@mui/material';
 import { useContext } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import CommentModal from '../../components/Comment/CommentModal';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -15,6 +15,9 @@ import LyricModal from '../../components/MediaControlCard/Lyric';
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();
   const { currentSong, error, success } = useContext(KContext);
+  const location = useLocation();
+  const hideMediaControlCard = /^\/rooms(\/|$)/.test(location.pathname);
+
   return (
     <div style={{ position: 'relative' }}>
       <Box
@@ -58,11 +61,13 @@ const DefaultLayout = ({ children }: any) => {
         </Box>
       </Box>
       <OTPInput />
-      <FullScreenMediaControlCard>
-        <MediaControlCard />
-        {currentSong && <CommentModal song={currentSong} />}
-        {currentSong && <LyricModal song={currentSong} />}
-      </FullScreenMediaControlCard>
+      {!hideMediaControlCard && (
+        <FullScreenMediaControlCard>
+          <MediaControlCard />
+          {currentSong && <CommentModal song={currentSong} />}
+          {currentSong && <LyricModal song={currentSong} />}
+        </FullScreenMediaControlCard>
+      )}
       {error && <Snackbars status="error" open={true} message={error} />}
       {success && <Snackbars status="success" open={true} message={success} />}
     </div>

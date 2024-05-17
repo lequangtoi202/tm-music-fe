@@ -4,7 +4,6 @@ const Container = styled.div`
   display: flex;
   padding-left: 24px;
   padding-right: 24px;
-  justify-content: space-between;
 
   @media (max-width: 1200px) {
     flex-wrap: nowrap;
@@ -29,11 +28,10 @@ const Container = styled.div`
 `;
 
 const StyledHistoryItem = styled.div`
-  flex: 1;
   margin: 8px;
   border-radius: 6px;
   cursor: pointer;
-  width: 100px;
+  width: 200px;
 
   @media (max-width: 768px) {
     & > div {

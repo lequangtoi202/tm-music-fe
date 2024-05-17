@@ -1,19 +1,19 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockIcon from '@mui/icons-material/Lock';
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { styled } from '@mui/material/styles';
+import images from '../../../assets/images';
 import { KContext } from '../../../context';
+import { IUser } from '../../../types/User';
+import { getCurrentUser } from '../../../utils/storage';
 import { StyledIcon } from './styles';
 import { ActionItem } from './types';
-import { getCurrentUser } from '../../../utils/storage';
-import { IUser } from '../../../types/User';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -61,13 +61,10 @@ function HeaderUserbox() {
 
   const listActions: ActionItem[] = currentUser
     ? [
-        { title: 'Hồ sơ', to: '/ho-so', icon: <AccountCircleIcon /> },
-        { title: 'Đăng xuất', to: '/dang-xuat', icon: <LockIcon /> },
+        { title: 'Hồ sơ', to: '/profile', icon: <AccountCircleIcon /> },
+        { title: 'Đăng xuất', to: '/logout', icon: <LockIcon /> },
       ]
-    : [
-        { title: 'Đăng nhập', to: '/dang-nhap', icon: <LockIcon /> },
-        { title: 'Đăng ký', to: '/dang-ky', icon: <VpnKeyIcon /> },
-      ];
+    : [{ title: 'Đăng nhập', to: '/login', icon: <LockIcon /> }];
 
   useEffect(() => {
     if (currentUser) {
@@ -78,7 +75,7 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="circular" alt={user?.firstName} src={user?.avatar ?? '../../../assets/images/no-image.png'} />
+        <Avatar variant="circular" alt={user?.firstName} src={user?.avatar ?? images.noImage} />
         {currentUser && (
           <>
             <Hidden mdDown>
@@ -106,12 +103,8 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex" alignItems={'center'} justifyContent={'center'}>
-          <Link to="/ho-so">
-            <Avatar
-              variant="circular"
-              alt={user?.firstName}
-              src={user?.avatar ?? '../../../assets/images/no-image.png'}
-            />
+          <Link to="/profile">
+            <Avatar variant="circular" alt={user?.firstName} src={user?.avatar ?? images.noImage} />
           </Link>
 
           {isLoggedIn && (

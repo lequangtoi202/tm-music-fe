@@ -1,7 +1,7 @@
 import { ISong } from '../../types/Song';
 
 interface IShareProps {
-  song: ISong;
+  song: ISong | null;
 }
 
 export type { IShareProps };

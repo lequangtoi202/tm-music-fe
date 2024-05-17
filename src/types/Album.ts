@@ -10,6 +10,7 @@ interface IAlbum {
   singers?: any;
   owner: boolean;
   created_at: string;
+  genre_id: number;
 }
 
 export type { IAlbum };

@@ -246,12 +246,6 @@ function Login() {
             <Grid item xs={12} sm>
               <Link to="/quen-mat-khau">Quên mật khẩu?</Link>
             </Grid>
-            <Grid item>
-              <Text style={{ fontSize: 16 }}>{'Bạn không có tài khoản?'}</Text>
-              <StyledLink>
-                <Link to="/dang-ky">{'Đăng ký'}</Link>
-              </StyledLink>
-            </Grid>
           </Grid>
           <Grid container mt={2}>
             <TButton

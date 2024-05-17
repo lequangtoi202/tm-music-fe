@@ -15,7 +15,7 @@ const theme = createTheme();
 type ReCallApiFunction = () => void;
 
 function Album() {
-  const { albumId } = useParams<{ albumId?: string }>()
+  const { albumId } = useParams<{ albumId?: string }>();
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [albumRelated, setAlbumRelated] = useState<IAlbum[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,67 +29,23 @@ function Album() {
   }, []);
 
   const fetchData = async (id: any) => {
-    const data = await getAlbumDetail(id)
-    setAlbum(data)
+    const data = await getAlbumDetail(id);
+    setAlbum(data);
   };
 
   const fetchDataRelated = async (id: any) => {
-    const data = await getAlbumsRelated(id)
-    setAlbumRelated(data)
+    const data = await getAlbumsRelated(id);
+    setAlbumRelated(data);
   };
 
   useEffect(() => {
     fetchData(albumId);
-    fetchDataRelated(albumId)  
+    fetchDataRelated(albumId);
   }, [albumId]);
-
 
   const reCallApi: ReCallApiFunction = () => {
     fetchData(albumId);
-  }
-
-  const singer: ISinger = {
-    image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    name: 'Hoàng Dũng',
-    id: '10',
-    description: 'A brief description of Hoàng Dũng',
-    birthdate: '1990-01-01',
-    songs: [],
-    albums: [],
-    followed: false,
   };
-  const albumData: IAlbum[] = [
-    {
-      image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-      title: 'Night view',
-      id: 3,
-      description: 'Description of Night view album',
-      songs: [],
-      created_at: new Date().toISOString(),
-      liked: false,
-      owner: false,
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1527549993586-dff825b37782',
-      title: 'Lake view',
-      id: 2,
-      description: 'Description of Lake view album',
-      songs: [],
-      created_at: new Date().toISOString(),
-      liked: false,
-      owner: false,
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
-      title: 'Mountain view',
-      id: 1,
-      description: 'Description of Mountain view album',
-      songs: [],
-      created_at: new Date().toISOString(),
-      liked: false,
-      owner: false,
-    },
-  ];
 
   return (
     <Box>
@@ -99,14 +55,14 @@ function Album() {
         <Box style={{ marginTop: '52px' }}>
           <TextHeaderOnly text={'Nghệ Sĩ Tham Gia'} />
           <StyledArtistList>
-            {album?.singers.map((singer: any, index: number) => (
-              <ArtistInfo item={singer} loading={loading} reCallApi={reCallApi} />
+            {album?.singers.map((singer: ISinger) => (
+              <ArtistInfo key={singer.id} item={singer} loading={loading} reCallApi={reCallApi} />
             ))}
           </StyledArtistList>
         </Box>
 
         <Box marginBottom={8}>
-          <TextHeader text={'Có Thể Bạn Quan Tâm'} />
+          <TextHeader text={'Có Thể Bạn Quan Tâm'} to={`/genres/${album?.genre_id}`} />
           <AlbumContainer items={albumRelated} />
         </Box>
 

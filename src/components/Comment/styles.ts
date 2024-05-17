@@ -78,6 +78,20 @@ const FormCommentWrapper = styled(Box)`
   & > button > svg {
     color: #1976d2;
   }
+
+  .loading {
+    animation: spinner 0.8s linear infinite;
+    margin-top: 12px;
+  }
+
+  @keyframes spinner {
+    from {
+      transform: translateY(-50%) rotate(0);
+    }
+    to {
+      transform: translateY(-50%) rotate(360deg);
+    }
+  }
 `;
 
 const StyledTextField = styled(TextField)`

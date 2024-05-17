@@ -6,7 +6,6 @@ const Container = styled.div`
   overflow: hidden;
   padding-left: 24px;
   padding-right: 24px;
-  justify-content: space-between;
   flex-wrap: wrap;
   @media (max-width: 480px) {
     padding: 0;
@@ -17,7 +16,6 @@ const Container = styled.div`
 `;
 
 const StyledItemContainer = styled.div`
-  flex: 1;
   margin: 8px;
   cursor: pointer;
 
@@ -32,7 +30,7 @@ const StyledItemContainer = styled.div`
   @media (max-width: 1200px) {
     flex-basis: calc(33.33% - 16px);
     & > div > div {
-      height: 180px;
+      height: 200px;
       width: 100%;
     }
   }
@@ -40,14 +38,14 @@ const StyledItemContainer = styled.div`
   @media (max-width: 768px) {
     flex-basis: calc(33.33% - 16px);
     & > div > div {
-      height: 150px;
+      height: 200px;
       width: 100%;
     }
   }
 
   @media (max-width: 480px) {
     & > div > div {
-      height: 120px;
+      height: 200px;
       width: 100%;
     }
   }
@@ -60,9 +58,17 @@ const StyledPlaylistItem = styled.div`
 
 const StyledAddPlaylistWrapper = styled.div`
   height: 100%;
+  min-height: 216px;
   color: #1976d2;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 6px;
+  @media (max-width: 768px) {
+    min-height: 150px;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 120px;
+  }
 `;
 
 const StyledAddPlaylist = styled(Box)`
@@ -119,6 +125,38 @@ const StyledPlaylistTitle = styled(Box)`
   }
 `;
 
+const StyledWrapper = styled.div`
+  flex: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  &:hover {
+    & > div {
+      opacity: 1;
+    }
+
+    & > img {
+      transform: scale(1.1);
+    }
+  }
+
+  & > img {
+    cursor: pointer;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+  }
+
+  & > div {
+    text-align: center;
+    height: 100%;
+  }
+`;
+
 export {
   Container,
   StyledPlaylistItem,
@@ -127,4 +165,5 @@ export {
   StyledAddPlaylist,
   StyledItemContainer,
   StyledPlaylistTitle,
+  StyledWrapper,
 };

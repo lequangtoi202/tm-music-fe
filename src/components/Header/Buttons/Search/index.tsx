@@ -1,7 +1,7 @@
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
   Box,
+  Chip,
   DialogContent,
   DialogTitle,
   Divider,
@@ -14,8 +14,15 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
-import { ChangeEvent, ReactElement, Ref, forwardRef, useState } from 'react';
+import { ChangeEvent, ReactElement, Ref, forwardRef, useContext, useEffect, useState } from 'react';
 
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Headphones, PlayCircleOutline, SearchTwoTone } from '@mui/icons-material';
+import { KContext } from '../../../../context';
+import { useDebounce } from '../../../../hook';
+import * as searchServices from '../../../../services/user';
+import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle } from '../../../AlbumDetail/styles';
 import { DialogWrapper, MobileSearchButton, SearchInputContainer, StyledSearchResult } from './styles';
 
 const Transition = forwardRef(function Transition(
@@ -32,6 +39,20 @@ const SearchInputWrapper = styled(TextField)(
         font-size: ${theme.typography.pxToRem(16)};
     }
 
+  .loading {
+    animation: spinner 0.8s linear infinite;
+    margin-top: 16px;
+  }
+
+  @keyframes spinner {
+    from {
+      transform: translateY(-50%) rotate(0);
+    }
+    to {
+      transform: translateY(-50%) rotate(360deg);
+    }
+  }
+
 `,
 );
 
@@ -47,6 +68,39 @@ function HeaderSearch() {
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);
   const [isOpenSearchResult, setIsOpenSearchResult] = useState(false);
+  const { setError, setCurrentSong } = useContext(KContext);
+  const debouncedValue = useDebounce<string>(searchValue, 500);
+  const [searchResult, setSearchResult] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSaveToHistory = async (id: number) => {
+    await searchServices.pushToHistories(id);
+  };
+
+  useEffect(() => {
+    if (!debouncedValue.trim()) {
+      setSearchResult([]);
+      return;
+    }
+
+    setLoading(true);
+    const fetchApi = async () => {
+      const res = await searchServices.search(debouncedValue.trim());
+      if (res.status !== 200) {
+        setError(res.data.message);
+      }
+      setSearchResult(res.data);
+      setLoading(false);
+    };
+    const timeoutId = setTimeout(() => {
+      setLoading(true);
+      fetchApi();
+    }, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [debouncedValue]);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(event.target.value);
@@ -63,6 +117,7 @@ function HeaderSearch() {
 
   const handleClearSearch = () => {
     setSearchValue('');
+    setSearchResult([]);
     setIsOpenSearchResult(false);
   };
 
@@ -74,6 +129,47 @@ function HeaderSearch() {
 
   const handleClose = () => {
     setOpen(false);
+    handleClearSearch();
+  };
+
+  const renderPlaylistItem = (type: string, data: any, index: number) => {
+    const label = type === 'album' ? 'Album' : 'Bài hát';
+    return (
+      <PlaylistItem key={index}>
+        <SongTitle>
+          <Headphones sx={{ marginRight: '8px' }} />
+          <StyledBox>
+            <StyledBoxTitle>
+              <Typography variant="inherit" noWrap>
+                {data.title}
+              </Typography>
+            </StyledBoxTitle>
+            <Box display={'flex'} alignItems={'center'} gap={1}>
+              <StyledBoxTitle>{data?.singers?.[0]?.name}</StyledBoxTitle>
+              <Chip label={label} />
+            </Box>
+          </StyledBox>
+          <Tooltip placement="top" title="Phát">
+            <IconButton
+              onClick={async () => {
+                if (label === 'Album') {
+                  if (!data?.songs || data?.songs?.length === 0) setError('Album không có bài hát');
+                  const randomSong = data?.songs ? data?.songs[Math.floor(Math.random() * data?.songs?.length)] : null;
+                  setCurrentSong(randomSong || null);
+                  if (randomSong?.id) {
+                    await handleSaveToHistory(randomSong.id);
+                  }
+                } else {
+                  setCurrentSong(data);
+                }
+              }}
+            >
+              <PlayCircleOutline />
+            </IconButton>
+          </Tooltip>
+        </SongTitle>
+      </PlaylistItem>
+    );
   };
 
   return (
@@ -85,7 +181,14 @@ function HeaderSearch() {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchTwoToneIcon sx={{ fontSize: '34px', cursor: 'pointer' }} />
+                {loading && (
+                  <FontAwesomeIcon
+                    style={{ fontSize: '16px', cursor: 'pointer' }}
+                    className="loading"
+                    icon={faSpinner}
+                  />
+                )}
+                {!loading && <SearchTwoTone sx={{ fontSize: '34px', cursor: 'pointer' }} />}
               </InputAdornment>
             ),
             endAdornment: (
@@ -110,6 +213,13 @@ function HeaderSearch() {
                   Gợi ý kết quả
                 </Typography>
               </Box>
+              <Box>
+                {searchResult.length > 0 &&
+                  searchResult.map((result: any, index: number) => {
+                    const { type, data } = result;
+                    return renderPlaylistItem(type, data, index);
+                  })}
+              </Box>
             </DialogContent>
           </StyledSearchResult>
         )}
@@ -117,7 +227,7 @@ function HeaderSearch() {
       <MobileSearchButton>
         <Tooltip arrow title="Search">
           <IconButton color="primary" onClick={handleMobileSearchClick}>
-            <SearchTwoToneIcon />
+            <SearchTwoTone />
           </IconButton>
         </Tooltip>
       </MobileSearchButton>
@@ -138,7 +248,14 @@ function HeaderSearch() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchTwoToneIcon />
+                  {loading && (
+                    <FontAwesomeIcon
+                      style={{ fontSize: '16px', cursor: 'pointer' }}
+                      className="loading"
+                      icon={faSpinner}
+                    />
+                  )}
+                  {!loading && <SearchTwoTone sx={{ cursor: 'pointer' }} />}
                 </InputAdornment>
               ),
               endAdornment: (
@@ -162,6 +279,13 @@ function HeaderSearch() {
               <Typography variant="body2" fontSize={16} fontWeight={'bold'} color={'#1976d2'} component="span">
                 Gợi ý kết quả
               </Typography>
+            </Box>
+            <Box>
+              {searchResult.length > 0 &&
+                searchResult.map((result: any, index: number) => {
+                  const { type, data } = result;
+                  return renderPlaylistItem(type, data, index);
+                })}
             </Box>
           </DialogContent>
         )}

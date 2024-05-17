@@ -1,6 +1,8 @@
-import { Box, Button, Fade, Icon, IconButton, Typography } from '@mui/material';
+import { CheckCircle, Warning } from '@mui/icons-material';
+import { Box, Fade, IconButton, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import images from '../../assets/images';
 import { KContext } from '../../context';
 import { createComment, deleteComment, getCommentsOfSong, validateComment } from '../../services/user';
 import { ISong } from '../../types/Song';
@@ -19,7 +21,6 @@ import {
   UserAvatar,
   UserWrapper,
 } from './styles';
-import { CheckCircle, Warning } from '@mui/icons-material';
 
 function CommentModal({ song }: { song: ISong }) {
   const { openCommentDialog, setOpenCommentDialog, currentSong, setError } = useContext(KContext);
@@ -28,8 +29,10 @@ function CommentModal({ song }: { song: ISong }) {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const { handleSubmit, register, reset } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: any) => {
+    setLoading(true);
     const result = await validateComment(data.comment);
     const res = await createComment({
       content: data.comment,
@@ -37,9 +40,10 @@ function CommentModal({ song }: { song: ISong }) {
       status: result[0] === 'POSITIVE' ? true : false,
     });
     setComments([...comments, res]);
+    setLoading(false);
   };
 
-  const handleDeleteComment = async (id: string) => {
+  const handleDeleteComment = async (id: number) => {
     await deleteComment(id);
     getComments(song.id);
   };
@@ -60,7 +64,7 @@ function CommentModal({ song }: { song: ISong }) {
     if (openCommentDialog) {
       getComments(song.id);
     }
-    setSingers(song.singers?.map((singer) => singer.name).join(', ') || ''); // Provide a default value of an empty string
+    setSingers(song.singers?.map((singer) => singer.name).join(', ') || '');
   }, [song, openCommentDialog]);
 
   const handleViewMore = () => {
@@ -85,7 +89,7 @@ function CommentModal({ song }: { song: ISong }) {
         <ModalContent sx={{ width: 640 }}>
           <PlaylistItem>
             <SongTitle>
-              <Image src={song?.image || '../../assets/images/no-image.png'} alt={song.title} />
+              <Image src={song?.image ?? images.noImage} alt={song.title} />
               <StyledBox>
                 <StyledBoxTitle>
                   <Typography fontWeight={700} variant="inherit" noWrap>
@@ -106,10 +110,7 @@ function CommentModal({ song }: { song: ISong }) {
               <CommentWrapper key={idx}>
                 <UserWrapper>
                   <UserAvatar>
-                    <Image
-                      src={comment.createdBy?.avatar ?? '../../assets/images/no-image.png'}
-                      alt={comment.createdBy?.firstName}
-                    />
+                    <Image src={comment.createdBy?.avatar ?? images.noImage} alt={comment.createdBy?.firstName} />
                   </UserAvatar>
                   <StyledName>{comment.createdBy?.firstName}</StyledName>
                 </UserWrapper>
@@ -136,7 +137,13 @@ function CommentModal({ song }: { song: ISong }) {
             ))}
             {page < totalPages && <StyledViewMoreComment onClick={handleViewMore}>Xem thêm</StyledViewMoreComment>}
           </CommentContainer>
-          <FormComment reset={reset} onSubmit={onSubmit} handleSubmit={handleSubmit} register={register} />
+          <FormComment
+            reset={reset}
+            onSubmit={onSubmit}
+            handleSubmit={handleSubmit}
+            register={register}
+            isLoading={loading}
+          />
         </ModalContent>
       </Fade>
     </Modal>

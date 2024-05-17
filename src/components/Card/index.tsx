@@ -5,16 +5,18 @@ import { KContext } from '../../context';
 import Image from '../Image';
 import { StyleCardImage, StyledLayerHover } from './styles';
 import { CardItemProps } from './types';
+import images from '../../assets/images';
 
 const CardItem: React.FC<CardItemProps> = ({ item }) => {
-  const { setCurrentSong, setCurrentAlbum } = useContext(KContext);
+  const { setCurrentSong, setCurrentAlbum, setError } = useContext(KContext);
   return (
     <StyleCardImage>
       <StyledLayerHover>
         <Tooltip placement="top" title="Phát">
           <IconButton
             onClick={() => {
-              const randomSong = item?.songs[Math.floor(Math.random() * item.songs.length)];
+              if (!item?.songs || item?.songs?.length === 0) setError('Album không có bài hát');
+              const randomSong = item?.songs ? item.songs[Math.floor(Math.random() * item.songs?.length)] : null;
               setCurrentSong(randomSong || null);
               setCurrentAlbum(item);
             }}
@@ -23,7 +25,7 @@ const CardItem: React.FC<CardItemProps> = ({ item }) => {
           </IconButton>
         </Tooltip>
       </StyledLayerHover>
-      <Image src={item?.image} alt="" />
+      <Image src={item?.image ?? images.noImage} alt="" />
     </StyleCardImage>
   );
 };

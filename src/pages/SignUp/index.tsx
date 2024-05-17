@@ -130,7 +130,7 @@ export default function SignUp() {
               <Grid item>
                 <Text style={{ fontSize: 16 }}>{'Đã có tài khoản?'}</Text>
                 <StyledLink>
-                  <Link to="/dang-nhap">{'Đăng nhập'}</Link>
+                  <Link to="/login">{'Đăng nhập'}</Link>
                 </StyledLink>
               </Grid>
             </Grid>

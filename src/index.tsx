@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import GlobalStyles from './components/GlobalStyles/GlobalStyles';
@@ -8,15 +7,13 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <GlobalStyles>
-      <KContextProvider>
-        <SidebarProvider>
-          <App />
-        </SidebarProvider>
-      </KContextProvider>
-    </GlobalStyles>
-  </React.StrictMode>,
+  <GlobalStyles>
+    <KContextProvider>
+      <SidebarProvider>
+        <App />
+      </SidebarProvider>
+    </KContextProvider>
+  </GlobalStyles>,
 );
 
 // If you want to start measuring performance in your app, pass a function

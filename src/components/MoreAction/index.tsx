@@ -23,11 +23,13 @@ import Image from '../Image';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle, StyledListItemIcon, StyledPopover } from './styles';
 import { IMoreActionProps } from './types';
 import { ISong } from '../../types/Song';
+import images from '../../assets/images';
 
 export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
   const {
     isOpenMoreAction,
     isMobile,
+    tempSongOrAlbum,
     setIsOpenMoreAction,
     setIsOpenAddPlaylistModal,
     setOpenCommentDialog,
@@ -35,6 +37,8 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
     setIsOpenUpload,
     setIsOpenUploadBackground,
     setAlbumIdUpload,
+    setSuccess,
+    setError,
   } = useContext(KContext);
   const [isOpenPlaylistList, setIsOpenPlaylistList] = useState<boolean>(false);
   const [playlists, setPlaylists] = useState<IAlbum[]>([]);
@@ -68,20 +72,31 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
       })
       .then((res) => {
         fileDownload(res.data, filename);
+      })
+      .catch((err) => {
+        console.error('Lỗi không thể tải xuống', err);
       });
   };
 
   const handleAddSongsToPlaylist = async (playlistId: number) => {
-    if (song && 'songs' in song) {
-      const songIds = song.songs?.map((song) => Number(song.id)) ?? [];
-      await addSongsToPlaylist(playlistId, songIds);
+    let songIds: number[] = [];
+
+    if (tempSongOrAlbum && 'songs' in tempSongOrAlbum) {
+      songIds = tempSongOrAlbum.songs?.map((item) => item.id) ?? [];
     } else {
-      await addSongsToPlaylist(playlistId, [Number(song?.id)]);
+      songIds = [Number(tempSongOrAlbum?.id)];
+    }
+
+    const res = await addSongsToPlaylist(playlistId, songIds);
+    if (res?.status === 200) {
+      setSuccess('Thêm vào playlist thành công!');
+    } else {
+      setError('Thêm vào playlist thất bại!');
     }
   };
 
-  const handleCreateCheckout = async () => {
-    const data = await createCheckout('1');
+  const handleCreateCheckout = async (songId: number) => {
+    const data = await createCheckout(songId);
     window.location.href = data.url;
   };
 
@@ -101,16 +116,16 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
         <ModalContent sx={{ width: 320 }}>
           <PlaylistItem>
             <SongTitle>
-              <Image src={song?.image} alt={song?.title} />
+              <Image src={tempSongOrAlbum?.image ?? images.noImage} alt="" />
               <StyledBox>
                 <StyledBoxTitle>
                   <Typography fontWeight={700} variant="inherit" noWrap>
-                    {song?.title}
+                    {tempSongOrAlbum?.title}
                   </Typography>
                 </StyledBoxTitle>
                 <StyledBoxTitle>
                   <Typography variant="inherit" noWrap>
-                    Harri Won
+                    {tempSongOrAlbum?.singers[0]?.name ?? ''}
                   </Typography>
                 </StyledBoxTitle>
               </StyledBox>
@@ -135,10 +150,12 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
             )}
             <ListItemButton
               onClick={() => {
-                handleDownloadFile(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEBqYEUHs9SPync2bo8AmdYjzW5WYicOWF8lreCXnMcQ&s',
-                  'test-download.jpg',
-                );
+                const song = tempSongOrAlbum as ISong;
+                if (song.audio) {
+                  handleDownloadFile(song.audio ?? '', song.title ?? 'download.mp3');
+                } else {
+                  setError('Không thể tải xuống bài hát này!');
+                }
               }}
             >
               <StyledListItemIcon>
@@ -146,10 +163,12 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
               </StyledListItemIcon>
               <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải xuống" />
             </ListItemButton>
-            {!pathname.includes('/mymusic/') && pathname.includes('/albums/') && (
+            {!owner && !pathname.includes('/mymusic/') && pathname.includes('/albums/') && (
               <ListItemButton
                 onClick={() => {
-                  handleCreateCheckout();
+                  if (song?.id) {
+                    handleCreateCheckout(song.id);
+                  }
                 }}
               >
                 <StyledListItemIcon>
@@ -158,7 +177,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
                 <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Mua bài hát" />
               </ListItemButton>
             )}
-            {pathname.includes('/mymusic/albums') && (
+            {owner && pathname.includes('/mymusic/albums') && (
               <ListItemButton
                 onClick={() => {
                   setIsOpenMoreAction(false);

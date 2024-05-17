@@ -39,7 +39,8 @@ import {
   StyledGroupAction,
   Time,
 } from './styles';
-import { createLike, getAllAlbums, unlike, getAlbumDetail } from '../../services/user';
+import { createLike, unlike, getAlbumDetail, pushToHistories } from '../../services/user';
+import images from '../../assets/images';
 
 const AlbumDetail = () => {
   const { setError, setSuccess } = useContext(KContext);
@@ -47,23 +48,18 @@ const AlbumDetail = () => {
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [singers, setSingers] = useState<{}[]>([]);
   const [likedSongs, setLikedSongs] = useState<Record<number, boolean>>({});
-  const { setCurrentSong, setCurrentAlbum, isMobile, setIsOpenMoreAction, setIsOpenSendToEmail } = useContext(KContext);
-  const { albumId } = useParams<{ albumId?: string }>()
-  const albumData: IAlbum = {
-    image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    title: 'Night view',
-    id: 3,
-    description: 'Description of Night view album',
-    songs: [],
-    liked: false,
-    created_at: new Date().toISOString(),
-    owner: false,
-  };
-  const handleOpenMoreAction = () => {
+  const { setCurrentSong, isMobile, setIsOpenMoreAction, setTempSongOrAlbum, tempSongOrAlbum } = useContext(KContext);
+  const { albumId } = useParams<{ albumId?: string }>();
+  const handleOpenMoreAction = (song: ISong) => {
+    setTempSongOrAlbum(song);
     setIsOpenMoreAction(true);
   };
 
   let totalViews: number = 0;
+
+  const handleSaveToHistory = async (id: number) => {
+    await pushToHistories(id);
+  };
 
   const handleToggleLike = async (id: number, liked: any) => {
     if (!liked) {
@@ -77,54 +73,17 @@ const AlbumDetail = () => {
       else setError('Bỏ yêu thích thất bại!');
       setLikedSongs({ ...likedSongs, [id]: false });
     }
-    fetchData(albumId); 
+    fetchData(albumId);
   };
 
   const fetchData = async (id: any) => {
-    const data = await getAlbumDetail(id)
-    setAlbum(data)
+    const data = await getAlbumDetail(id);
+    setAlbum(data);
   };
 
   useEffect(() => {
-    fetchData(albumId);  
+    fetchData(albumId);
   }, [albumId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setLoading(false);
-      // const res = await getAlbumDetail(albumId || '');
-      // setAlbum(res.data);
-      // setSingers(res.data.singers);
-    };
-
-    fetchData();
-  }, [albumId]);
-
-  const mockGenre: IGenre = {
-    title: 'Pop',
-    id: 1,
-    description:
-      'A genre of popular music that originated in its modern form during the mid-1950s in the United States and the United Kingdom.',
-    songs: [],
-    image: 'https://example.com/pop-genre',
-  };
-
-  const songData: ISong = {
-    id: 3,
-    title: 'Night view',
-    lyric: 'Lyrics of the song',
-    release_date: '2024-03-06',
-    duration: '3:30',
-    views: 100,
-    track_number: 1,
-    image: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    audio: 'path/to/song/file.mp3',
-    genre: mockGenre,
-    singers: [],
-    liked: false,
-    owner: true,
-  };
 
   const handleDuration = (link: any): Promise<any> => {
     return new Promise((resolve) => {
@@ -140,7 +99,7 @@ const AlbumDetail = () => {
         resolve(formattedDuration);
       };
       audio.onerror = () => {
-        resolve("00:00");
+        resolve('00:00');
       };
     });
   };
@@ -150,21 +109,20 @@ const AlbumDetail = () => {
   useEffect(() => {
     const fetchDurations = async () => {
       try {
-        const promises = album?.songs?.map(song => handleDuration(song.audio)) || [];
+        const promises = album?.songs?.map((song) => handleDuration(song.audio)) || [];
         const durations = await Promise.all(promises);
         setSongDurations(durations);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching song durations:", error);
+        console.error('Error fetching song durations:', error);
       }
     };
 
     fetchDurations();
-    album?.songs.forEach(song => {
+    album?.songs.forEach((song) => {
       totalViews += song?.views || 0;
     });
   }, [album?.songs]);
-  
 
   return (
     <ResponsiveContainer>
@@ -178,16 +136,21 @@ const AlbumDetail = () => {
             </CardImage>
             <BoxCentered>
               <StyledTextHeader>{album?.title}</StyledTextHeader>
-              {/* sau này thêm field createdDate */}
               <Box>Cập nhật: {moment(album?.created_at).format('YYYY-MM-DD')}</Box>
               {/* lấy data singers từ useState ra và max 4 ca sĩ */}
               {/* sau này thêm field likes */}
               <Box>{totalViews} Views</Box>
               <Button
                 sx={{ borderRadius: '18px' }}
-                onClick={() => {
-                  const randomSong = album?.songs[Math.floor(Math.random() * album?.songs?.length)];
+                onClick={async () => {
+                  if (!album?.songs || album?.songs?.length === 0) setError('Album không có bài hát');
+                  const randomSong = album?.songs
+                    ? album?.songs[Math.floor(Math.random() * album?.songs?.length)]
+                    : null;
                   setCurrentSong(randomSong || null);
+                  if (randomSong?.id) {
+                    await handleSaveToHistory(randomSong.id);
+                  }
                 }}
                 variant="contained"
                 startIcon={<PlayArrow />}
@@ -207,7 +170,7 @@ const AlbumDetail = () => {
               <Box>THỜI GIAN</Box>
             </HeaderTitle>
             {loading
-              ?  Array.from({ length: album?.songs?.length || 0 }, (_, index) => <PlaylistItemSkeleton key={index} />)
+              ? Array.from({ length: album?.songs?.length || 0 }, (_, index) => <PlaylistItemSkeleton key={index} />)
               : album?.songs.map((song, index) => (
                   <PlaylistItem key={index}>
                     <SongTitle>
@@ -219,7 +182,6 @@ const AlbumDetail = () => {
                     </SongTitle>
                     <AlbumTitle>{album?.title}</AlbumTitle>
                     <StyledGroupAction>
-                      {/* Nhớ sửa số 1 thành item.id */}
                       {!song?.liked ? (
                         <Tooltip placement="top" title="Yêu thích">
                           <IconButton onClick={() => handleToggleLike(song.id, song?.liked)}>
@@ -235,48 +197,51 @@ const AlbumDetail = () => {
                       )}
                       <Tooltip placement="top" title="Phát">
                         <IconButton
-                          onClick={() => {
-                            const randomSong = album?.songs[Math.floor(Math.random() * album.songs.length)];
+                          onClick={async () => {
+                            if (!album.songs || album.songs?.length === 0) setError('Album không có bài hát');
+                            const randomSong = album.songs
+                              ? album.songs[Math.floor(Math.random() * album.songs?.length)]
+                              : null;
                             setCurrentSong(song);
                             setTempCurrentSong(randomSong);
+                            if (randomSong?.id) {
+                              await handleSaveToHistory(randomSong.id);
+                            }
                           }}
                         >
                           <PlayCircleOutline />
                         </IconButton>
                       </Tooltip>
                       <Tooltip placement="top" title="Khác">
-                        <IconButton onClick={handleOpenMoreAction}>
+                        <IconButton onClick={() => handleOpenMoreAction(song)}>
                           <MoreHoriz />
                         </IconButton>
                       </Tooltip>
                       <Time>{songDurations[index]}</Time>
                     </StyledGroupAction>
-                  </PlaylistItem>             
+                  </PlaylistItem>
                 ))}
           </>
         ) : (
           <>
             {loading
-              ? Array.from({ length: album?.songs?.length || 0  }, (_, index) => <PlaylistItemSkeleton key={index} />)
+              ? Array.from({ length: album?.songs?.length || 0 }, (_, index) => <PlaylistItemSkeleton key={index} />)
               : album?.songs.map((song, index) => (
                   <PlaylistItem key={index}>
                     <SongTitle>
-                      <Headphones style={{ marginRight: '8px' }} />
-                      <Image
-                        src={song?.image}
-                        alt="Live from space album cover"
-                      />
+                      <Headphones sx={{ marginRight: '8px' }} />
+                      <Image src={song?.image ?? images.noImage} alt="Live from space album cover" />
                       <StyledBox>
                         <StyledBoxTitle>
                           <Typography variant="inherit" noWrap>
-                          {song.title}
+                            {song.title}
                           </Typography>
                         </StyledBoxTitle>
                         <StyledBoxTitle>{song?.singers?.[0]?.name}</StyledBoxTitle>
                       </StyledBox>
                       <StyleMoreButton>
                         <Tooltip placement="top" title="Khác">
-                          <IconButton onClick={handleOpenMoreAction}>
+                          <IconButton onClick={() => handleOpenMoreAction(song)}>
                             <MoreVert />
                           </IconButton>
                         </Tooltip>
@@ -287,8 +252,8 @@ const AlbumDetail = () => {
           </>
         )}
       </PlaylistContainer>
-      <MoreAction song={songData} />
-      <SendEmail song={songData} />
+      <MoreAction song={tempSongOrAlbum} />
+      <SendEmail song={tempSongOrAlbum as ISong} />
       <PlaylistModal />
     </ResponsiveContainer>
   );

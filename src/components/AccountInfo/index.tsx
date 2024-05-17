@@ -4,6 +4,7 @@ import Playlist from '../Playlist';
 import ListItem from '../ListItem';
 import { IUser } from '../../types/User';
 import { getCurrentUser } from '../../utils/storage';
+import images from '../../assets/images';
 
 function AccountInfo() {
   const [user, setUser] = useState<IUser | null>(null);
@@ -22,11 +23,7 @@ function AccountInfo() {
     <Box>
       <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
         <Box display="flex" alignItems="center">
-          <Avatar
-            src={user?.avatar ?? '../../assets/images/no-image.png'}
-            alt={user?.firstName}
-            sx={{ width: 80, height: 80 }}
-          />
+          <Avatar src={user?.avatar ?? images.noImage} alt={user?.firstName} sx={{ width: 80, height: 80 }} />
           <Box ml={2}>
             <Typography variant="h6">{user?.firstName}</Typography>
             <Typography variant="body1">Account ID: {user?.id}</Typography>

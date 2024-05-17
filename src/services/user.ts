@@ -1,8 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import { getToken, removeToken } from '../utils/storage';
 import apiInstance from './api';
 import apiNoAuthInstance from './apiNoAuth';
-import { apiTmMusicUrl } from '../constants';
 
 export enum TYPE_THIRD_PARTY {
   GOOGLE = 'google',
@@ -31,7 +30,9 @@ export const loginWithGoogle = async ({ token }: { token?: string }) => {
 
 export const validateComment = async (comment: string) => {
   try {
-    const { data } = await axios.get(`http://localhost:8000/answers/vietnamese_classification?text=${comment}`);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER_VIETNAMESE_CLASSIFICATION_HOST}/answers/vietnamese_classification?text=${comment}`,
+    );
     return data;
   } catch (error) {
     console.error('Can not validate this comment', error);
@@ -127,9 +128,16 @@ export const getHistories = async (page: number) => {
   }
 };
 
-export const pushToHistories = async (data: any) => {
+export const pushToHistories = async (songId: number) => {
   try {
-    const response = await apiInstance.post(`/me/histories`, data);
+    const formData = new FormData();
+    formData.set('song_id', songId.toString());
+    const response = await apiInstance.post(`/me/histories`, formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching histories:', error);
@@ -171,9 +179,9 @@ export const unlike = async (data: number[], params: string) => {
   }
 };
 
-export const followArtist = async (artistId: string) => {
+export const followArtist = async (artistId: number) => {
   const formData = new FormData();
-  formData.append('artist_id', artistId);
+  formData.append('artist_id', artistId.toString());
   try {
     const response = await apiInstance.post(`/me/follows`, formData, {
       headers: {
@@ -187,7 +195,7 @@ export const followArtist = async (artistId: string) => {
   }
 };
 
-export const unfollowArtist = async (id: string) => {
+export const unfollowArtist = async (id: number) => {
   try {
     const response = await apiInstance.delete(`/me/follows/${id}`);
     return response;
@@ -202,7 +210,7 @@ export const createComment = async (data: any) => {
   formData.append('song_id', data.songId);
   formData.append('status', data.status);
   try {
-    const response = await axios.post(`${apiTmMusicUrl}/me/comments`, formData, {
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_HOST}/me/comments`, formData, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
         'Content-Type': 'multipart/form-data',
@@ -214,7 +222,7 @@ export const createComment = async (data: any) => {
   }
 };
 
-export const deleteComment = async (id: string) => {
+export const deleteComment = async (id: number) => {
   try {
     const response = await apiInstance.delete(`/me/comments/${id}`);
     return response.data;
@@ -232,7 +240,7 @@ export const deleteMyAlbum = async (id: number) => {
   }
 };
 
-export const getCommentDetail = async (id: string) => {
+export const getCommentDetail = async (id: number) => {
   try {
     const response = await apiInstance.get(`/me/comments/${id}`);
     return response.data;
@@ -312,7 +320,7 @@ export const getAllGenres = async (page: number, size?: number) => {
   }
 };
 
-export const getGenre = async (id: string) => {
+export const getGenre = async (id: number) => {
   try {
     const response = await apiInstance.get(`/genres/${id}`);
     return response.data;
@@ -321,30 +329,30 @@ export const getGenre = async (id: string) => {
   }
 };
 
-export const getGenresRelated = async (id: string) => {
+export const getGenresRelated = async (id: number) => {
   try {
     const response = await apiInstance.get(`/genres/${id}/related`);
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get genres related:', error);
   }
 };
 
-export const getAlbumsRelated = async (id: string) => {
+export const getAlbumsRelated = async (id: number) => {
   try {
     const response = await apiInstance.get(`/albums/${id}/related`);
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get albums related:', error);
   }
 };
 
-export const getAlbumsOfSinger = async (ids: string[]) => {
+export const getAlbumsOfSinger = async (ids: number[]) => {
   try {
     const response = await apiInstance.get(`/singers/albums?ids=${ids.join(',')}`);
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get albums of singers:', error);
   }
 };
 
@@ -353,7 +361,7 @@ export const getCommentsOfSong = async (id: number) => {
     const response = await apiInstance.get(`/songs/${id}/comments`);
     return response;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error get comments of Song:', error);
   }
 };
 
@@ -367,13 +375,13 @@ export const addSongsToPlaylist = async (playlistId: number, ids: number[]) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error add song to playlist:', error);
   }
 };
 
-export const deleteSongsFromPlaylist = async (playlistId: string, ids: number[]) => {
+export const deleteSongsFromPlaylist = async (playlistId: number, ids: number[]) => {
   const formData = new FormData();
   formData.append('song_ids', JSON.stringify(ids));
   try {
@@ -385,7 +393,7 @@ export const deleteSongsFromPlaylist = async (playlistId: string, ids: number[])
     });
     return response.data;
   } catch (error) {
-    console.error('Error get genres:', error);
+    console.error('Error delete song to playlist:', error);
   }
 };
 
@@ -416,9 +424,9 @@ export const verifyInvitation = async (code: string) => {
   }
 };
 
-export const createCheckout = async (songId: string) => {
+export const createCheckout = async (songId: number) => {
   const formData = new FormData();
-  formData.append('song_id', songId);
+  formData.append('song_id', songId.toString());
   try {
     const response = await apiInstance.post(`/create-checkout-session`, formData, {
       headers: {
@@ -492,6 +500,30 @@ export const getAlbumsByGenre = async (genreId: number, page: number, size?: num
     return response;
   } catch (error) {
     console.error('Error get albums by genre:', error);
+  }
+};
+
+export const getRooms = async () => {
+  try {
+    const response = await apiInstance.get(`/me/rooms`);
+    return response;
+  } catch (error) {
+    console.error('Error verify otp:', error);
+    return (error as any).response.status;
+  }
+};
+
+export const search = async (q: string): Promise<AxiosResponse<any>> => {
+  try {
+    const res: AxiosResponse<any> = await apiInstance.get(`/me/search?q=${q}`);
+    return res;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw error;
+    } else {
+      console.error('An unknown error occurred:', error);
+      throw error;
+    }
   }
 };
 

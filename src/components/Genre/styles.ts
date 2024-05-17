@@ -2,24 +2,24 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
-  overflow: hidden;
   padding-left: 24px;
   padding-right: 24px;
-  justify-content: space-between;
-
+  flex-wrap: wrap;
+  overflow: hidden;
   @media (max-width: 1200px) {
     flex-wrap: wrap;
     justify-content: center;
   }
 `;
 
-const StyledAlbumItem = styled.div`
+const StyledGenreItem = styled.div`
   flex: 1;
   margin: 8px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   @media (min-width: 1201px) {
+    flex-basis: calc(20% - 16px);
     & > div:first-child {
       height: 216px;
       width: 100%;
@@ -48,7 +48,7 @@ const StyledAlbumItem = styled.div`
   }
 `;
 
-const StyledChildAlbumItem = styled.div`
+const StyledChildGenreItem = styled.div`
   border-radius: 6px;
   & div {
     height: 100%;
@@ -56,4 +56,4 @@ const StyledChildAlbumItem = styled.div`
   }
 `;
 
-export { Container, StyledAlbumItem, StyledChildAlbumItem };
+export { Container, StyledGenreItem, StyledChildGenreItem };

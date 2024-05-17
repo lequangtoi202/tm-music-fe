@@ -2,7 +2,7 @@ import { AddCircleOutline, Close, MoreHoriz, PlayCircleOutline } from '@mui/icon
 import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { KContext } from '../../context';
-import { deleteMyAlbum, getMyAlbums } from '../../services/user';
+import { deleteMyAlbum, getMyAlbums, pushToHistories } from '../../services/user';
 import { IAlbum } from '../../types/Album';
 import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 import Image from '../Image';
@@ -10,7 +10,7 @@ import { MoreAction } from '../MoreAction';
 import { PlaylistModal } from '../PlaylistModal';
 import { RoundedSkeleton, TitleSkeleton } from '../Skeleton';
 import Snackbars from '../Snackbar';
-import { StyledLayerHover, StyledWrapper } from '../Theme/styles';
+import { StyledLayerHover } from '../Theme/styles';
 import UploadModal from '../Upload';
 import UploadSongModal from '../Upload/UploadSong';
 import { PLaylistTitle } from './PlaylistTitle';
@@ -21,7 +21,9 @@ import {
   StyledChildPlaylistItem,
   StyledItemContainer,
   StyledPlaylistItem,
+  StyledWrapper,
 } from './styles';
+import images from '../../assets/images';
 
 function Playlist() {
   const [loading, setLoading] = useState(true);
@@ -44,8 +46,8 @@ function Playlist() {
 
   const fetchData = async () => {
     const res = await getMyAlbums(page);
-    setMyAlbums(res.albums);
-    setTotalPages(res.total_pages);
+    setMyAlbums(res?.albums ?? []);
+    setTotalPages(res?.total_pages ?? 0);
     setLoading(false);
   };
 
@@ -61,6 +63,10 @@ function Playlist() {
       setError('Xóa playlist không thành công');
     }
     fetchData();
+  };
+
+  const handleSaveToHistory = async (id: number) => {
+    await pushToHistories(id);
   };
 
   const handleViewMore = () => {
@@ -101,7 +107,7 @@ function Playlist() {
                       </Tooltip>
                       <Tooltip placement="top" title="Phát">
                         <IconButton
-                          onClick={() => {
+                          onClick={async () => {
                             if (!item.songs || item.songs.length === 0) setError('Playlist không có bài hát');
                             const randomSong = item.songs
                               ? item.songs[Math.floor(Math.random() * item.songs.length)]
@@ -110,6 +116,9 @@ function Playlist() {
                             setCurrentAlbum(item);
                             setTempCurrentSong(randomSong);
                             setTempCurrentAlbum(item);
+                            if (randomSong?.id) {
+                              await handleSaveToHistory(randomSong.id);
+                            }
                           }}
                         >
                           <PlayCircleOutline />
@@ -126,7 +135,7 @@ function Playlist() {
                         </IconButton>
                       </Tooltip>
                     </StyledLayerHover>
-                    <Image src={item.image ?? '../../assets/images/no-image.png'} alt={item.title} />
+                    <Image src={item.image ?? images.noImage} alt={item.title} />
                   </StyledWrapper>
                 )}
               </StyledChildPlaylistItem>

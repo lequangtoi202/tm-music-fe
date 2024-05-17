@@ -1,98 +1,75 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { Box, Button, Divider, Fade, Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Box, Button, Fade, IconButton, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import clsx from 'clsx';
 import { forwardRef, useContext, useState } from 'react';
 import { KContext } from '../../context';
-import { StyledInput } from '../PlaylistModal/styles';
-import { IShareProps } from './types';
-import Image from '../Image';
-import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle } from '../MoreAction/styles';
-import { createInvitation } from '../../services/user';
+import { createMyAlbum } from '../../services/user';
+import { StyledInput } from './styles';
 
-export const SendEmail: React.FC<IShareProps> = ({ song }) => {
-  const { isOpenSendToEmail, setIsOpenSendToEmail } = useContext(KContext);
-  const [recipientEmail, setRecipientEmail] = useState<string>('');
-  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+export const RoomModal = () => {
+  const { isOpenAddRoomModal, setIsOpenAddRoomModal, setSuccess, setError, setChangedRoom, roomChanged } =
+    useContext(KContext);
+  const [roomName, setRoomName] = useState('');
   const [disabled, setDisabled] = useState<boolean>(true);
-  const handleClose = () => {
-    setIsOpenSendToEmail(false);
-    setIsEmailValid(true);
-  };
 
-  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const email = e.target.value;
-    setRecipientEmail(email);
-    if (validateEmail(email)) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
+  const handleCreateNewRoom = async () => {
+    const formData = new FormData();
+    formData.append('title', roomName);
+
+    const res = await createMyAlbum(formData);
+    if (res?.status === 201) {
+      setSuccess('Tạo phòng thành công!');
+      setRoomName('');
+      setIsOpenAddRoomModal(false);
+      setChangedRoom(!roomChanged);
+    } else if (res?.status === 422) {
+      setError('Tạo phòng không thành công.');
     }
-  };
-
-  const handleSubmitShareSong = async () => {
-    await createInvitation({ email: recipientEmail, songId: song?.id });
-    setIsOpenSendToEmail(false);
-  };
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
   };
 
   return (
     <Modal
       aria-labelledby="unstyled-modal-title"
       aria-describedby="unstyled-modal-description"
-      open={isOpenSendToEmail}
-      onClose={handleClose}
+      open={isOpenAddRoomModal}
+      onClose={() => setIsOpenAddRoomModal(false)}
       slots={{ backdrop: StyledBackdrop }}
     >
-      <Fade in={isOpenSendToEmail}>
-        <ModalContent sx={{ width: 280 }}>
+      <Fade in={isOpenAddRoomModal}>
+        <ModalContent>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <IconButton
+              aria-label="close"
+              onClick={() => setIsOpenAddRoomModal(false)}
+              sx={{ position: 'absolute', top: 8, right: 8 }}
+            >
+              <Close />
+            </IconButton>
+          </Box>
           <Typography fontWeight={700} textAlign={'center'} fontSize={20} color={'#1976d2'} variant="inherit" noWrap>
-            Chia sẻ bài hát
+            Tạo phòng
           </Typography>
-          <PlaylistItem>
-            <SongTitle>
-              <Image src={song?.image} alt={song?.title} />
-              <StyledBox>
-                <StyledBoxTitle>
-                  <Typography fontWeight={700} variant="inherit" noWrap>
-                    {song?.title}
-                  </Typography>
-                </StyledBoxTitle>
-                <StyledBoxTitle>
-                  <Typography variant="inherit" noWrap>
-                    {song?.title}
-                  </Typography>
-                </StyledBoxTitle>
-              </StyledBox>
-            </SongTitle>
-          </PlaylistItem>
-          <Divider />
           <Box width={'100%'}>
             <StyledInput
               autoFocus
-              type="email"
-              required
               disableUnderline={true}
-              onChange={handleChangeEmail}
-              placeholder="Nhập email người nhận"
+              value={roomName}
+              onChange={(event) => {
+                setRoomName(event.target.value);
+                setDisabled(event.target.value.length === 0);
+              }}
+              placeholder="Nhập tên Room"
             />
-            {!isEmailValid && (
-              <Typography sx={{ mt: 1 }} color="error" fontSize={14} fontStyle={'italic'}>
-                Email người nhận không hợp lệ
-              </Typography>
-            )}
             <Box sx={{ mt: 2 }} display={'flex'} justifyContent={'center'}>
               <Button
                 sx={{ borderRadius: '18px', flex: 1 }}
                 disabled={disabled}
-                onClick={handleSubmitShareSong}
+                onClick={handleCreateNewRoom}
                 variant="contained"
               >
-                Gửi
+                TẠO MỚI
               </Button>
             </Box>
           </Box>
@@ -122,7 +99,7 @@ const grey = {
 
 export const Modal = styled(BaseModal)`
   position: fixed;
-  z-index: 10;
+  z-index: 1400;
   inset: 0;
   display: flex;
   align-items: center;
@@ -139,6 +116,7 @@ export const StyledBackdrop = styled(Backdrop)`
 
 export const ModalContent = styled('div')(
   ({ theme }) => css`
+    width: 360px;
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
     text-align: start;

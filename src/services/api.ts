@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { getToken } from '../utils/storage';
-import { apiTmMusicUrl } from '../constants';
 
 const apiInstance = axios.create({
-  baseURL: apiTmMusicUrl,
+  baseURL: process.env.REACT_APP_SERVER_HOST,
 });
 
 apiInstance.interceptors.request.use(

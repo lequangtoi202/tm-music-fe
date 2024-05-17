@@ -17,6 +17,7 @@ import { formatTime } from '../../utils/time';
 import Image from '../Image';
 import Snackbars from '../Snackbar';
 import { CustomCardContent, CustomDisplayControl } from './styles';
+import images from '../../assets/images';
 
 export default function MediaControlCard() {
   const theme = useTheme();
@@ -153,7 +154,7 @@ export default function MediaControlCard() {
         }}
       >
         <CustomCardContent>
-          <Image src={currentSong?.image} alt="Live from space album cover" />
+          <Image src={currentSong?.image ?? images.noImage} alt="Live from space album cover" />
           <Box sx={{ pl: 1 }}>
             <Typography component="div" variant="h5">
               {currentSong?.title}

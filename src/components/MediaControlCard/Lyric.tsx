@@ -24,7 +24,7 @@ function LyricModal({ song }: { song: ISong }) {
         <ModalContent sx={{ width: 640 }}>
           <LyricContainer>
             <Box sx={{ fontWeight: 700, fontSize: 18 }}>Lời bài hát</Box>
-            <Box sx={{ whiteSpace: 'pre-line', fontSize: 14 }}>{currentSong?.lyric}</Box>
+            <Box sx={{ whiteSpace: 'pre-line', fontSize: 14 }}>{currentSong?.lyric}...</Box>
           </LyricContainer>
         </ModalContent>
       </Fade>

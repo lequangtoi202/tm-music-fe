@@ -17,6 +17,7 @@ interface Room {
   uuid: string;
   created_at: string;
   updated_at: string;
+  user_name: string
 }
 
 interface RoomListProps {
@@ -51,7 +52,7 @@ const RoomList: React.FC<RoomListProps> = ({ rooms, isPrivate, getAllRooms }) =>
         rooms.map((room) => (
           <Paper key={room.id} sx={{ p: 2, mb: 2 }}>
             <Typography fontSize={16} fontWeight={600}>
-              {room.name}
+              {room.name} { !isPrivate ? `(Phòng của ${room.user_name})` : ''}
             </Typography>
             <Typography fontSize={14}>{room.description}</Typography>
             <Link to={`/rooms/${room.uuid}`} className="link">

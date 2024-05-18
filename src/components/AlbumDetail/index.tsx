@@ -48,7 +48,8 @@ const AlbumDetail = () => {
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [singers, setSingers] = useState<{}[]>([]);
   const [likedSongs, setLikedSongs] = useState<Record<number, boolean>>({});
-  const { setCurrentSong, isMobile, setIsOpenMoreAction, setTempSongOrAlbum, tempSongOrAlbum } = useContext(KContext);
+  const { setCurrentSong, isMobile, setIsOpenMoreAction, setTempSongOrAlbum, setCurrentAlbum, tempSongOrAlbum } =
+    useContext(KContext);
   const { albumId } = useParams<{ albumId?: string }>();
   const handleOpenMoreAction = (song: ISong) => {
     setTempSongOrAlbum(song);
@@ -204,6 +205,7 @@ const AlbumDetail = () => {
                               : null;
                             setCurrentSong(song);
                             setTempCurrentSong(randomSong);
+                            setCurrentAlbum(album);
                             if (randomSong?.id) {
                               await handleSaveToHistory(randomSong.id);
                             }

@@ -5,6 +5,7 @@ import { Avatar, Box, Checkbox, Container, CssBaseline, Grid, TextField, Typogra
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useGoogleLogin } from '@react-oauth/google';
+import Cookies from 'js-cookie';
 import { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,21 +13,17 @@ import { z } from 'zod';
 import { FacebookIcon } from '../../assets/icons/FacebookIcon';
 import { GoogleIcon } from '../../assets/icons/GoogleIcon';
 import { TButton } from '../../components/Button/Button';
-import Text from '../../components/Text';
+import Snackbars from '../../components/Snackbar';
 import { KContext } from '../../context';
 import { login, loginWithFaceBook, loginWithGoogle } from '../../services/user';
-import { IUser } from '../../types/User';
-import { setToken, setCurrentUser, setTempCurrentSong } from '../../utils/storage';
-import { StyledLink } from './styles';
-import Cookies from 'js-cookie';
-import Snackbars from '../../components/Snackbar';
+import { setCurrentUser, setTempCurrentSong, setToken } from '../../utils/storage';
 const defaultTheme = createTheme();
 
 export function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link style={{ color: '#1976d2' }} to="http://localhost:3001/">
+      <Link style={{ color: '#1976d2' }} to="/">
         TM Music
       </Link>{' '}
       {new Date().getFullYear()}

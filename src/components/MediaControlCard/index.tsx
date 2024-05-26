@@ -25,6 +25,7 @@ export default function MediaControlCard() {
   const [duration, setDuration] = useState<number>(300);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(50);
+  const [disablePlay, setDisablePlay] = useState<boolean>(false);
   const [prevVolume] = useState<number>(50);
   const [isMuted, setIsMuted] = useState(false);
   const {
@@ -101,7 +102,18 @@ export default function MediaControlCard() {
       setCurrentTime(0);
       setIsMuted(false);
     }
+    setDisablePlay(false)
   }, [currentSong]);
+
+  useEffect(() => {
+    if (!currentSong?.bought && currentSong?.copyright && currentTime === 60) {
+      setDisablePlay(true)
+      setIsPlaying(false)
+      const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
+      audio.pause();
+      setError('Vui lòng mua bài hát.')
+    }
+  }, [currentTime]);
 
   const handleIconClick = () => {
     const newIsMuted = !isMuted;
@@ -173,7 +185,7 @@ export default function MediaControlCard() {
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Phát">
-            <IconButton aria-label="play/pause" onClick={togglePlayPause}>
+            <IconButton aria-label="play/pause" onClick={togglePlayPause} disabled={disablePlay}>
               {isPlaying ? <Pause sx={{ height: 38, width: 38 }} /> : <PlayArrow sx={{ height: 38, width: 38 }} />}
             </IconButton>
           </Tooltip>
@@ -193,6 +205,7 @@ export default function MediaControlCard() {
           <Box sx={{ flex: '1 1 35%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ mr: 2 }}>{formatTime(currentTime)}</Box>
             <Slider
+              disabled={disablePlay}
               sx={{ color: '#1976d2' }}
               value={currentTime}
               max={duration}

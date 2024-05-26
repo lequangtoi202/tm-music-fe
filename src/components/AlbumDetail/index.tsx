@@ -232,7 +232,8 @@ const AlbumDetail = () => {
                   <PlaylistItem key={index}>
                     <SongTitle>
                       <Headphones sx={{ marginRight: '8px' }} />
-                      <Image src={song?.image ?? images.noImage} alt="Live from space album cover" />
+                      {/* làm thêm cái phát bài hát trên mobile */}
+                      <Image src={song?.image ?? images.noImage} alt="Live" />
                       <StyledBox>
                         <StyledBoxTitle>
                           <Typography variant="inherit" noWrap>

@@ -15,6 +15,7 @@ export interface IGlobalContext {
   isOpenSendToEmail: boolean;
   isOpenAddPlaylistModal: boolean;
   isOpenAddRoomModal: boolean;
+  isOpenAdvertise: boolean;
   currentSong: ISong | null;
   currentUser: IUser | null;
   currentAlbum: IAlbum | null;
@@ -38,6 +39,7 @@ export interface IGlobalContext {
   setIsOpenMoreAction: Dispatch<SetStateAction<boolean>>;
   setIsOpenAddPlaylistModal: Dispatch<SetStateAction<boolean>>;
   setIsOpenAddRoomModal: Dispatch<SetStateAction<boolean>>;
+  setIsOpenAdvertise: Dispatch<SetStateAction<boolean>>;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
   setOpenCommentDialog: Dispatch<SetStateAction<boolean>>;
   setIsOpenOTP: Dispatch<SetStateAction<boolean>>;

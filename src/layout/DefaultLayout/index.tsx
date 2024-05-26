@@ -1,23 +1,37 @@
 import { Box, alpha, lighten, useTheme } from '@mui/material';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { AdvertiseBanner } from '../../components/AdvertiseBanner';
 import CommentModal from '../../components/Comment/CommentModal';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import MediaControlCard from '../../components/MediaControlCard';
+import LyricModal from '../../components/MediaControlCard/Lyric';
 import OTPInput from '../../components/OTP';
 import Sidebar from '../../components/Sidebar';
 import Snackbars from '../../components/Snackbar';
 import { KContext } from '../../context';
 import { FullScreenMediaControlCard } from '../../pages/Home/styles';
-import LyricModal from '../../components/MediaControlCard/Lyric';
 
 const DefaultLayout = ({ children }: any) => {
   const theme = useTheme();
-  const { currentSong, error, success } = useContext(KContext);
+  const { currentSong, error, success, isOpenAdvertise, setIsOpenAdvertise, currentUser } = useContext(KContext);
   const location = useLocation();
   const hideMediaControlCard = /^\/rooms(\/|$)/.test(location.pathname);
+  useEffect(() => {
+    if (currentUser?.premium) {
+      return;
+    }
 
+    const timer = setInterval(
+      () => {
+        setIsOpenAdvertise(true);
+      },
+      15 * 60 * 1000,
+    );
+
+    return () => clearTimeout(timer);
+  }, [currentUser, setIsOpenAdvertise]);
   return (
     <div style={{ position: 'relative' }}>
       <Box
@@ -61,6 +75,7 @@ const DefaultLayout = ({ children }: any) => {
         </Box>
       </Box>
       <OTPInput />
+      {isOpenAdvertise && <AdvertiseBanner />}
       {!hideMediaControlCard && (
         <FullScreenMediaControlCard>
           <MediaControlCard />

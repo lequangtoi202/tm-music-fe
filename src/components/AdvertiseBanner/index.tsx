@@ -1,16 +1,24 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
 import { Close } from '@mui/icons-material';
-import { Box, Fade, IconButton, Typography } from '@mui/material';
+import { Box, Button, Fade, IconButton, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import clsx from 'clsx';
 import { forwardRef, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { KContext } from '../../context';
+import { createCheckoutSubmission } from '../../services/user';
 import Image from '../Image';
+import { StyleButtonBuyAds } from './styles';
 
 export const AdvertiseBanner = () => {
   const { isOpenAdvertise, setIsOpenAdvertise } = useContext(KContext);
-
+  const buyPremium = async () => {
+    try {
+      const res = await createCheckoutSubmission();
+      window.location.href = res.url;
+    } catch (error) {
+      alert('Failed to process premium purchase. Please try again later.');
+    }
+  };
   return (
     <Modal
       aria-labelledby="unstyled-modal-title"
@@ -60,8 +68,7 @@ export const AdvertiseBanner = () => {
               Tặng bạn nhiều đặc quyền ưu đãi hấp dẫn khác.
             </Typography>
             <Box sx={{ mt: 2 }} display={'flex'} justifyContent={'center'}>
-              <Link
-                to="/premium"
+              <StyleButtonBuyAds
                 style={{
                   color: '#1976d2',
                   fontWeight: 700,
@@ -69,9 +76,10 @@ export const AdvertiseBanner = () => {
                   borderRadius: 16,
                   padding: '8px 16px',
                 }}
+                onClick={buyPremium}
               >
                 KHÁM PHÁ NGAY
-              </Link>
+              </StyleButtonBuyAds>
             </Box>
           </Box>
         </ModalContent>

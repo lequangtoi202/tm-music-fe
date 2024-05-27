@@ -17,6 +17,7 @@ interface ISong {
   liked?: boolean;
   owner?: boolean;
   copyright?: boolean;
+  bought?: boolean;
 }
 
 export type { ISong };

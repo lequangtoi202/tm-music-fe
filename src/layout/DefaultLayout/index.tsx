@@ -20,7 +20,10 @@ const DefaultLayout = ({ children }: any) => {
   const hideMediaControlCard = /^\/rooms(\/|$)/.test(location.pathname);
   useEffect(() => {
     if (currentUser?.premium) {
+      setIsOpenAdvertise(false);
       return;
+    } else {
+      setIsOpenAdvertise(true);
     }
 
     const timer = setInterval(

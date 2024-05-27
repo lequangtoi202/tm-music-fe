@@ -1,6 +1,6 @@
 import { Modal as BaseModal } from '@mui/base/Modal';
 import { Close } from '@mui/icons-material';
-import { Box, Button, Fade, IconButton, Typography } from '@mui/material';
+import { Box, Fade, IconButton, Typography } from '@mui/material';
 import { css, styled } from '@mui/system';
 import clsx from 'clsx';
 import { forwardRef, useContext } from 'react';
@@ -61,7 +61,7 @@ export const AdvertiseBanner = () => {
             </Typography>
             <Box textAlign="center">
               <Typography display="inline-block" fontSize={14} color={'#fff'} variant="inherit">
-                Nâng cấp gói Premium chỉ với 13.000đ/tháng
+                Nâng cấp gói Premium chỉ với 1.000.000đ
               </Typography>
             </Box>
             <Typography textAlign={'center'} fontSize={14} color={'#fff'} variant="inherit">

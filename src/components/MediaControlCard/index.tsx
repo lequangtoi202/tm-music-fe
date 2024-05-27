@@ -116,7 +116,7 @@ export default function MediaControlCard() {
   };
 
   const playPreviousSong = () => {
-    if (currentAlbum && currentSong) {
+    if (currentAlbum && currentAlbum.songs && currentSong) {
       const currentIndex = currentAlbum.songs.findIndex((song) => song.id === currentSong.id);
       const prevIndex = (currentIndex - 1 + currentAlbum.songs?.length) % currentAlbum.songs?.length;
       const prevSong = currentAlbum.songs[prevIndex];
@@ -125,7 +125,7 @@ export default function MediaControlCard() {
   };
 
   const playNextSong = () => {
-    if (currentAlbum && currentSong) {
+    if (currentAlbum && currentAlbum.songs && currentSong) {
       const currentIndex = currentAlbum.songs.findIndex((song) => song.id === currentSong.id);
       const nextIndex = (currentIndex + 1) % currentAlbum.songs?.length;
       const nextSong = currentAlbum.songs[nextIndex];
@@ -173,9 +173,15 @@ export default function MediaControlCard() {
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Phát">
-            <IconButton aria-label="play/pause" onClick={togglePlayPause}>
-              {isPlaying ? <Pause sx={{ height: 38, width: 38 }} /> : <PlayArrow sx={{ height: 38, width: 38 }} />}
-            </IconButton>
+            {!currentSong ? (
+              <IconButton disabled={true} aria-label="play/pause" onClick={togglePlayPause}>
+                {isPlaying ? <Pause sx={{ height: 38, width: 38 }} /> : <PlayArrow sx={{ height: 38, width: 38 }} />}
+              </IconButton>
+            ) : (
+              <IconButton aria-label="play/pause" onClick={togglePlayPause}>
+                {isPlaying ? <Pause sx={{ height: 38, width: 38 }} /> : <PlayArrow sx={{ height: 38, width: 38 }} />}
+              </IconButton>
+            )}
           </Tooltip>
           <Tooltip placement="top" title="Tiếp theo">
             <IconButton aria-label="next" onClick={playNextSong}>

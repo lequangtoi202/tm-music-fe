@@ -16,7 +16,7 @@ import { TButton } from '../../components/Button/Button';
 import Snackbars from '../../components/Snackbar';
 import { KContext } from '../../context';
 import { login, loginWithFaceBook, loginWithGoogle } from '../../services/user';
-import { setCurrentUser, setTempCurrentSong, setToken } from '../../utils/storage';
+import { setCurrentUser, setTempCurrentAlbum, setTempCurrentSong, setToken } from '../../utils/storage';
 const defaultTheme = createTheme();
 
 export function Copyright(props: any) {
@@ -90,6 +90,7 @@ function Login() {
           id: client.id,
           premium: client.premium,
         });
+        setTempCurrentAlbum(null);
         setTempCurrentSong(client.listened_song);
         setToken(response.data.token);
         setIsLoggedIn(true);
@@ -120,6 +121,8 @@ function Login() {
         id: client.id,
         premium: client.premium,
       });
+      setTempCurrentSong(client.listened_song);
+      setTempCurrentAlbum(null);
       setSuccess('Đăng nhập thành công');
       setIsLoggedIn(true);
       navigate('/');
@@ -142,6 +145,8 @@ function Login() {
       id: client.id,
       premium: client.premium,
     });
+    setTempCurrentAlbum(null);
+    setTempCurrentSong(client.listened_song);
     setSuccess('Đăng nhập thành công');
     navigate('/');
     setIsLoggedIn(true);

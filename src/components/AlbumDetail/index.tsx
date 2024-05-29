@@ -14,7 +14,7 @@ import { KContext } from '../../context';
 import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
-import { setTempCurrentSong } from '../../utils/storage';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 import CardItem from '../Card';
 import Image from '../Image';
 import { MoreAction } from '../MoreAction';
@@ -206,6 +206,7 @@ const AlbumDetail = () => {
                             setCurrentSong(song);
                             setTempCurrentSong(randomSong);
                             setCurrentAlbum(album);
+                            setTempCurrentAlbum(album);
                             if (randomSong?.id) {
                               await handleSaveToHistory(randomSong.id);
                             }

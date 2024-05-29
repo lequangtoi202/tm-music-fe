@@ -11,6 +11,7 @@ import { StyledLayerHoverHistories } from '../../Theme/styles';
 import { StyledHistoryItem } from '../styles';
 import { HistoryItemProps } from '../types';
 import { StyledWrapper } from '../../Playlist/styles';
+import { setTempCurrentSong } from '../../../utils/storage';
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
   const { setIsOpenMoreAction, setTempSongOrAlbum, setCurrentSong } = useContext(KContext);
@@ -58,6 +59,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, loading }) => {
                 <IconButton
                   onClick={async () => {
                     setCurrentSong(item);
+                    setTempCurrentSong(item);
                     await handleSaveToHistory(item.id);
                   }}
                 >

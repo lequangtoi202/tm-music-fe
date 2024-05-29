@@ -6,6 +6,7 @@ import Image from '../Image';
 import { StyleCardImage, StyledLayerHover } from './styles';
 import { CardItemProps } from './types';
 import images from '../../assets/images';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 
 const CardItem: React.FC<CardItemProps> = ({ item }) => {
   const { setCurrentSong, setCurrentAlbum, setError } = useContext(KContext);
@@ -19,6 +20,8 @@ const CardItem: React.FC<CardItemProps> = ({ item }) => {
               const randomSong = item?.songs ? item.songs[Math.floor(Math.random() * item.songs?.length)] : null;
               setCurrentSong(randomSong || null);
               setCurrentAlbum(item);
+              setTempCurrentSong(randomSong || null);
+              setTempCurrentAlbum(item);
             }}
           >
             <PlayCircleOutline />

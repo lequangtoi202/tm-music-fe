@@ -18,6 +18,7 @@ import Image from '../Image';
 import Snackbars from '../Snackbar';
 import { CustomCardContent, CustomDisplayControl } from './styles';
 import images from '../../assets/images';
+import { setTempCurrentSong } from '../../utils/storage';
 
 export default function MediaControlCard() {
   const theme = useTheme();
@@ -101,8 +102,10 @@ export default function MediaControlCard() {
 
       setCurrentTime(0);
       setIsMuted(false);
+      setDisablePlay(false);
+    } else {
+      setDisablePlay(true);
     }
-    setDisablePlay(false);
   }, [currentSong]);
 
   useEffect(() => {
@@ -133,6 +136,7 @@ export default function MediaControlCard() {
       const prevIndex = (currentIndex - 1 + currentAlbum.songs?.length) % currentAlbum.songs?.length;
       const prevSong = currentAlbum.songs[prevIndex];
       setCurrentSong(prevSong);
+      setTempCurrentSong(prevSong);
     }
   };
 
@@ -142,6 +146,7 @@ export default function MediaControlCard() {
       const nextIndex = (currentIndex + 1) % currentAlbum.songs?.length;
       const nextSong = currentAlbum.songs[nextIndex];
       setCurrentSong(nextSong);
+      setTempCurrentSong(nextSong);
     }
   };
 
@@ -185,7 +190,7 @@ export default function MediaControlCard() {
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Phát">
-            <IconButton aria-label="play/pause" onClick={togglePlayPause}>
+            <IconButton disabled={disablePlay} aria-label="play/pause" onClick={togglePlayPause}>
               {isPlaying ? <Pause sx={{ height: 38, width: 38 }} /> : <PlayArrow sx={{ height: 38, width: 38 }} />}
             </IconButton>
           </Tooltip>

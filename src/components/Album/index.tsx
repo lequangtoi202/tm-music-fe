@@ -12,6 +12,7 @@ import { Container, StyledAlbumItem, StyledChildAlbumItem } from './styles';
 import { AlbumItemsProps } from './types';
 import images from '../../assets/images';
 import { StyledWrapper } from '../Playlist/styles';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 
 const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
   const [loading, setLoading] = useState(true);
@@ -81,6 +82,8 @@ const AlbumContainer: React.FC<AlbumItemsProps> = ({ items }) => {
                             : null;
                           setCurrentSong(randomSong);
                           setCurrentAlbum(item);
+                          setTempCurrentSong(randomSong);
+                          setTempCurrentAlbum(item);
                           if (randomSong?.id) {
                             await handleSaveToHistory(randomSong.id);
                           }

@@ -5,9 +5,8 @@ import { NavLink as RouterLink } from 'react-router-dom';
 
 import { KContext } from '../../../context';
 import { SidebarContext } from '../../../context/SidebarContext';
-import { MenuType, SidebarMenuProps } from '../types';
 import { createCheckoutSubmission } from '../../../services/user';
-import { WorkspacePremium } from '@mui/icons-material';
+import { MenuType, SidebarMenuProps } from '../types';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `

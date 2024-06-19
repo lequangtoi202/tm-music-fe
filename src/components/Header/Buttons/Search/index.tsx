@@ -24,6 +24,7 @@ import { useDebounce } from '../../../../hook';
 import * as searchServices from '../../../../services/user';
 import { PlaylistItem, SongTitle, StyledBox, StyledBoxTitle } from '../../../AlbumDetail/styles';
 import { DialogWrapper, MobileSearchButton, SearchInputContainer, StyledSearchResult } from './styles';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../../../utils/storage';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children: ReactElement<any, any> },
@@ -156,11 +157,13 @@ function HeaderSearch() {
                   if (!data?.songs || data?.songs?.length === 0) setError('Album không có bài hát');
                   const randomSong = data?.songs ? data?.songs[Math.floor(Math.random() * data?.songs?.length)] : null;
                   setCurrentSong(randomSong || null);
+                  setTempCurrentAlbum(data);
                   if (randomSong?.id) {
                     await handleSaveToHistory(randomSong.id);
                   }
                 } else {
                   setCurrentSong(data);
+                  setTempCurrentSong(data);
                 }
               }}
             >

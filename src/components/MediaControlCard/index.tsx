@@ -18,6 +18,7 @@ import Image from '../Image';
 import Snackbars from '../Snackbar';
 import { CustomCardContent, CustomDisplayControl } from './styles';
 import images from '../../assets/images';
+import { setTempCurrentSong } from '../../utils/storage';
 
 export default function MediaControlCard() {
   const theme = useTheme();
@@ -25,6 +26,7 @@ export default function MediaControlCard() {
   const [duration, setDuration] = useState<number>(300);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(50);
+  const [disablePlay, setDisablePlay] = useState<boolean>(false);
   const [prevVolume] = useState<number>(50);
   const [isMuted, setIsMuted] = useState(false);
   const {
@@ -100,8 +102,21 @@ export default function MediaControlCard() {
 
       setCurrentTime(0);
       setIsMuted(false);
+      setDisablePlay(false);
+    } else {
+      setDisablePlay(true);
     }
   }, [currentSong]);
+
+  useEffect(() => {
+    if (!currentSong?.bought && currentSong?.copyright && currentTime === 60) {
+      setDisablePlay(true);
+      setIsPlaying(false);
+      const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
+      audio.pause();
+      setError('Vui lòng mua bài hát.');
+    }
+  }, [currentTime]);
 
   const handleIconClick = () => {
     const newIsMuted = !isMuted;
@@ -116,20 +131,22 @@ export default function MediaControlCard() {
   };
 
   const playPreviousSong = () => {
-    if (currentAlbum && currentSong) {
+    if (currentAlbum && currentAlbum.songs && currentSong) {
       const currentIndex = currentAlbum.songs.findIndex((song) => song.id === currentSong.id);
       const prevIndex = (currentIndex - 1 + currentAlbum.songs?.length) % currentAlbum.songs?.length;
       const prevSong = currentAlbum.songs[prevIndex];
       setCurrentSong(prevSong);
+      setTempCurrentSong(prevSong);
     }
   };
 
   const playNextSong = () => {
-    if (currentAlbum && currentSong) {
+    if (currentAlbum && currentAlbum.songs && currentSong) {
       const currentIndex = currentAlbum.songs.findIndex((song) => song.id === currentSong.id);
       const nextIndex = (currentIndex + 1) % currentAlbum.songs?.length;
       const nextSong = currentAlbum.songs[nextIndex];
       setCurrentSong(nextSong);
+      setTempCurrentSong(nextSong);
     }
   };
 
@@ -173,7 +190,7 @@ export default function MediaControlCard() {
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Phát">
-            <IconButton aria-label="play/pause" onClick={togglePlayPause}>
+            <IconButton disabled={disablePlay} aria-label="play/pause" onClick={togglePlayPause}>
               {isPlaying ? <Pause sx={{ height: 38, width: 38 }} /> : <PlayArrow sx={{ height: 38, width: 38 }} />}
             </IconButton>
           </Tooltip>
@@ -193,6 +210,7 @@ export default function MediaControlCard() {
           <Box sx={{ flex: '1 1 35%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ mr: 2 }}>{formatTime(currentTime)}</Box>
             <Slider
+              disabled={disablePlay}
               sx={{ color: '#1976d2' }}
               value={currentTime}
               max={duration}

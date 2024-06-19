@@ -6,7 +6,7 @@ import { IAlbum } from '../types/Album';
 import { ISong } from '../types/Song';
 import { IUser } from '../types/User';
 import { IGlobalContext, KContextProps } from '../types/context';
-import { getCurrentUser } from '../utils/storage';
+import { getCurrentUser, getTempCurrentAlbum, getTempCurrentSong } from '../utils/storage';
 
 export const KContext = createContext<IGlobalContext>({} as IGlobalContext);
 
@@ -21,6 +21,7 @@ export const KContextProvider = ({ children }: KContextProps) => {
   const [tempSongOrAlbum, setTempSongOrAlbum] = useState<ISong | IAlbum | null>(null);
   const [isOpenMoreAction, setIsOpenMoreAction] = useState<boolean>(false);
   const [isOpenSendToEmail, setIsOpenSendToEmail] = useState<boolean>(false);
+  const [isOpenAdvertise, setIsOpenAdvertise] = useState<boolean>(true);
   const [playlistChanged, setChangedPlaylist] = useState<boolean>(false);
   const [roomChanged, setChangedRoom] = useState<boolean>(false);
   const [isShowLyric, setIsShowLyric] = useState<boolean>(false);
@@ -38,6 +39,8 @@ export const KContextProvider = ({ children }: KContextProps) => {
       if (localUser) {
         setIsLoggedIn(true);
         setCurrentUser(JSON.parse(localUser));
+        setCurrentSong(getTempCurrentSong() ? JSON.parse(getTempCurrentSong()!) : null);
+        setCurrentAlbum(getTempCurrentAlbum() ? JSON.parse(getTempCurrentAlbum()!) : null);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -71,6 +74,8 @@ export const KContextProvider = ({ children }: KContextProps) => {
         tempSongOrAlbum,
         roomChanged,
         isOpenAddRoomModal,
+        isOpenAdvertise,
+        setIsOpenAdvertise,
         setChangedRoom,
         setIsOpenAddRoomModal,
         setTempSongOrAlbum,

@@ -14,7 +14,7 @@ import { KContext } from '../../context';
 import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
-import { setTempCurrentSong } from '../../utils/storage';
+import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 import CardItem from '../Card';
 import Image from '../Image';
 import { MoreAction } from '../MoreAction';
@@ -48,7 +48,8 @@ const AlbumDetail = () => {
   const [album, setAlbum] = useState<IAlbum | null>(null);
   const [singers, setSingers] = useState<{}[]>([]);
   const [likedSongs, setLikedSongs] = useState<Record<number, boolean>>({});
-  const { setCurrentSong, isMobile, setIsOpenMoreAction, setTempSongOrAlbum, tempSongOrAlbum } = useContext(KContext);
+  const { setCurrentSong, isMobile, setIsOpenMoreAction, setTempSongOrAlbum, setCurrentAlbum, tempSongOrAlbum } =
+    useContext(KContext);
   const { albumId } = useParams<{ albumId?: string }>();
   const handleOpenMoreAction = (song: ISong) => {
     setTempSongOrAlbum(song);
@@ -204,6 +205,8 @@ const AlbumDetail = () => {
                               : null;
                             setCurrentSong(song);
                             setTempCurrentSong(randomSong);
+                            setCurrentAlbum(album);
+                            setTempCurrentAlbum(album);
                             if (randomSong?.id) {
                               await handleSaveToHistory(randomSong.id);
                             }
@@ -230,7 +233,8 @@ const AlbumDetail = () => {
                   <PlaylistItem key={index}>
                     <SongTitle>
                       <Headphones sx={{ marginRight: '8px' }} />
-                      <Image src={song?.image ?? images.noImage} alt="Live from space album cover" />
+                      {/* làm thêm cái phát bài hát trên mobile */}
+                      <Image src={song?.image ?? images.noImage} alt="Live" />
                       <StyledBox>
                         <StyledBoxTitle>
                           <Typography variant="inherit" noWrap>

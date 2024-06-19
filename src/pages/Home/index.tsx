@@ -1,18 +1,21 @@
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AlbumContainer from '../../components/Album';
 import CarouselContainer from '../../components/Carousel';
 import HistoryContainer from '../../components/History';
 import { PlaylistModal } from '../../components/PlaylistModal';
 import { TextHeader } from '../../components/TextHeader';
 import { TextHeaderOnly } from '../../components/TextHeaderOnly';
-import { getAlbumsByGenre, getAllGenres, getHistories, suggestSongs } from '../../services/user';
+import { getAlbumsByGenre, getAllGenres, getHistories, getSuggestSongsName, suggestSongs } from '../../services/user';
 import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
+import { getCurrentUser, getTempCurrentAlbum, getTempCurrentSong } from '../../utils/storage';
+import { KContext } from '../../context';
 const theme = createTheme();
 
 function Homepage() {
+  const { setCurrentUser, setCurrentSong, setCurrentAlbum } = useContext(KContext);
   const [histories, setHistories] = useState<ISong[]>([]);
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -129,18 +132,33 @@ function Homepage() {
       owner: false,
     },
   ];
+
+  useEffect(() => {
+    const localUser = getCurrentUser();
+    const localSong = getTempCurrentSong();
+    const localAlbum = getTempCurrentAlbum();
+    if (localUser) {
+      setCurrentUser(JSON.parse(localUser));
+      setCurrentSong(localSong ? JSON.parse(localSong) : null);
+      setCurrentAlbum(localAlbum ? JSON.parse(localAlbum) : null);
+    }
+  }, []);
   useEffect(() => {
     (async () => {
       const resHistories = await getHistories(page);
       const histories = resHistories?.data?.histories ?? [];
       const uniqueHistories = Array.from(new Set(histories.map((history: ISong) => history.id)));
+      const historiesSongName = uniqueHistories
+        ?.map((id) => histories.find((history: ISong) => history.id === id))
+        .map((song) => song?.title ?? '');
       setHistories(
         uniqueHistories.map((id) => histories.find((history: ISong) => history.id === id)).slice(0, 6) ?? [],
       );
       const resGenres = await getAllGenres(page);
       const genresData = resGenres?.data?.genres ?? [];
       setGenres(genresData);
-      const data = (await suggestSongs()) ?? [];
+      const resData = await getSuggestSongsName(historiesSongName);
+      const data = (await suggestSongs(resData ?? [])) ?? [];
       setSuggests(data.slice(0, 6));
     })();
   }, [page]);

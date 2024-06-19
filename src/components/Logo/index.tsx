@@ -1,12 +1,11 @@
 import { WorkspacePremium } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import { useContext } from 'react';
-import { KContext } from '../../context';
+import { getCurrentUser } from '../../utils/storage';
 import Image from '../Image';
 import { LogoSignWrapper, LogoWrapper, StyledPremiumLogo, StyledPremiumText } from './styles';
 
 function Logo() {
-  const { currentUser } = useContext(KContext);
+  const currentUser = getCurrentUser();
   return (
     <LogoWrapper to="/">
       <LogoSignWrapper>
@@ -15,7 +14,7 @@ function Logo() {
           alt=""
         />
       </LogoSignWrapper>
-      {currentUser?.premium && (
+      {JSON.parse(currentUser ?? '')?.premium && (
         <StyledPremiumLogo>
           <IconButton>
             <WorkspacePremium />

@@ -38,6 +38,17 @@ export const validateComment = async (comment: string) => {
     console.error('Can not validate this comment', error);
   }
 };
+export const getSuggestSongsName = async (value: string[]) => {
+  try {
+    const stringValue = value.map((v) => `'${v}'`).join(', ');
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER_VIETNAMESE_CLASSIFICATION_HOST}/answers/music_suggest?text=[${stringValue}]`,
+    );
+    return data;
+  } catch (error) {
+    console.error('Can not get suggest music name', error);
+  }
+};
 export const loginWithFaceBook = async ({ token }: { token?: string }) => {
   if (!token) return;
   try {
@@ -562,9 +573,17 @@ export const search = async (q: string): Promise<AxiosResponse<any>> => {
   }
 };
 
-export const suggestSongs = async () => {
+export const suggestSongs = async (value: string) => {
   try {
-    const response = await apiInstance.get('/me/suggest');
+    const array = JSON.parse(value.replace(/'/g, '"'));
+    const formData = new FormData();
+    formData.append('songs', JSON.stringify(array));
+    const response = await apiInstance.post('/me/suggest', formData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error get suggested songs:', error);

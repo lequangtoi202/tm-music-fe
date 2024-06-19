@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { CssBaseline } from '@mui/material';
-import React, { Fragment, ReactNode, Suspense } from 'react';
+import React, { Fragment, ReactNode, Suspense, useContext, useEffect } from 'react';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';

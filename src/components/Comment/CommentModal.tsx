@@ -1,5 +1,5 @@
 import { CheckCircle, Warning } from '@mui/icons-material';
-import { Box, Fade, IconButton, Typography } from '@mui/material';
+import { Box, Fade, IconButton, Tooltip, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import images from '../../assets/images';
@@ -23,7 +23,7 @@ import {
 } from './styles';
 
 function CommentModal({ song }: { song: ISong }) {
-  const { openCommentDialog, setOpenCommentDialog, currentSong, setError } = useContext(KContext);
+  const { openCommentDialog, setOpenCommentDialog, currentSong, setError, currentUser } = useContext(KContext);
   const [comments, setComments] = useState<any[]>([]);
   const [singers, setSingers] = useState<string>('');
   const [page, setPage] = useState<number>(1);
@@ -118,20 +118,25 @@ function CommentModal({ song }: { song: ISong }) {
                   {comment?.status ? (
                     <StyledPositive>
                       <Typography variant="inherit">{comment?.content}</Typography>
-                      <CheckCircle />
+                      <Tooltip sx={{ cursor: 'pointer' }} placement="top" title="Tích cực">
+                        <CheckCircle />
+                      </Tooltip>
                     </StyledPositive>
                   ) : (
                     <StyledNegative>
                       <Typography variant="inherit">{comment?.content}</Typography>
-                      <Warning />
+                      <Tooltip sx={{ cursor: 'pointer' }} placement="top" title="Tiêu cực">
+                        <Warning />
+                      </Tooltip>
                     </StyledNegative>
                   )}
-
-                  <IconButton onClick={() => handleDeleteComment(comment.id)}>
-                    <Typography fontSize={12} variant="inherit" noWrap>
-                      Xóa
-                    </Typography>
-                  </IconButton>
+                  {comment.user?.id === currentUser?.id && (
+                    <IconButton onClick={() => handleDeleteComment(comment.id)}>
+                      <Typography fontSize={12} variant="inherit" noWrap>
+                        Xóa
+                      </Typography>
+                    </IconButton>
+                  )}
                 </StyledComment>
               </CommentWrapper>
             ))}

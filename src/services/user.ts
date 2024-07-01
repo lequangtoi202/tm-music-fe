@@ -219,7 +219,6 @@ export const createComment = async (data: any) => {
   const formData = new FormData();
   formData.append('content', data.content);
   formData.append('song_id', data.songId);
-  formData.append('status', data.status);
   try {
     const response = await axios.post(`${process.env.REACT_APP_SERVER_HOST}/me/comments`, formData, {
       headers: {

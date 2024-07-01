@@ -33,11 +33,11 @@ function CommentModal({ song }: { song: ISong }) {
 
   const onSubmit = async (data: any) => {
     setLoading(true);
-    const result = await validateComment(data.comment);
+    // const result = await validateComment(data.comment);
     const res = await createComment({
       content: data.comment,
       songId: currentSong?.id,
-      status: result[0] === 'POSITIVE' ? true : false,
+      // status: result[0] === 'POSITIVE' ? true : false,
     });
     setComments([...comments, res]);
     setLoading(false);

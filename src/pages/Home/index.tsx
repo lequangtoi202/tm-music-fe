@@ -158,7 +158,7 @@ function Homepage() {
       const genresData = resGenres?.data?.genres ?? [];
       setGenres(genresData);
       const resData = await getSuggestSongsName(historiesSongName);
-      const data = (await suggestSongs(resData ?? [])) ?? [];
+      const data = (await suggestSongs(JSON.stringify(historiesSongName) ?? [])) ?? [];
       setSuggests(data.slice(0, 6));
     })();
   }, [page]);

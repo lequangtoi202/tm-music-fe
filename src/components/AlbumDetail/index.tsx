@@ -12,7 +12,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { KContext } from '../../context';
 import { IAlbum } from '../../types/Album';
-import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
 import { setTempCurrentAlbum, setTempCurrentSong } from '../../utils/storage';
 import CardItem from '../Card';
@@ -35,9 +34,12 @@ import {
   SongTitle,
   StyleMoreButton,
   StyledBox,
+  StyledBoxSubTitle,
   StyledBoxTitle,
   StyledGroupAction,
+  Tag,
   Time,
+  TitlePremium,
 } from './styles';
 import { createLike, unlike, getAlbumDetail, pushToHistories } from '../../services/user';
 import images from '../../assets/images';
@@ -177,8 +179,11 @@ const AlbumDetail = () => {
                     <SongTitle>
                       <Headphones sx={{ marginRight: '8px' }} />
                       <StyledBox>
-                        <StyledBoxTitle>{song.title}</StyledBoxTitle>
-                        <StyledBoxTitle>{song?.singers?.[0]?.name}</StyledBoxTitle>
+                        <TitlePremium>
+                          <StyledBoxTitle>{song.title}</StyledBoxTitle>
+                          {song.copyright ? <Tag>Pre</Tag> : <></>}
+                        </TitlePremium>
+                        <StyledBoxSubTitle>{song?.singers?.[0]?.name}</StyledBoxSubTitle>
                       </StyledBox>
                     </SongTitle>
                     <AlbumTitle>{album?.title}</AlbumTitle>

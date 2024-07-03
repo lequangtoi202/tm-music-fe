@@ -56,7 +56,15 @@ export default function MediaControlCard() {
     if (audio) {
       audio.currentTime = currentTime;
     }
-    setCurrentTime(newValue as number);
+    if (!currentSong?.bought && currentSong?.copyright && currentTime >= 60) {
+      setDisablePlay(true);
+      setIsPlaying(false);
+      const audio = document.getElementById('audioPlayer') as HTMLAudioElement;
+      audio.pause();
+      setError('Vui lòng mua bài hát.');
+    } else {
+      setCurrentTime(newValue as number);
+    }
   };
 
   const togglePlayPause = () => {

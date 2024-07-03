@@ -184,6 +184,22 @@ const StyledBox = styled.div`
 
 const StyledBoxTitle = styled.div`
   font-size: 14px;
+  font-weight: bold;
+  max-width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media (max-width: 768px) {
+    max-width: 160px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
+`;
+
+const StyledBoxSubTitle = styled.div`
+  font-size: 14px;
   font-weight: normal;
   max-width: 210px;
   white-space: nowrap;
@@ -198,6 +214,11 @@ const StyledBoxTitle = styled.div`
   }
 `;
 
+const TitlePremium = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const ResponsiveContainer = styled.div`
   padding-left: 24px;
   padding-right: 24px;
@@ -209,6 +230,22 @@ const ResponsiveContainer = styled.div`
     ${CardContainer}, ${PlaylistContainer} {
       min-width: 100%;
     }
+  }
+`;
+
+const Tag = styled.div`
+  display: inline-block;
+  margin-left: 4px;
+  padding: 2px 6px;
+  background-image: linear-gradient(to right, yellow, orange);
+  border-radius: 4px;
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+
+  & < button {
+    height: 12px;
+    width: 12px;
   }
 `;
 
@@ -228,4 +265,7 @@ export {
   StyledBox,
   StyleMoreButton,
   StyledGroupAction,
+  Tag,
+  TitlePremium,
+  StyledBoxSubTitle,
 };

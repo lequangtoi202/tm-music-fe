@@ -67,6 +67,16 @@ const RoomDetail: React.FC = () => {
     return 0;
   })();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (ownerRoomId === -1) {
+        window.location.reload();
+      }
+    }, 2000)
+
+    return () => clearTimeout(timer);
+  }, [ownerRoomId])
+
   const createSocket = () => {
     const socket_url = 'ws://localhost:3000/cable';
     const socket = new WebSocket(socket_url);
@@ -210,8 +220,7 @@ const RoomDetail: React.FC = () => {
   const getVideoDuration = (url) => {
     return new Promise((resolve) => {
       const video = document.createElement('video');
-      video.src =
-        'https://vnso-pt-15-tf-a128-z3.zmdcdn.me/756ba39ea07eb46c326b54c999668a94?authen=exp=1716058741~acl=/756ba39ea07eb46c326b54c999668a94/*~hmac=8322462b2f81ebbaef181e2dcc9dbad2';
+      video.src = url;
       video.addEventListener('loadedmetadata', () => {
         resolve(Math.floor(video.duration));
       });
@@ -220,26 +229,33 @@ const RoomDetail: React.FC = () => {
       });
     });
   };
-  console.log(songsInRoom);
+
+  // useEffect(() => {
+  //   const playAudio = async () => {
+  //     if (audioRef.current) {
+  //       audioRef.current.currentTime = currentTime;
+  //       try {
+  //         await audioRef.current.play();
+  //       } catch (error) {
+  //         console.error('Failed to play audio:', error);
+  //       }
+  //     }
+  //   };
+
+  //   document.addEventListener('click', playAudio);
+
+  //   return () => {
+  //     document.removeEventListener('click', playAudio);
+  //   };
+  // }, []);
 
   useEffect(() => {
-    const playAudio = async () => {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0;
-        try {
-          await audioRef.current.play();
-        } catch (error) {
-          console.error('Failed to play audio:', error);
-        }
-      }
-    };
-
-    document.addEventListener('click', playAudio);
-
-    return () => {
-      document.removeEventListener('click', playAudio);
-    };
-  }, []);
+    const audio = audioRef.current;
+    if (audio && currentTime !== 0) {
+      audio.currentTime = currentTime; // Set to start at the received time
+      audio.play();
+    }
+  }, [currentTime]);
 
   return (
     <Box>

@@ -16,8 +16,11 @@ import {
   Tooltip,
   Typography,
   createTheme,
+  Grid,
+  Paper
 } from '@mui/material';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import { getSongsInRoom } from '../../services/user';
 import { getCurrentUser } from '../../utils/storage';
@@ -50,6 +53,8 @@ const RoomDetail: React.FC = () => {
   const [url, setUrl] = useState<string>('');
   const [ownerRoomId, setOwnerRoomId] = useState<number>(-1);
   const [songsInRoom, setSongsInRoom] = useState<any[]>([]);
+  const [songTitle, setSongTitle] = useState<string>('');
+  const [songSinger, setSongSinger] = useState<string>('');
   const { setCurrentSong } = useContext(KContext);
   const lastMessageRef = useRef<HTMLLIElement | null>(null);
 
@@ -66,6 +71,16 @@ const RoomDetail: React.FC = () => {
     }
     return 0;
   })();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (ownerRoomId === -1) {
+        window.location.reload();
+      }
+    }, 2000)
+
+    return () => clearTimeout(timer);
+  }, [ownerRoomId])
 
   const createSocket = () => {
     const socket_url = 'ws://localhost:3000/cable';
@@ -106,9 +121,12 @@ const RoomDetail: React.FC = () => {
     socket.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type !== 'ping') {
+        console.log('data: ',data)
         if (data.message?.total_user) {
           setUrl(data.message?.room?.url);
           setOwnerRoomId(data.message?.room?.owner_id);
+          setSongTitle(data.message?.room?.song_title)
+          setSongSinger(data.message?.room?.song_singer)
         }
         if (currentTime === 0 && data.message?.room?.current_time) {
           setCurrentTime(data.message.room.current_time);
@@ -131,6 +149,8 @@ const RoomDetail: React.FC = () => {
       if (data.message?.type === 'change_url') {
         setUrl(data.message?.room?.url);
         setCurrentTime(data.message?.room?.current_time);
+        setSongTitle(data.message?.room?.song_title)
+        setSongSinger(data.message?.room?.song_singer)
       }
     };
 
@@ -210,8 +230,7 @@ const RoomDetail: React.FC = () => {
   const getVideoDuration = (url) => {
     return new Promise((resolve) => {
       const video = document.createElement('video');
-      video.src =
-        'https://vnso-pt-15-tf-a128-z3.zmdcdn.me/756ba39ea07eb46c326b54c999668a94?authen=exp=1716058741~acl=/756ba39ea07eb46c326b54c999668a94/*~hmac=8322462b2f81ebbaef181e2dcc9dbad2';
+      video.src = url;
       video.addEventListener('loadedmetadata', () => {
         resolve(Math.floor(video.duration));
       });
@@ -220,111 +239,135 @@ const RoomDetail: React.FC = () => {
       });
     });
   };
-  console.log(songsInRoom);
+
+  // useEffect(() => {
+  //   const playAudio = async () => {
+  //     if (audioRef.current) {
+  //       audioRef.current.currentTime = currentTime;
+  //       try {
+  //         await audioRef.current.play();
+  //       } catch (error) {
+  //         console.error('Failed to play audio:', error);
+  //       }
+  //     }
+  //   };
+
+  //   document.addEventListener('click', playAudio);
+
+  //   return () => {
+  //     document.removeEventListener('click', playAudio);
+  //   };
+  // }, []);
 
   useEffect(() => {
-    const playAudio = async () => {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0;
-        try {
-          await audioRef.current.play();
-        } catch (error) {
-          console.error('Failed to play audio:', error);
-        }
-      }
-    };
-
-    document.addEventListener('click', playAudio);
-
-    return () => {
-      document.removeEventListener('click', playAudio);
-    };
-  }, []);
+    const audio = audioRef.current;
+    if (audio && currentTime !== 0) {
+      audio.currentTime = currentTime; // Set to start at the received time
+      audio.play();
+    }
+  }, [currentTime]);
 
   return (
     <Box>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box p={2}>
-          <PlaylistContainer>
-            {songsInRoom.map((song, index) => (
-              <PlaylistItem key={index}>
-                <SongTitle>
-                  <Headphones sx={{ marginRight: '8px' }} />
-                  <Image src={song?.image ?? images.noImage} alt="Live" />
-                  <StyledBox>
-                    <StyledBoxTitle>
-                      <Typography variant="inherit" noWrap>
-                        {song.title}
-                      </Typography>
-                    </StyledBoxTitle>
-                    <StyledBoxTitle>{song?.singers?.[0]?.name}</StyledBoxTitle>
-                  </StyledBox>
-                  <StyleMoreButton>
-                    <Tooltip placement="top" title={ownerRoomId !== user_id ? 'Bạn không phải chủ phòng' : 'Phát'}>
-                      <span>
-                        <IconButton
-                          disabled={ownerRoomId !== user_id}
-                          onClick={() => handleButtonClickSongs(song.audio)}
-                        >
-                          <PlayCircleOutline />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  </StyleMoreButton>
-                </SongTitle>
-              </PlaylistItem>
-            ))}
-          </PlaylistContainer>
-          <StyledAudio>
-            <audio id="audioPlayer" autoPlay controls={true} src={url} ref={audioRef} />
-          </StyledAudio>
-
-          <Box mb={2} display={'flex'} flexDirection={'column'} maxHeight={'calc(100vh - 64px)'} overflowy={'auto'}>
+          <div style={{display: 'flex', marginBottom: '20px', alignItems: 'center', gap: '20px'}}>
             <div>
-              <Typography variant="h6">Trò chuyện</Typography>
+              <img src='https://res.cloudinary.com/dx9vr7on4/image/upload/v1720363478/music-7683_gvtlrv.gif' width='120px' alt="GIF"/>
             </div>
-            <div style={{ flex: 1 }}>
-              <StyleCommentSection>
-                <List ref={chatListRef}>
-                  {messages.map((comment, index) => (
-                    <ListItem
-                      key={index}
-                      sx={{ pl: 0, pr: 0 }}
-                      ref={index === messages.length - 1 ? lastMessageRef : null}
-                    >
-                      <ListItemAvatar>
-                        <Avatar alt={comment.name} src={comment.image ?? images.noImage} />
-                      </ListItemAvatar>
-                      <ListItemText primary={comment.name} secondary={comment.content} />
-                    </ListItem>
-                  ))}
-                </List>
-              </StyleCommentSection>
-              <StyledCommentInput>
-                <TextField
-                  label="Bạn muốn nói gì?"
-                  variant="outlined"
-                  value={newMessage}
-                  fullWidth
-                  onChange={(e) => {
-                    if (e.target.value !== '') {
-                      setDisabled(false);
-                      setNewMessage(e.target.value);
-                    } else {
-                      setNewMessage('');
-                      setDisabled(true);
-                    }
-                  }}
-                  onKeyUp={handleKeyPress}
-                  multiline
-                />
-                <IconButton disabled={disabled} color="primary" onClick={sendMessage}>
-                  <Send />
-                </IconButton>
-              </StyledCommentInput>
+            <div>
+              <h3>{songTitle}</h3>
+              <span>{songSinger}</span>
             </div>
-          </Box>
+          </div>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <div>
+                <Typography variant="h6">Danh sách bài hát</Typography>
+              </div>
+              <PlaylistContainer style={{ height: '70vh' }}>
+                {songsInRoom.map((song, index) => (
+                  <PlaylistItem key={index}>
+                    <SongTitle>
+                      <Headphones sx={{ marginRight: '8px' }} />
+                      <Image src={song?.image ?? images.noImage} alt="Live" />
+                      <StyledBox>
+                        <StyledBoxTitle>
+                          <Typography variant="inherit" noWrap>
+                            {song.title}
+                          </Typography>
+                        </StyledBoxTitle>
+                        <StyledBoxTitle>{song?.singers?.[0]?.name}</StyledBoxTitle>
+                      </StyledBox>
+                      <StyleMoreButton>
+                        <Tooltip placement="top" title={ownerRoomId !== user_id ? 'Bạn không phải chủ phòng' : 'Phát'}>
+                          <span>
+                            <IconButton
+                              disabled={ownerRoomId !== user_id}
+                              onClick={() => handleButtonClickSongs(song.audio)}
+                            >
+                              <PlayCircleOutline />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                      </StyleMoreButton>
+                    </SongTitle>
+                  </PlaylistItem>
+                ))}
+              </PlaylistContainer>
+              <StyledAudio>
+                <audio id="audioPlayer" autoPlay src={url} ref={audioRef} />
+              </StyledAudio>
+            </Grid>
+            <Grid item xs={4}>
+              <Box mb={2} display={'flex'} flexDirection={'column'} maxHeight={'calc(100vh - 64px)'} overflowy={'auto'}>
+                <div>
+                  <Typography variant="h6">Trò chuyện</Typography>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <StyleCommentSection style={{ height: '70vh' }}>
+                    <List ref={chatListRef}>
+                      {messages.map((comment, index) => (
+                        <ListItem
+                          key={index}
+                          sx={{ pl: 0, pr: 0 }}
+                          ref={index === messages.length - 1 ? lastMessageRef : null}
+                        >
+                          <ListItemAvatar>
+                            <Avatar alt={comment.name} src={comment.image ?? images.noImage} />
+                          </ListItemAvatar>
+                          <ListItemText primary={comment.name} secondary={comment.content} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </StyleCommentSection>
+                  <StyledCommentInput style={{ width: '100%' }}>
+                    <TextField
+                      label="Bạn muốn nói gì?"
+                      variant="outlined"
+                      value={newMessage}
+                      fullWidth
+                      onChange={(e) => {
+                        if (e.target.value !== '') {
+                          setDisabled(false);
+                          setNewMessage(e.target.value);
+                        } else {
+                          setNewMessage('');
+                          setDisabled(true);
+                        }
+                      }}
+                      onKeyUp={handleKeyPress}
+                      multiline
+                    />
+                    <IconButton disabled={disabled} color="primary" onClick={sendMessage}>
+                      <Send />
+                    </IconButton>
+                  </StyledCommentInput>
+                </div>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
       </ThemeProvider>
     </Box>

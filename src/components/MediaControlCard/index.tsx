@@ -39,6 +39,7 @@ export default function MediaControlCard() {
     success,
     setError,
     setIsShowLyric,
+    currentUser,
   } = useContext(KContext);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
@@ -56,7 +57,7 @@ export default function MediaControlCard() {
     if (audio) {
       audio.currentTime = currentTime;
     }
-    if (!currentSong?.bought && currentSong?.copyright && currentTime >= 60) {
+    if (!currentUser?.premium && !currentSong?.bought && currentSong?.copyright && currentTime >= 60) {
       setDisablePlay(true);
       setIsPlaying(false);
       const audio = document.getElementById('audioPlayer') as HTMLAudioElement;

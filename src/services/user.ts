@@ -548,6 +548,16 @@ export const getAlbumsByGenre = async (genreId: number, page: number, size?: num
   }
 };
 
+export const getMe = async () => {
+  try {
+    const response = await apiInstance.get(`/me`);
+    return response;
+  } catch (error) {
+    console.error('Error with get my info:', error);
+    return (error as any).response.status;
+  }
+};
+
 export const getRooms = async () => {
   try {
     const response = await apiInstance.get(`/me/rooms`);

@@ -6,7 +6,14 @@ import HistoryContainer from '../../components/History';
 import { PlaylistModal } from '../../components/PlaylistModal';
 import { TextHeader } from '../../components/TextHeader';
 import { TextHeaderOnly } from '../../components/TextHeaderOnly';
-import { getAlbumsByGenre, getAllGenres, getHistories, getSuggestSongsName, suggestSongs } from '../../services/user';
+import {
+  getAlbumsByGenre,
+  getAllGenres,
+  getHistories,
+  getMe,
+  getSuggestSongsName,
+  suggestSongs,
+} from '../../services/user';
 import { IAlbum } from '../../types/Album';
 import { IGenre } from '../../types/Genre';
 import { ISong } from '../../types/Song';
@@ -137,12 +144,26 @@ function Homepage() {
     const localUser = getCurrentUser();
     const localSong = getTempCurrentSong();
     const localAlbum = getTempCurrentAlbum();
-    if (localUser) {
-      setCurrentUser(JSON.parse(localUser));
-      setCurrentSong(localSong ? JSON.parse(localSong) : null);
-      setCurrentAlbum(localAlbum ? JSON.parse(localAlbum) : null);
-    }
+
+    const fetchData = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('success') === 'true') {
+        const me = await getMe();
+        setCurrentUser(me?.data);
+      }
+    };
+
+    (async () => {
+      await fetchData();
+
+      if (localUser) {
+        setCurrentUser(JSON.parse(localUser));
+        setCurrentSong(localSong ? JSON.parse(localSong) : null);
+        setCurrentAlbum(localAlbum ? JSON.parse(localAlbum) : null);
+      }
+    })();
   }, []);
+
   useEffect(() => {
     (async () => {
       const resHistories = await getHistories(page);

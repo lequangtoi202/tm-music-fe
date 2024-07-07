@@ -16,8 +16,11 @@ import {
   Tooltip,
   Typography,
   createTheme,
+  Grid,
+  Paper
 } from '@mui/material';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import { getSongsInRoom } from '../../services/user';
 import { getCurrentUser } from '../../utils/storage';
@@ -262,85 +265,100 @@ const RoomDetail: React.FC = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box p={2}>
-          <PlaylistContainer>
-            {songsInRoom.map((song, index) => (
-              <PlaylistItem key={index}>
-                <SongTitle>
-                  <Headphones sx={{ marginRight: '8px' }} />
-                  <Image src={song?.image ?? images.noImage} alt="Live" />
-                  <StyledBox>
-                    <StyledBoxTitle>
-                      <Typography variant="inherit" noWrap>
-                        {song.title}
-                      </Typography>
-                    </StyledBoxTitle>
-                    <StyledBoxTitle>{song?.singers?.[0]?.name}</StyledBoxTitle>
-                  </StyledBox>
-                  <StyleMoreButton>
-                    <Tooltip placement="top" title={ownerRoomId !== user_id ? 'Bạn không phải chủ phòng' : 'Phát'}>
-                      <span>
-                        <IconButton
-                          disabled={ownerRoomId !== user_id}
-                          onClick={() => handleButtonClickSongs(song.audio)}
-                        >
-                          <PlayCircleOutline />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  </StyleMoreButton>
-                </SongTitle>
-              </PlaylistItem>
-            ))}
-          </PlaylistContainer>
-          <StyledAudio>
-            <audio id="audioPlayer" autoPlay controls={true} src={url} ref={audioRef} />
-          </StyledAudio>
 
-          <Box mb={2} display={'flex'} flexDirection={'column'} maxHeight={'calc(100vh - 64px)'} overflowy={'auto'}>
-            <div>
-              <Typography variant="h6">Trò chuyện</Typography>
-            </div>
-            <div style={{ flex: 1 }}>
-              <StyleCommentSection>
-                <List ref={chatListRef}>
-                  {messages.map((comment, index) => (
-                    <ListItem
-                      key={index}
-                      sx={{ pl: 0, pr: 0 }}
-                      ref={index === messages.length - 1 ? lastMessageRef : null}
-                    >
-                      <ListItemAvatar>
-                        <Avatar alt={comment.name} src={comment.image ?? images.noImage} />
-                      </ListItemAvatar>
-                      <ListItemText primary={comment.name} secondary={comment.content} />
-                    </ListItem>
-                  ))}
-                </List>
-              </StyleCommentSection>
-              <StyledCommentInput>
-                <TextField
-                  label="Bạn muốn nói gì?"
-                  variant="outlined"
-                  value={newMessage}
-                  fullWidth
-                  onChange={(e) => {
-                    if (e.target.value !== '') {
-                      setDisabled(false);
-                      setNewMessage(e.target.value);
-                    } else {
-                      setNewMessage('');
-                      setDisabled(true);
-                    }
-                  }}
-                  onKeyUp={handleKeyPress}
-                  multiline
-                />
-                <IconButton disabled={disabled} color="primary" onClick={sendMessage}>
-                  <Send />
-                </IconButton>
-              </StyledCommentInput>
-            </div>
-          </Box>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <div style={{display: 'flex', marginBottom: '20px', alignItems: 'center', gap: '20px'}}>
+                <div>
+                  <img src='https://res.cloudinary.com/dx9vr7on4/image/upload/v1720363478/music-7683_gvtlrv.gif' width='120px' alt="GIF"/>
+                </div>
+                <div>
+                  <h3>Ten bai hat</h3>
+                  <span>Tac gia</span>
+                </div>
+              </div>
+              <PlaylistContainer>
+                {songsInRoom.map((song, index) => (
+                  <PlaylistItem key={index}>
+                    <SongTitle>
+                      <Headphones sx={{ marginRight: '8px' }} />
+                      <Image src={song?.image ?? images.noImage} alt="Live" />
+                      <StyledBox>
+                        <StyledBoxTitle>
+                          <Typography variant="inherit" noWrap>
+                            {song.title}
+                          </Typography>
+                        </StyledBoxTitle>
+                        <StyledBoxTitle>{song?.singers?.[0]?.name}</StyledBoxTitle>
+                      </StyledBox>
+                      <StyleMoreButton>
+                        <Tooltip placement="top" title={ownerRoomId !== user_id ? 'Bạn không phải chủ phòng' : 'Phát'}>
+                          <span>
+                            <IconButton
+                              disabled={ownerRoomId !== user_id}
+                              onClick={() => handleButtonClickSongs(song.audio)}
+                            >
+                              <PlayCircleOutline />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                      </StyleMoreButton>
+                    </SongTitle>
+                  </PlaylistItem>
+                ))}
+              </PlaylistContainer>
+              <StyledAudio>
+                <audio id="audioPlayer" autoPlay controls={true} src={url} ref={audioRef} />
+              </StyledAudio>
+            </Grid>
+            <Grid item xs={4}>
+              <Box mb={2} display={'flex'} flexDirection={'column'} maxHeight={'calc(100vh - 64px)'} overflowy={'auto'}>
+                <div>
+                  <Typography variant="h6">Trò chuyện</Typography>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <StyleCommentSection style={{ height: '50vh' }}>
+                    <List ref={chatListRef}>
+                      {messages.map((comment, index) => (
+                        <ListItem
+                          key={index}
+                          sx={{ pl: 0, pr: 0 }}
+                          ref={index === messages.length - 1 ? lastMessageRef : null}
+                        >
+                          <ListItemAvatar>
+                            <Avatar alt={comment.name} src={comment.image ?? images.noImage} />
+                          </ListItemAvatar>
+                          <ListItemText primary={comment.name} secondary={comment.content} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </StyleCommentSection>
+                  <StyledCommentInput style={{ width: '100%' }}>
+                    <TextField
+                      label="Bạn muốn nói gì?"
+                      variant="outlined"
+                      value={newMessage}
+                      fullWidth
+                      onChange={(e) => {
+                        if (e.target.value !== '') {
+                          setDisabled(false);
+                          setNewMessage(e.target.value);
+                        } else {
+                          setNewMessage('');
+                          setDisabled(true);
+                        }
+                      }}
+                      onKeyUp={handleKeyPress}
+                      multiline
+                    />
+                    <IconButton disabled={disabled} color="primary" onClick={sendMessage}>
+                      <Send />
+                    </IconButton>
+                  </StyledCommentInput>
+                </div>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
       </ThemeProvider>
     </Box>

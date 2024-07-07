@@ -326,7 +326,7 @@ const RoomDetail: React.FC = () => {
                   <Typography variant="h6">Trò chuyện</Typography>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <StyleCommentSection style={{ height: '70vh' }}>
+                  <StyleCommentSection style={{ height: '36vh' }}>
                     <List ref={chatListRef}>
                       {messages.map((comment, index) => (
                         <ListItem

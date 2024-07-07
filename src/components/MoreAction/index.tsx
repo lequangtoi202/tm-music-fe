@@ -30,6 +30,7 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
     isOpenMoreAction,
     isMobile,
     tempSongOrAlbum,
+    currentUser,
     setIsOpenMoreAction,
     setIsOpenAddPlaylistModal,
     setOpenCommentDialog,
@@ -148,22 +149,27 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
                 <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Bình luận" />
               </ListItemButton>
             )}
-            <ListItemButton
-              onClick={() => {
-                const song = tempSongOrAlbum as ISong;
-                if (song.audio) {
-                  handleDownloadFile(song.audio ?? '', song.title ?? 'download.mp3');
-                } else {
-                  setError('Không thể tải xuống bài hát này!');
-                }
-              }}
-            >
-              <StyledListItemIcon>
-                <Download />
-              </StyledListItemIcon>
-              <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải xuống" />
-            </ListItemButton>
-            {!owner && !pathname.includes('/mymusic/') && pathname.includes('/albums/') && (
+            {(currentUser?.premium && pathname.includes('/albums/')) || (owner && pathname.includes('/mymusic/')) ? (
+              <ListItemButton
+                onClick={() => {
+                  const song = tempSongOrAlbum as ISong;
+                  if (song.audio) {
+                    handleDownloadFile(song.audio ?? '', song.title ?? 'download.mp3');
+                  } else {
+                    setError('Không thể tải xuống bài hát này!');
+                  }
+                }}
+              >
+                <StyledListItemIcon>
+                  <Download />
+                </StyledListItemIcon>
+                <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Tải xuống" />
+              </ListItemButton>
+            ) : (
+              <></>
+            )}
+            {(!owner && !pathname.includes('/mymusic/') && pathname.includes('/albums/')) ||
+            (!owner && pathname.includes('/')) ? (
               <ListItemButton
                 onClick={() => {
                   if (song?.id) {
@@ -176,6 +182,8 @@ export const MoreAction: React.FC<IMoreActionProps> = ({ song }) => {
                 </StyledListItemIcon>
                 <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Mua bài hát" />
               </ListItemButton>
+            ) : (
+              <></>
             )}
             {owner && pathname.includes('/mymusic/albums') && (
               <ListItemButton

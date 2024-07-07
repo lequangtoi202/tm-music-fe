@@ -141,10 +141,6 @@ function Homepage() {
   ];
 
   useEffect(() => {
-    const localUser = getCurrentUser();
-    const localSong = getTempCurrentSong();
-    const localAlbum = getTempCurrentAlbum();
-
     const fetchData = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('success') === 'true') {
@@ -155,7 +151,9 @@ function Homepage() {
 
     (async () => {
       await fetchData();
-
+      const localUser = getCurrentUser();
+      const localSong = getTempCurrentSong();
+      const localAlbum = getTempCurrentAlbum();
       if (localUser) {
         setCurrentUser(JSON.parse(localUser));
         setCurrentSong(localSong ? JSON.parse(localSong) : null);

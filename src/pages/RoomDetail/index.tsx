@@ -53,6 +53,8 @@ const RoomDetail: React.FC = () => {
   const [url, setUrl] = useState<string>('');
   const [ownerRoomId, setOwnerRoomId] = useState<number>(-1);
   const [songsInRoom, setSongsInRoom] = useState<any[]>([]);
+  const [songTitle, setSongTitle] = useState<string>('');
+  const [songSinger, setSongSinger] = useState<string>('');
   const { setCurrentSong } = useContext(KContext);
   const lastMessageRef = useRef<HTMLLIElement | null>(null);
 
@@ -119,9 +121,12 @@ const RoomDetail: React.FC = () => {
     socket.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type !== 'ping') {
+        console.log('data: ',data)
         if (data.message?.total_user) {
           setUrl(data.message?.room?.url);
           setOwnerRoomId(data.message?.room?.owner_id);
+          setSongTitle(data.message?.room?.song_title)
+          setSongSinger(data.message?.room?.song_singer)
         }
         if (currentTime === 0 && data.message?.room?.current_time) {
           setCurrentTime(data.message.room.current_time);
@@ -144,6 +149,8 @@ const RoomDetail: React.FC = () => {
       if (data.message?.type === 'change_url') {
         setUrl(data.message?.room?.url);
         setCurrentTime(data.message?.room?.current_time);
+        setSongTitle(data.message?.room?.song_title)
+        setSongSinger(data.message?.room?.song_singer)
       }
     };
 
@@ -265,19 +272,21 @@ const RoomDetail: React.FC = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box p={2}>
-
+          <div style={{display: 'flex', marginBottom: '20px', alignItems: 'center', gap: '20px'}}>
+            <div>
+              <img src='https://res.cloudinary.com/dx9vr7on4/image/upload/v1720363478/music-7683_gvtlrv.gif' width='120px' alt="GIF"/>
+            </div>
+            <div>
+              <h3>{songTitle}</h3>
+              <span>{songSinger}</span>
+            </div>
+          </div>
           <Grid container spacing={2}>
             <Grid item xs={8}>
-              <div style={{display: 'flex', marginBottom: '20px', alignItems: 'center', gap: '20px'}}>
-                <div>
-                  <img src='https://res.cloudinary.com/dx9vr7on4/image/upload/v1720363478/music-7683_gvtlrv.gif' width='120px' alt="GIF"/>
-                </div>
-                <div>
-                  <h3>Ten bai hat</h3>
-                  <span>Tac gia</span>
-                </div>
+              <div>
+                <Typography variant="h6">Danh sách bài hát</Typography>
               </div>
-              <PlaylistContainer>
+              <PlaylistContainer style={{ height: '70vh' }}>
                 {songsInRoom.map((song, index) => (
                   <PlaylistItem key={index}>
                     <SongTitle>
@@ -308,7 +317,7 @@ const RoomDetail: React.FC = () => {
                 ))}
               </PlaylistContainer>
               <StyledAudio>
-                <audio id="audioPlayer" autoPlay controls={true} src={url} ref={audioRef} />
+                <audio id="audioPlayer" autoPlay src={url} ref={audioRef} />
               </StyledAudio>
             </Grid>
             <Grid item xs={4}>
@@ -317,7 +326,7 @@ const RoomDetail: React.FC = () => {
                   <Typography variant="h6">Trò chuyện</Typography>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <StyleCommentSection style={{ height: '50vh' }}>
+                  <StyleCommentSection style={{ height: '70vh' }}>
                     <List ref={chatListRef}>
                       {messages.map((comment, index) => (
                         <ListItem
